@@ -1,0 +1,6 @@
+{
+  "name": "Biserica Ortodoxă Scunthorpe",
+  "description": "Website-ul oficial și platforma liturgică pentru Biserica Ortodoxă Antiochiană din Scunthorpe. Un portal spiritual modern, fluid și elegant în ton cu tradițiile bizantine.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

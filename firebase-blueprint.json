@@ -1,0 +1,74 @@
+{
+  "entities": {
+    "Announcement": {
+      "title": "Announcement",
+      "description": "Banner configuration for parish announcements shown on the homepage altar alert bar.",
+      "type": "object",
+      "properties": {
+        "roTitle": {
+          "type": "string",
+          "description": "Title of the advertisement / announcement in Romanian language."
+        },
+        "roText": {
+          "type": "string",
+          "description": "Detailed text of the announcement in Romanian language."
+        },
+        "enTitle": {
+          "type": "string",
+          "description": "Title of the announcement in English language."
+        },
+        "enText": {
+          "type": "string",
+          "description": "Detailed text of the announcement in English language."
+        },
+        "active": {
+          "type": "boolean",
+          "description": "Toggle indicating if this announcement is currently active and visible to visitors."
+        }
+      },
+      "required": ["roTitle", "roText", "enTitle", "enText", "active"]
+    },
+    "ServicesList": {
+      "title": "ServicesList",
+      "description": "List of regular scheduled services of the parish.",
+      "type": "object",
+      "properties": {
+        "list": {
+          "type": "array",
+          "description": "Array of liturgical services."
+        }
+      },
+      "required": ["list"]
+    },
+    "Gallery": {
+      "title": "Gallery",
+      "description": "Store list of custom parish photos and Youtube videos.",
+      "type": "object",
+      "properties": {
+        "photos": {
+          "type": "array",
+          "description": "Array of uploaded photos with storage URLs."
+        },
+        "videos": {
+          "type": "array",
+          "description": "Array of YouTube videos with titles."
+        }
+      },
+      "required": ["photos", "videos"]
+    }
+  },
+  "firestore": {
+    "settings/announcement": {
+      "schema": "Announcement",
+      "description": "Holds the latest liturgical parish banner info"
+    },
+    "settings/services": {
+      "schema": "ServicesList",
+      "description": "Holds the ordered array list of holy services"
+    },
+    "settings/gallery": {
+      "schema": "Gallery",
+      "description": "Holds lists of photo URLs and YouTube videos for the parish"
+    }
+  }
+}

@@ -1,0 +1,45 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Default-deny Catch-all Security block
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Publicly readable, schema-validated writes for Announcements
+    match /settings/announcement {
+      allow read: if true;
+      allow write: if request.resource.data.keys().hasAll(['roTitle', 'roText', 'enTitle', 'enText', 'active'])
+        && request.resource.data.keys().size() == 5
+        && request.resource.data.roTitle is string
+        && request.resource.data.roTitle.size() <= 300
+        && request.resource.data.roText is string
+        && request.resource.data.roText.size() <= 2000
+        && request.resource.data.enTitle is string
+        && request.resource.data.enTitle.size() <= 300
+        && request.resource.data.enText is string
+        && request.resource.data.enText.size() <= 2000
+        && request.resource.data.active is bool;
+    }
+
+    // Publicly readable, system-validated writes for Services List
+    match /settings/services {
+      allow read: if true;
+      allow write: if request.resource.data.keys().hasAll(['list'])
+        && request.resource.data.keys().size() == 1
+        && request.resource.data.list is list
+        && request.resource.data.list.size() <= 100;
+    }
+
+    // Publicly readable, validated writes for Gallery
+    match /settings/gallery {
+      allow read: if true;
+      allow write: if request.resource.data.keys().hasAll(['photos', 'videos'])
+        && request.resource.data.keys().size() == 2
+        && request.resource.data.photos is list
+        && request.resource.data.photos.size() <= 20
+        && request.resource.data.videos is list
+        && request.resource.data.videos.size() <= 40;
+    }
+  }
+}
