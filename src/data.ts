@@ -145,6 +145,17 @@ export const TRANSLATIONS: Record<'RO' | 'EN', TranslationSchema> = {
 
 export const SERVICES_SCHEDULING: Service[] = [
   {
+    id: 'vespers',
+    name: { RO: 'Vecernia', EN: 'Vespers' },
+    time: '18:00',
+    day: { RO: 'Sâmbătă Seara', EN: 'Saturday Evening' },
+    description: {
+      RO: 'Slujba de seară de sâmbătă prin care se intră în ziua Domnului, deschizând programul duminical.',
+      EN: 'The traditional evening service on Saturdays opening the Lord\'s Day.'
+    },
+    type: 'vespers'
+  },
+  {
     id: 'matins',
     name: { RO: 'Utrenia (Slujba de Dimineață)', EN: 'Matins (Morning Service)' },
     time: '09:00',

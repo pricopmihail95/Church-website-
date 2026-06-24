@@ -90,9 +90,19 @@ export default function App() {
     const servDocRef = doc(db, 'settings', 'services');
     const unsubServ = onSnapshot(servDocRef, (snap) => {
       if (snap.exists()) {
-        const data = snap.data() as { list: Service[] };
+        const data = snap.data() as { list: Service[]; version?: number };
         if (data && Array.isArray(data.list)) {
-          setServicesList(data.list);
+          let list = [...data.list];
+          if (!data.version || data.version < 2) {
+            const hasVespers = list.some(s => s.id === 'vespers' || s.type === 'vespers');
+            if (!hasVespers) {
+              const defaultVespers = SERVICES_SCHEDULING.find(s => s.id === 'vespers');
+              if (defaultVespers) {
+                list = [defaultVespers, ...list];
+              }
+            }
+          }
+          setServicesList(list);
         }
       }
     }, (err) => {

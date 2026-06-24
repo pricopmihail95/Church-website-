@@ -25,10 +25,11 @@ service cloud.firestore {
     // Publicly readable, system-validated writes for Services List
     match /settings/services {
       allow read: if true;
-      allow write: if request.resource.data.keys().hasAll(['list'])
-        && request.resource.data.keys().size() == 1
+      allow write: if request.resource.data.keys().hasAll(['list', 'version'])
+        && request.resource.data.keys().size() == 2
         && request.resource.data.list is list
-        && request.resource.data.list.size() <= 100;
+        && request.resource.data.list.size() <= 100
+        && request.resource.data.version is int;
     }
 
     // Publicly readable, validated writes for Gallery

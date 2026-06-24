@@ -36,9 +36,13 @@
         "list": {
           "type": "array",
           "description": "Array of liturgical services."
+        },
+        "version": {
+          "type": "integer",
+          "description": "Schema version number."
         }
       },
-      "required": ["list"]
+      "required": ["list", "version"]
     },
     "Gallery": {
       "title": "Gallery",
