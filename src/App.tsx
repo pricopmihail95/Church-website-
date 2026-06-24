@@ -17,9 +17,8 @@ import PangarDonations from './components/PangarDonations';
 import ContactSection from './components/ContactSection';
 import Footer from './components/Footer';
 import AdminPanel from './components/AdminPanel';
-import { db, handleFirestoreError, OperationType } from './firebase';
-import { doc, onSnapshot } from 'firebase/firestore';
 import { SERVICES_SCHEDULING } from './data';
+import { fetchParishData } from './lib/cloudinaryData';
 import { Megaphone, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
@@ -70,49 +69,38 @@ export default function App() {
     }
   }, [darkMode]);
 
-  // Listen to Firestore real-time updates for announcement and services
+  // Fetch real-time updates for announcement and services from Cloudinary (with fallback)
   useEffect(() => {
-    // 1. Get real-time updates for important announcement banner
-    const annDocRef = doc(db, 'settings', 'announcement');
-    const unsubAnn = onSnapshot(annDocRef, (snap) => {
-      if (snap.exists()) {
-        const data = snap.data() as any;
-        setAnnouncement(data);
-        // Reset dismissed state if announcement text changed
-        setDismissedAnnouncement(false);
-      }
-    }, (err) => {
-      console.error('Error listening to announcement:', err);
-      handleFirestoreError(err, OperationType.GET, 'settings/announcement');
-    });
+    let active = true;
+    let prevAnnouncementText = '';
 
-    // 2. Get real-time updates for listing of services
-    const servDocRef = doc(db, 'settings', 'services');
-    const unsubServ = onSnapshot(servDocRef, (snap) => {
-      if (snap.exists()) {
-        const data = snap.data() as { list: Service[]; version?: number };
-        if (data && Array.isArray(data.list)) {
-          let list = [...data.list];
-          if (!data.version || data.version < 2) {
-            const hasVespers = list.some(s => s.id === 'vespers' || s.type === 'vespers');
-            if (!hasVespers) {
-              const defaultVespers = SERVICES_SCHEDULING.find(s => s.id === 'vespers');
-              if (defaultVespers) {
-                list = [defaultVespers, ...list];
-              }
-            }
-          }
-          setServicesList(list);
+    const load = async () => {
+      try {
+        const data = await fetchParishData();
+        if (!active) return;
+        
+        setServicesList(data.services);
+        setAnnouncement(data.announcement);
+
+        // Reset dismissed state if announcement content changed
+        const currentText = `${data.announcement?.roText || ''}-${data.announcement?.enText || ''}-${data.announcement?.active ? '1' : '0'}`;
+        if (prevAnnouncementText && prevAnnouncementText !== currentText) {
+          setDismissedAnnouncement(false);
         }
+        prevAnnouncementText = currentText;
+      } catch (e) {
+        console.error('Error loading centralized parish data:', e);
       }
-    }, (err) => {
-      console.error('Error listening to services:', err);
-      handleFirestoreError(err, OperationType.GET, 'settings/services');
-    });
+    };
+
+    load();
+
+    // Poll Cloudinary every 12 seconds for potential admin updates
+    const interval = setInterval(load, 12000);
 
     return () => {
-      unsubAnn();
-      unsubServ();
+      active = false;
+      clearInterval(interval);
     };
   }, []);
 

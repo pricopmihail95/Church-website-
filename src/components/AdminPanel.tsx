@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { db, handleFirestoreError, OperationType, storage } from '../firebase';
-import { doc, getDoc, setDoc } from 'firebase/firestore';
-import { ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
 import { Service, GalleryPhoto, GalleryVideo } from '../types';
+import { fetchParishData, saveParishData } from '../lib/cloudinaryData';
 import { SERVICES_SCHEDULING } from '../data';
 import { 
   Lock, 
@@ -91,6 +89,15 @@ const SERVICE_PRESETS = [
   }
 ];
 
+const safeConfirm = (message: string): boolean => {
+  try {
+    return window.confirm(message);
+  } catch (e) {
+    console.warn("window.confirm blocked in sandboxed iframe, auto-confirming.", e);
+    return true;
+  }
+};
+
 export default function AdminPanel() {
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -128,74 +135,18 @@ export default function AdminPanel() {
   // Live Preview State
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
 
-  // Load from Firestore
+  // Load from Cloudinary/localStorage
   const loadData = async () => {
     try {
       setLoading(true);
+      const data = await fetchParishData();
       
-      // Fetch Announcement
-      const annDocRef = doc(db, 'settings', 'announcement');
-      let annDocSnap;
-      try {
-        annDocSnap = await getDoc(annDocRef);
-      } catch (e) {
-        handleFirestoreError(e, OperationType.GET, 'settings/announcement');
-      }
-      
-      if (annDocSnap && annDocSnap.exists()) {
-        setAnnouncement(annDocSnap.data() as AnnouncementData);
-      }
-
-      // Fetch Services
-      const servDocRef = doc(db, 'settings', 'services');
-      let servDocSnap;
-      try {
-        servDocSnap = await getDoc(servDocRef);
-      } catch (e) {
-        handleFirestoreError(e, OperationType.GET, 'settings/services');
-      }
-      
-      if (servDocSnap && servDocSnap.exists()) {
-        const data = servDocSnap.data() as { list: Service[]; version?: number };
-        if (data && Array.isArray(data.list)) {
-          let list = [...data.list];
-          if (!data.version || data.version < 2) {
-            const hasVespers = list.some(s => s.id === 'vespers' || s.type === 'vespers');
-            if (!hasVespers) {
-              const defaultVespers = SERVICES_SCHEDULING.find(s => s.id === 'vespers');
-              if (defaultVespers) {
-                list = [defaultVespers, ...list];
-              }
-            }
-          }
-          setServices(list);
-        } else {
-          setServices(SERVICES_SCHEDULING);
-        }
-      } else {
-        setServices(SERVICES_SCHEDULING);
-      }
-
-      // Fetch Gallery
-      const gallDocRef = doc(db, 'settings', 'gallery');
-      let gallDocSnap;
-      try {
-        gallDocSnap = await getDoc(gallDocRef);
-      } catch (e) {
-        console.warn('Gallery document load warning:', e);
-      }
-      if (gallDocSnap && gallDocSnap.exists()) {
-        const gData = gallDocSnap.data();
-        if (gData.photos && Array.isArray(gData.photos)) {
-          setGalleryPhotos(gData.photos);
-        }
-        if (gData.videos && Array.isArray(gData.videos)) {
-          setGalleryVideos(gData.videos);
-        }
-      }
+      setAnnouncement(data.announcement);
+      setServices(data.services);
+      setGalleryPhotos(data.galleryPhotos);
+      setGalleryVideos(data.galleryVideos);
     } catch (e) {
-      console.error('Error loading Firestore settings:', e);
-      // Fallback to static defaults
+      console.error('Error loading parish settings:', e);
       setServices(SERVICES_SCHEDULING);
     } finally {
       setLoading(false);
@@ -223,34 +174,21 @@ export default function AdminPanel() {
       setSaving(true);
       setSaveSuccess(false);
 
-      // Save Announcement document
-      const annDocRef = doc(db, 'settings', 'announcement');
-      try {
-        await setDoc(annDocRef, announcement);
-      } catch (e) {
-        handleFirestoreError(e, OperationType.WRITE, 'settings/announcement');
-      }
+      const success = await saveParishData({
+        announcement,
+        services,
+        galleryPhotos,
+        galleryVideos
+      });
 
-      // Save Services document
-      const servDocRef = doc(db, 'settings', 'services');
-      try {
-        await setDoc(servDocRef, { list: services, version: 2 });
-      } catch (e) {
-        handleFirestoreError(e, OperationType.WRITE, 'settings/services');
+      if (success) {
+        setSaveSuccess(true);
+        setTimeout(() => setSaveSuccess(false), 4000);
+      } else {
+        alert('Eroare la salvarea în Cloud (Cloudinary)! Datele au fost salvate doar local în browser pentru moment.');
       }
-
-      // Save Gallery document
-      const gallDocRef = doc(db, 'settings', 'gallery');
-      try {
-        await setDoc(gallDocRef, { photos: galleryPhotos, videos: galleryVideos });
-      } catch (e) {
-        handleFirestoreError(e, OperationType.WRITE, 'settings/gallery');
-      }
-
-      setSaveSuccess(true);
-      setTimeout(() => setSaveSuccess(false), 4000);
     } catch (e) {
-      console.error('Error saving settings to Firestore:', e);
+      console.error('Error saving settings to Cloudinary:', e);
       alert('A apărut o eroare la salvare: ' + (e instanceof Error ? e.message : String(e)));
     } finally {
       setSaving(false);
@@ -332,7 +270,7 @@ export default function AdminPanel() {
   };
 
   const deleteService = (index: number) => {
-    if (confirm('Sigur doriți să ștergeți această slujbă?')) {
+    if (safeConfirm('Sigur doriți să ștergeți această slujbă?')) {
       const updated = services.filter((_, i) => i !== index);
       setServices(updated);
     }
@@ -415,16 +353,26 @@ export default function AdminPanel() {
       
       let finalUrl = '';
       try {
-        const uniqueName = `${Date.now()}_${file.name.replace(/[^a-zA-Z0-9.]/g, '_')}`;
-        const photoRef = ref(storage, `gallery/${uniqueName}`);
-        
         const res = await fetch(compressedDataUrl);
         const blob = await res.blob();
         
-        const uploadResult = await uploadBytes(photoRef, blob);
-        finalUrl = await getDownloadURL(uploadResult.ref);
-      } catch (storageError) {
-        console.warn('Fallback secure base64 compression applied due to firebase storage rule setup or limits:', storageError);
+        const formData = new FormData();
+        formData.append('file', blob, file.name);
+        formData.append('upload_preset', 'preset_biserica');
+        
+        const response = await fetch('https://api.cloudinary.com/v1_1/da4ywersp/image/upload', {
+          method: 'POST',
+          body: formData,
+        });
+        
+        if (!response.ok) {
+          throw new Error(`Cloudinary upload failed: ${response.statusText}`);
+        }
+        
+        const data = await response.json();
+        finalUrl = data.secure_url;
+      } catch (uploadError) {
+        console.warn('Cloudinary upload failed, falling back to local base64 compression:', uploadError);
         finalUrl = compressedDataUrl;
       }
 
@@ -435,7 +383,9 @@ export default function AdminPanel() {
         createdAt: Date.now()
       };
 
-      setGalleryPhotos(prev => [...prev, newPhoto]);
+      const updatedPhotos = [...galleryPhotos, newPhoto];
+      setGalleryPhotos(updatedPhotos);
+      localStorage.setItem('parish_gallery_photos', JSON.stringify(updatedPhotos));
       setPhotoCaption('');
       setGalleryStatus({ 
         type: 'success', 
@@ -465,32 +415,19 @@ export default function AdminPanel() {
       caption: photoCaption.trim() || undefined,
       createdAt: Date.now()
     };
-    setGalleryPhotos(prev => [...prev, newPhoto]);
+    
+    const updatedPhotos = [...galleryPhotos, newPhoto];
+    setGalleryPhotos(updatedPhotos);
+    localStorage.setItem('parish_gallery_photos', JSON.stringify(updatedPhotos));
     setPhotoUrlInput('');
     setPhotoCaption('');
     setGalleryStatus({ type: 'success', message: 'Fotografia a fost adăugată prin URL! Nu uitați să salvați din panoul de sus.' });
   };
 
-  const handleDeletePhoto = async (photo: GalleryPhoto) => {
-    try {
-      if (photo.url.includes('firebasestorage')) {
-        try {
-          const decodedUrl = decodeURIComponent(photo.url);
-          const parts = decodedUrl.split('/o/');
-          if (parts.length > 1) {
-            const pathWithQuery = parts[1];
-            const fullPath = pathWithQuery.split('?')[0];
-            const fileRef = ref(storage, fullPath);
-            await deleteObject(fileRef);
-          }
-        } catch (delErr) {
-          console.warn('Storage delete warning:', delErr);
-        }
-      }
-    } catch (e) {
-      console.error(e);
-    }
-    setGalleryPhotos(prev => prev.filter(p => p.id !== photo.id));
+  const handleDeletePhoto = (photo: GalleryPhoto) => {
+    const updatedPhotos = galleryPhotos.filter(p => p.id !== photo.id);
+    setGalleryPhotos(updatedPhotos);
+    localStorage.setItem('parish_gallery_photos', JSON.stringify(updatedPhotos));
     setGalleryStatus({ type: 'success', message: 'Fotografia a fost ștearsă din listă. Salvează din panoul de sus.' });
   };
 
@@ -643,7 +580,7 @@ export default function AdminPanel() {
 
             <button
               onClick={() => {
-                if (window.confirm('Sigur doriți să anulați toate modificările nesalvate și să reîncărcați datele din Cloud?')) {
+                if (safeConfirm('Sigur doriți să anulați toate modificările nesalvate și să reîncărcați datele din Cloud?')) {
                   loadData();
                 }
               }}
@@ -1023,7 +960,7 @@ export default function AdminPanel() {
                   <button
                     type="button"
                     onClick={() => {
-                      if (window.confirm('Sigur doriți să resetați programul slujbelor la programul canonic implicit? Modificările nu sunt salvate permanent până când nu apăsați "Salvează modificări" din header.')) {
+                      if (safeConfirm('Sigur doriți să resetați programul slujbelor la programul canonic implicit? Modificările nu sunt salvate permanent până când nu apăsați "Salvează modificări" din header.')) {
                         setServices(SERVICES_SCHEDULING);
                         setGalleryStatus({
                           type: 'success',
@@ -1164,7 +1101,7 @@ export default function AdminPanel() {
                         <button
                           type="button"
                           onClick={() => {
-                            if (window.confirm('Sigur doriți să GOLIȚI complet toate datele acestui slot? Aceasta va șterge textul, dar va păstra slotul în listă pentru a-l edita manual.')) {
+                            if (safeConfirm('Sigur doriți să GOLIȚI complet toate datele acestui slot? Aceasta va șterge textul, dar va păstra slotul în listă pentru a-l edita manual.')) {
                               wipeService(index);
                             }
                           }}

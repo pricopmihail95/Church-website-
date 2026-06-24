@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { db, handleFirestoreError, OperationType } from '../firebase';
-import { doc, onSnapshot } from 'firebase/firestore';
 import { Language, GalleryPhoto, GalleryVideo } from '../types';
+import { fetchParishData } from '../lib/cloudinaryData';
 import { Image, Video, Play, ExternalLink, Calendar, Film, ArrowRight, ArrowLeft } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
@@ -27,33 +26,39 @@ export default function GallerySection({ lang, isSeparatePage = false }: Gallery
   const [playingVideoId, setPlayingVideoId] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<'all' | 'photos' | 'videos'>('all');
 
-  // Load photos and videos in real-time
+  // Load photos and videos in real-time from Cloudinary (with backup)
   useEffect(() => {
-    const docRef = doc(db, 'settings', 'gallery');
-    const unsub = onSnapshot(docRef, (snapshot) => {
-      if (snapshot.exists()) {
-        const data = snapshot.data();
-        if (data.photos) {
-          const sortedPhotos = [...data.photos].sort((a: any, b: any) => b.createdAt - a.createdAt);
+    let active = true;
+
+    const load = async () => {
+      try {
+        const data = await fetchParishData();
+        if (!active) return;
+
+        if (data.galleryPhotos) {
+          const sortedPhotos = [...data.galleryPhotos].sort((a, b) => b.createdAt - a.createdAt);
           setPhotos(sortedPhotos);
         }
-        if (data.videos) {
-          const sortedVideos = [...data.videos].sort((a: any, b: any) => b.createdAt - a.createdAt);
+        if (data.galleryVideos) {
+          const sortedVideos = [...data.galleryVideos].sort((a, b) => b.createdAt - a.createdAt);
           setVideos(sortedVideos);
         }
-      } else {
-        // Fallbacks for initial load if document non-existent
-        setPhotos([]);
-        setVideos([]);
+      } catch (error) {
+        console.error('Error fetching gallery settings:', error);
+      } finally {
+        if (active) setLoading(false);
       }
-      setLoading(false);
-    }, (error) => {
-      console.error('Error fetching gallery settings:', error);
-      setLoading(false);
-      handleFirestoreError(error, OperationType.GET, 'settings/gallery');
-    });
+    };
 
-    return () => unsub();
+    load();
+
+    // Poll every 15 seconds to receive new live updates
+    const interval = setInterval(load, 15000);
+
+    return () => {
+      active = false;
+      clearInterval(interval);
+    };
   }, []);
 
   if (loading) {
