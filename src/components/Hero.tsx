@@ -119,7 +119,7 @@ export default function Hero({ lang }: HeroProps) {
   return (
     <section 
       id="home" 
-      className="relative min-h-screen flex items-center justify-center pt-20 overflow-hidden bg-gradient-to-b from-stone-900 via-stone-950 to-stone-900 border-b border-stone-800"
+      className="relative min-h-screen flex items-center justify-center pt-20 overflow-hidden bg-gradient-to-b from-byz-blue-950 via-byz-blue-900 to-byz-blue-950 border-b border-byz-blue-900"
     >
       {/* Absolute background color and lighting layer */}
       <div className="absolute inset-0 z-0">

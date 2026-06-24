@@ -58,7 +58,7 @@ export default function GallerySection({ lang, isSeparatePage = false }: Gallery
 
   if (loading) {
     return (
-      <section id="gallery" className="py-20 bg-stone-100 dark:bg-stone-900 border-b border-stone-200 dark:border-stone-800 text-center text-stone-500">
+      <section id="gallery" className="py-20 bg-byz-blue-50/20 dark:bg-byz-blue-950 border-b border-byz-blue-100 dark:border-byz-blue-900 text-center text-stone-500">
         <div className="max-w-7xl mx-auto px-4">
           <p className="animate-pulse font-serif italic text-sm">
             {lang === 'RO' ? 'Se deschide albumul parohial...' : 'Opening the parish album...'}
@@ -71,7 +71,7 @@ export default function GallerySection({ lang, isSeparatePage = false }: Gallery
   if (!isSeparatePage) {
     // Teaser / Door Mode on the home page
     return (
-      <section id="gallery" className="py-24 bg-stone-100 dark:bg-stone-900 border-b border-stone-200 dark:border-stone-800 transition-colors duration-300">
+      <section id="gallery" className="py-24 bg-byz-blue-50/20 dark:bg-byz-blue-950 border-b border-byz-blue-100/70 dark:border-byz-blue-900 transition-colors duration-300">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
@@ -122,7 +122,7 @@ export default function GallerySection({ lang, isSeparatePage = false }: Gallery
             {/* Photos Preview Doors - Right Side */}
             <div className="lg:col-span-7">
               {photos.length === 0 ? (
-                <div className="text-center py-16 bg-white dark:bg-stone-900/40 border border-stone-200/60 dark:border-stone-850 rounded-3xl">
+                <div className="text-center py-16 bg-white dark:bg-byz-blue-900/40 border border-byz-blue-100 dark:border-byz-blue-800/60 rounded-3xl">
                   <p className="font-serif italic text-stone-400 text-xs sm:text-sm">
                     {lang === 'RO' ? 'Nicio fotografie publicată momentan.' : 'No photos published at this moment.'}
                   </p>
@@ -136,7 +136,7 @@ export default function GallerySection({ lang, isSeparatePage = false }: Gallery
                         i === 1 ? 'mt-4 sm:mt-6' : i === 2 ? '-mt-4 sm:-mt-6' : ''
                       }`}
                     >
-                      <div className="relative aspect-[4/3] bg-stone-100 dark:bg-stone-950">
+                      <div className="relative aspect-[4/3] bg-byz-blue-50 dark:bg-byz-blue-950">
                         <img
                           src={photo.url}
                           alt={photo.caption || 'Parish photo'}
@@ -144,7 +144,7 @@ export default function GallerySection({ lang, isSeparatePage = false }: Gallery
                           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                           loading="lazy"
                         />
-                        <div className="absolute inset-0 bg-gradient-to-t from-stone-950/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-3">
+                        <div className="absolute inset-0 bg-gradient-to-t from-byz-blue-950/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-3">
                           {photo.caption && (
                             <p className="font-serif italic text-white text-[10px] leading-tight line-clamp-2">
                               {photo.caption}
@@ -166,7 +166,7 @@ export default function GallerySection({ lang, isSeparatePage = false }: Gallery
   }
 
   return (
-    <section id="gallery" className="py-24 bg-stone-100 dark:bg-stone-900 border-b border-stone-200 dark:border-stone-800 transition-colors duration-300 min-h-screen">
+    <section id="gallery" className="py-24 bg-byz-blue-50/20 dark:bg-byz-blue-950 border-b border-byz-blue-100 dark:border-byz-blue-900 transition-colors duration-300 min-h-screen">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Back Link */}
@@ -178,7 +178,7 @@ export default function GallerySection({ lang, isSeparatePage = false }: Gallery
                 e.preventDefault();
                 window.location.hash = '#home';
               }}
-              className="inline-flex items-center space-x-2 text-xs font-semibold uppercase tracking-wider text-amber-700 hover:text-amber-800 dark:text-gold-400 dark:hover:text-gold-300 hover:bg-stone-200/50 dark:hover:bg-stone-800/50 px-3.5 py-2 rounded-xl transition-all cursor-pointer border border-stone-200/20"
+              className="inline-flex items-center space-x-2 text-xs font-semibold uppercase tracking-wider text-amber-700 hover:text-amber-800 dark:text-gold-400 dark:hover:text-gold-300 hover:bg-byz-blue-100 dark:hover:bg-byz-blue-900/50 px-3.5 py-2 rounded-xl transition-all cursor-pointer border border-byz-blue-100 dark:border-byz-blue-800/40"
             >
               <ArrowLeft size={14} />
               <span>{lang === 'RO' ? 'Înapoi la prima pagină' : 'Back to Home'}</span>
@@ -218,7 +218,7 @@ export default function GallerySection({ lang, isSeparatePage = false }: Gallery
                   className={`px-4 py-1.5 text-xs font-medium uppercase tracking-wider rounded-full transition-all cursor-pointer ${
                     isActive 
                       ? 'bg-amber-600 text-white dark:bg-gold-500 dark:text-stone-950 font-semibold shadow-sm' 
-                      : 'text-stone-500 hover:text-stone-900 dark:text-stone-400 dark:hover:text-stone-100 hover:bg-stone-200/55 dark:hover:bg-stone-800/60'
+                      : 'text-stone-500 hover:text-stone-900 dark:text-stone-400 dark:hover:text-stone-100 hover:bg-byz-blue-100/60 dark:hover:bg-byz-blue-900/40'
                   }`}
                 >
                   {label}
@@ -231,7 +231,7 @@ export default function GallerySection({ lang, isSeparatePage = false }: Gallery
         {/* Photos Grid Section */}
         {(activeTab === 'all' || activeTab === 'photos') && (
           <div className="mb-16">
-            <div className="flex items-center space-x-2 mb-6 border-b border-stone-200 dark:border-stone-800 pb-2">
+            <div className="flex items-center space-x-2 mb-6 border-b border-byz-blue-100 dark:border-byz-blue-900 pb-2">
               <Image size={16} className="text-amber-600 dark:text-gold-400" />
               <h3 className="font-display text-lg font-bold tracking-tight text-stone-800 dark:text-stone-100">
                 {lang === 'RO' ? 'Fotografii Parohiale' : 'Parish Photos'}
@@ -240,7 +240,7 @@ export default function GallerySection({ lang, isSeparatePage = false }: Gallery
             </div>
 
             {photos.length === 0 ? (
-              <div className="text-center py-12 bg-white dark:bg-stone-900/40 border border-stone-200/60 dark:border-stone-850 rounded-2xl">
+              <div className="text-center py-12 bg-white dark:bg-byz-blue-900/30 border border-byz-blue-100 dark:border-byz-blue-850/50 rounded-2xl">
                 <p className="font-serif italic text-stone-400 text-xs sm:text-sm">
                   {lang === 'RO' ? 'Nu s-au adăugat fotografii încă.' : 'No photos uploaded yet.'}
                 </p>
@@ -250,9 +250,9 @@ export default function GallerySection({ lang, isSeparatePage = false }: Gallery
                 {photos.map((photo) => (
                   <div
                     key={photo.id}
-                    className="bg-white dark:bg-stone-900 border border-stone-200/60 dark:border-stone-850 p-2.5 rounded-2xl flex flex-col shadow-sm hover:shadow-md hover:border-gold-500/20 transition-all duration-300 group"
+                    className="bg-white dark:bg-byz-blue-900/40 border border-byz-blue-100 dark:border-byz-blue-800/60 p-2.5 rounded-2xl flex flex-col shadow-sm hover:shadow-md hover:border-gold-500/20 transition-all duration-300 group"
                   >
-                    <div className="relative aspect-[4/3] rounded-xl overflow-hidden bg-stone-100 dark:bg-stone-950">
+                    <div className="relative aspect-[4/3] rounded-xl overflow-hidden bg-byz-blue-50 dark:bg-byz-blue-950">
                       <img
                         src={photo.url}
                         alt={photo.caption || 'Parish Photo'}
@@ -276,7 +276,7 @@ export default function GallerySection({ lang, isSeparatePage = false }: Gallery
         {/* Videos Grid Section */}
         {(activeTab === 'all' || activeTab === 'videos') && (
           <div>
-            <div className="flex items-center space-x-2 mb-6 border-b border-stone-200 dark:border-stone-800 pb-2">
+            <div className="flex items-center space-x-2 mb-6 border-b border-byz-blue-100 dark:border-byz-blue-900 pb-2">
               <Video size={16} className="text-amber-600 dark:text-gold-400" />
               <h3 className="font-display text-lg font-bold tracking-tight text-stone-800 dark:text-stone-100">
                 {lang === 'RO' ? 'Slujbe și Materiale Video' : 'Services & Videos'}
@@ -285,7 +285,7 @@ export default function GallerySection({ lang, isSeparatePage = false }: Gallery
             </div>
 
             {videos.length === 0 ? (
-              <div className="text-center py-12 bg-white dark:bg-stone-900/40 border border-stone-200/60 dark:border-stone-850 rounded-2xl">
+              <div className="text-center py-12 bg-white dark:bg-byz-blue-900/30 border border-byz-blue-100 dark:border-byz-blue-850/50 rounded-2xl">
                 <p className="font-serif italic text-stone-400 text-xs sm:text-sm">
                   {lang === 'RO' ? 'Nu s-au adăugat materiale video încă.' : 'No videos added yet.'}
                 </p>
@@ -299,9 +299,9 @@ export default function GallerySection({ lang, isSeparatePage = false }: Gallery
                   return (
                     <div
                       key={video.id}
-                      className="bg-white dark:bg-stone-900 border border-stone-200/60 dark:border-stone-850 p-3 rounded-2xl flex flex-col shadow-sm hover:shadow-md hover:border-gold-500/20 transition-all duration-300"
+                      className="bg-white dark:bg-byz-blue-900/40 border border-byz-blue-100 dark:border-byz-blue-800/60 p-3 rounded-2xl flex flex-col shadow-sm hover:shadow-md hover:border-gold-500/20 transition-all duration-300"
                     >
-                      <div className="relative aspect-video rounded-xl overflow-hidden bg-stone-950 flex flex-col justify-center items-center group">
+                      <div className="relative aspect-video rounded-xl overflow-hidden bg-byz-blue-950 flex flex-col justify-center items-center group">
                         {isPlaying && yid ? (
                           <iframe
                             src={`https://www.youtube.com/embed/${yid}?autoplay=1`}
@@ -322,7 +322,7 @@ export default function GallerySection({ lang, isSeparatePage = false }: Gallery
                                 loading="lazy"
                               />
                             ) : (
-                              <div className="absolute inset-0 bg-stone-900 flex flex-col items-center justify-center text-stone-500">
+                              <div className="absolute inset-0 bg-byz-blue-900 flex flex-col items-center justify-center text-stone-500">
                                 <Video size={36} />
                               </div>
                             )}

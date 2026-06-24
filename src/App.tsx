@@ -8,6 +8,7 @@ import { Language, Service } from './types';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import IntroductionSection from './components/IntroductionSection';
+import ExplanatoryCards from './components/ExplanatoryCards';
 import LiturgicalCalendar from './components/LiturgicalCalendar';
 import SpiritualQuotes from './components/SpiritualQuotes';
 import HistorySection from './components/HistorySection';
@@ -23,7 +24,7 @@ import { Megaphone, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
 export default function App() {
-  const [lang, setLang] = useState<Language>('RO');
+  const [lang, setLang] = useState<Language>('EN');
   const [darkMode, setDarkMode] = useState<boolean>(true);
 
   // Firestore States
@@ -111,7 +112,7 @@ export default function App() {
 
   if (isGalleryView) {
     return (
-      <div className="min-h-screen bg-stone-50 text-stone-900 dark:bg-stone-950 dark:text-stone-100 font-sans transition-colors duration-300 antialiased overflow-x-hidden selection:bg-gold-500/30 selection:text-gold-200 pt-20">
+      <div className="min-h-screen bg-byz-blue-50/25 text-stone-900 dark:bg-byz-blue-950 dark:text-byz-blue-100 font-sans transition-colors duration-300 antialiased overflow-x-hidden selection:bg-gold-500/30 selection:text-gold-200 pt-20">
         
         {/* Dynamic Header Navbar with bilingual and dark theme selectors */}
         <Navbar 
@@ -133,7 +134,7 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen bg-stone-50 text-stone-900 dark:bg-stone-950 dark:text-stone-100 font-sans transition-colors duration-300 antialiased overflow-x-hidden selection:bg-gold-500/30 selection:text-gold-200 pt-20">
+    <div className="min-h-screen bg-byz-blue-50/25 text-stone-900 dark:bg-byz-blue-950 dark:text-byz-blue-100 font-sans transition-colors duration-300 antialiased overflow-x-hidden selection:bg-gold-500/30 selection:text-gold-200 pt-20">
       
       {/* Dynamic Header Navbar with bilingual and dark theme selectors */}
       <Navbar 
@@ -202,6 +203,16 @@ export default function App() {
           transition={{ duration: 0.6 }}
         >
           <LiturgicalCalendar lang={lang} services={servicesList} />
+        </motion.div>
+
+        {/* Modular Explanatory Cards */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true, margin: '-100px' }}
+          transition={{ duration: 0.6 }}
+        >
+          <ExplanatoryCards lang={lang} />
         </motion.div>
 
         {/* spiritual Quotes Wisdom and Reflections Widget */}

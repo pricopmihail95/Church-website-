@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { TRANSLATIONS } from '../data';
 import { Language } from '../types';
-import { Mail, Phone, MapPin, Send, Compass, CheckCircle, Navigation, Copy } from 'lucide-react';
+import { Mail, Phone, MapPin, Send, Compass, CheckCircle, Copy } from 'lucide-react';
 
 interface ContactSectionProps {
   lang: Language;
@@ -49,7 +49,7 @@ export default function ContactSection({ lang }: ContactSectionProps) {
   };
 
   return (
-    <section id="contact" className="py-24 bg-stone-900 text-stone-100 border-b border-stone-950 relative overflow-hidden transition-colors duration-300">
+    <section id="contact" className="py-24 bg-byz-blue-950 text-stone-100 border-b border-byz-blue-950 relative overflow-hidden transition-colors duration-300">
       
       {/* Background radial atmosphere */}
       <div className="absolute inset-0 z-0">
@@ -80,7 +80,7 @@ export default function ContactSection({ lang }: ContactSectionProps) {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 max-w-6xl mx-auto">
           
           {/* Left Block (5/12): Contact form */}
-          <div className="lg:col-span-5 bg-stone-950 border border-stone-800 p-6 sm:p-8 rounded-3xl shadow-2xl">
+          <div className="lg:col-span-5 bg-byz-blue-900/30 border border-byz-blue-800/50 p-6 sm:p-8 rounded-3xl shadow-2xl">
             <h3 className="font-display text-lg sm:text-xl font-medium text-gold-400 mb-6 border-b border-stone-850 pb-4">
               {lang === 'RO' ? 'Laolaltă în rugăciune' : 'Parish Request Box'}
             </h3>
@@ -108,7 +108,7 @@ export default function ContactSection({ lang }: ContactSectionProps) {
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     placeholder="E.g., George Popa"
-                    className="w-full px-4 py-3 bg-stone-900 border border-stone-800 focus:border-gold-500/50 rounded-xl text-stone-100 placeholder-stone-600 text-sm focus:outline-none transition-all"
+                    className="w-full px-4 py-3 bg-byz-blue-950 border border-byz-blue-800/60 focus:border-gold-500/50 rounded-xl text-stone-100 placeholder-byz-blue-400/50 text-sm focus:outline-none transition-all"
                   />
                 </div>
 
@@ -123,7 +123,7 @@ export default function ContactSection({ lang }: ContactSectionProps) {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="E.g., george@gamil.com"
-                    className="w-full px-4 py-3 bg-stone-900 border border-stone-800 focus:border-gold-500/50 rounded-xl text-stone-100 placeholder-stone-600 text-sm focus:outline-none transition-all"
+                    className="w-full px-4 py-3 bg-byz-blue-950 border border-byz-blue-800/60 focus:border-gold-500/50 rounded-xl text-stone-100 placeholder-byz-blue-400/50 text-sm focus:outline-none transition-all"
                   />
                 </div>
 
@@ -138,7 +138,7 @@ export default function ContactSection({ lang }: ContactSectionProps) {
                     onChange={(e) => setMessage(e.target.value)}
                     rows={4}
                     placeholder={lang === 'RO' ? 'Scrie gândurile tale aici...' : 'Write your request here...'}
-                    className="w-full px-4 py-3 bg-stone-900 border border-stone-800 focus:border-gold-500/50 rounded-xl text-stone-100 placeholder-stone-600 text-sm focus:outline-none transition-all resize-none"
+                    className="w-full px-4 py-3 bg-byz-blue-950 border border-byz-blue-800/60 focus:border-gold-500/50 rounded-xl text-stone-100 placeholder-byz-blue-400/50 text-sm focus:outline-none transition-all resize-none"
                   />
                 </div>
 
@@ -155,35 +155,35 @@ export default function ContactSection({ lang }: ContactSectionProps) {
             )}
           </div>
 
-          {/* Right Block (7/12): Map simulator and coordinate targets */}
-          <div className="lg:col-span-7 flex flex-col justify-between">
-            <div className="bg-stone-950 border border-stone-800/80 rounded-2xl p-6 shadow-2xl flex flex-col h-full justify-between">
-                         {/* Info contacts header */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 border-b border-stone-850 pb-6 mb-6">
+          {/* Right Block (7/12): Contact information card */}
+          <div className="lg:col-span-7">
+            <div className="bg-byz-blue-900/30 border border-byz-blue-800/50 rounded-3xl p-8 sm:p-10 shadow-2xl h-full flex flex-col justify-center">
+              {/* Info contacts list */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div>
-                  <h4 className="font-display font-semibold text-stone-400 text-xs uppercase tracking-widest mb-1.5 flex items-center gap-1">
+                  <h4 className="font-display font-semibold text-stone-400 text-xs uppercase tracking-widest mb-2 flex items-center gap-1">
                     <span>{lang === 'RO' ? 'Locația Bisericii' : 'Church Location'}</span>
                   </h4>
-                  <p className="font-serif text-sm text-stone-100 leading-normal italic">
+                  <p className="font-serif text-sm text-stone-100 leading-relaxed italic">
                     {addressText}
                   </p>
                   
                   {/* Copy ZIP button */}
                   <button
                     onClick={handleCopyZip}
-                    className="mt-2.5 inline-flex items-center space-x-1 px-2 py-1 border border-stone-800 bg-stone-900 hover:bg-stone-850 text-[10px] uppercase font-mono tracking-wider font-semibold rounded text-gold-400 select-none cursor-pointer transition-colors"
+                    className="mt-3.5 inline-flex items-center space-x-1.5 px-3 py-1.5 border border-byz-blue-800 bg-byz-blue-950 hover:bg-byz-blue-900 text-[10px] uppercase font-mono tracking-wider font-semibold rounded text-gold-400 select-none cursor-pointer transition-colors"
                   >
                     <Copy size={10} />
                     <span>{copiedZip ? (lang === 'RO' ? 'Copiat!' : 'Copied!') : 'DN16 2AQ'}</span>
                   </button>
                 </div>
 
-                <div className="space-y-4">
+                <div className="space-y-5">
                   <div>
                     <h4 className="font-display font-semibold text-stone-400 text-xs uppercase tracking-widest mb-1.5">
                       {lang === 'RO' ? 'Preot Paroh' : 'Parish Priest'}
                     </h4>
-                    <p className="font-sans font-bold text-white text-sm mb-1">
+                    <p className="font-sans font-bold text-white text-sm mb-1.5">
                       Father Mihai Cerghit
                     </p>
                     <p className="font-mono text-xs text-gold-400 font-bold flex items-center gap-1.5">
@@ -193,75 +193,19 @@ export default function ContactSection({ lang }: ContactSectionProps) {
                   </div>
 
                   <div>
-                    <h4 className="font-display font-semibold text-stone-400 text-xs uppercase tracking-widest mb-1">
+                    <h4 className="font-display font-semibold text-stone-400 text-xs uppercase tracking-widest mb-1.5">
                       {lang === 'RO' ? 'Adrese Email' : 'Email Addresses'}
                     </h4>
                     <p className="font-mono text-[11px] text-gold-400 flex items-center gap-1.5">
                       <Mail size={11} className="flex-shrink-0" />
                       <span className="truncate">{emailText1}</span>
                     </p>
-                    <p className="font-mono text-[11px] text-gold-400 flex items-center gap-1.5 mt-0.5">
+                    <p className="font-mono text-[11px] text-gold-400 flex items-center gap-1.5 mt-1">
                       <Mail size={11} className="flex-shrink-0" />
                       <span className="truncate">{emailText2}</span>
                     </p>
                   </div>
                 </div>
-              </div>
-
-              {/* simulated Map (Byzantine styled vector compass chart) */}
-              <div className="relative flex-grow min-h-[220px] bg-stone-900/60 rounded-xl border border-stone-850 overflow-hidden p-4 flex flex-col justify-between">
-                
-                {/* Background layout cross grids resembling a true mapping interface */}
-                <div className="absolute inset-0 pointer-events-none opacity-[0.1] bg-[linear-gradient(to_right,#808080_1px,transparent_1px),linear-gradient(to_bottom,#808080_1px,transparent_1px)] [background-size:20px_20px]" />
-                
-                {/* Visual Landmark markers pins */}
-                <div className="relative z-10 flex flex-col h-full justify-between">
-                  <div className="flex justify-between items-start">
-                    <div className="text-[10px] font-mono tracking-widest text-stone-500 uppercase flex items-center gap-1">
-                      <Compass size={11} className="animate-spin-slow" />
-                      <span>53.5796° N, 0.6548° W</span>
-                    </div>
-                    
-                    <span className="text-[9px] uppercase tracking-wider font-mono text-gold-500 bg-gold-400/10 border border-gold-500/20 px-2.5 py-0.5 rounded">
-                      DN16 2AQ
-                    </span>
-                  </div>
- 
-                  {/* Centered Golden Altar Map Bullseye indicator */}
-                  <div className="my-auto self-center text-center p-6 bg-stone-950/60 border border-stone-800 rounded-2xl max-w-sm shadow-xl flex items-center space-x-4">
-                    <div className="relative p-3 rounded-full bg-gold-500/10 text-gold-400 border border-gold-500/20 flex-shrink-0">
-                      <MapPin size={22} className="animate-bounce" />
-                      <div className="absolute top-0 right-0 h-3.5 w-3.5 rounded-full bg-gold-400 border border-stone-950 flex items-center justify-center font-bold text-[8px] text-stone-950">
-                        ✝
-                      </div>
-                    </div>
-                    
-                    <div className="text-left">
-                      <h5 className="font-display font-semibold text-white tracking-wide text-xs uppercase text-gold-300">
-                        {lang === 'RO' ? 'Biserica Metodistă' : 'Methodist Church'}
-                      </h5>
-                      <p className="font-serif text-[11px] text-stone-300 italic mt-0.5 leading-tight">
-                        Old Brumby United Church, 185 Ashby Rd, Scunthorpe
-                      </p>
-                      <p className="font-sans text-[9px] text-stone-500 font-semibold mt-1">
-                        * {lang === 'RO' ? 'În fiecare Duminică la slujbă' : 'Every Sunday for Liturgy'}
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* Compass directions helper footer */}
-                  <div className="flex items-center justify-between text-[11px] text-stone-400 border-t border-stone-850 pt-3 mt-3">
-                    <div className="flex items-center gap-1">
-                      <Navigation size={11} className="text-gold-500" />
-                      <span className="font-serif italic text-stone-400">{lang === 'RO' ? 'Spre Centru / M181' : 'Towards Town Centre / M181'}</span>
-                    </div>
-                    
-                    <cite className="not-italic font-mono text-[9px] text-stone-500 uppercase tracking-widest">
-                      Orthodox Mission Map
-                    </cite>
-                  </div>
-                </div>
-
               </div>
 
             </div>

@@ -25,19 +25,15 @@ export default function PangarDonations({ lang }: PangarDonationsProps) {
   };
 
   const wishListItems = lang === 'RO' ? [
-    { name: 'Ceară curată de albine (pentru lumânări)', spec: '100% naturală' },
-    { name: 'Ulei de măsline virgin (pentru candele)', spec: 'Fără aditivi' },
-    { name: 'Tămâie naturală (Muntele Athos)', spec: 'Arome curate de iasomie/trandafir' },
-    { name: 'Cărți liturgice bilingve (RO/EN)', spec: 'Acatistiere, Ceasloave' },
+    { name: 'Vin liturgic: Mavrodaphne de Patras', spec: 'Pentru Sfânta Împărtășanie' },
+    { name: 'Tămâie naturală (Muntele Athos)', spec: 'Arome curate de iasomie/trandafir sau bizantină' },
   ] : [
-    { name: 'Pure Beeswax (for candles)', spec: '100% natural, unscented' },
-    { name: 'Extra Virgin Olive Oil (for oil lamps)', spec: 'Additive-free' },
+    { name: 'Wine: Mavrodaphne of Patras', spec: 'For Holy Communion' },
     { name: 'Athonite Incense (Mount Athos)', spec: 'Jasmine, Rose, or Byzantine fragrances' },
-    { name: 'Bilingual Liturgical Books (RO/EN)', spec: 'Horologion, Service books' },
   ];
 
   return (
-    <section id="support" className="py-24 bg-stone-50 text-stone-900 dark:bg-stone-900 dark:text-stone-100 border-b border-stone-200 dark:border-stone-850 transition-colors duration-300">
+    <section id="support" className="py-24 bg-byz-blue-50/30 text-stone-900 dark:bg-byz-blue-950 dark:text-byz-blue-100 border-b border-byz-blue-100 dark:border-byz-blue-900 transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}
@@ -51,7 +47,7 @@ export default function PangarDonations({ lang }: PangarDonationsProps) {
             {t.supportTitle}
           </h2>
           
-          <p className="font-serif text-stone-600 dark:text-stone-400 text-sm sm:text-base italic max-w-2xl mx-auto leading-relaxed">
+          <p className="font-serif text-stone-600 dark:text-byz-blue-200 text-sm sm:text-base italic max-w-2xl mx-auto leading-relaxed">
             "{t.supportSubtitle}"
           </p>
 
@@ -62,7 +58,7 @@ export default function PangarDonations({ lang }: PangarDonationsProps) {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
           
           {/* Box 1: Bank Transfer with Copy parameters */}
-          <div className="bg-white dark:bg-stone-950 border border-stone-200 dark:border-stone-850 p-6 sm:p-8 rounded-3xl shadow-sm flex flex-col justify-between group hover:border-gold-500/30 transition-all duration-300">
+          <div className="bg-white dark:bg-byz-blue-900/40 border border-byz-blue-100 dark:border-byz-blue-800/60 p-6 sm:p-8 rounded-3xl shadow-sm flex flex-col justify-between group hover:border-gold-500/30 transition-all duration-300">
             <div>
               <div className="w-12 h-12 bg-amber-500/10 text-gold-600 dark:text-gold-400 border border-gold-500/20 rounded-2xl flex items-center justify-center mb-6">
                 <Landmark size={20} />
@@ -72,7 +68,7 @@ export default function PangarDonations({ lang }: PangarDonationsProps) {
                 {t.supportBankTransfers}
               </h3>
               
-              <p className="font-serif text-xs text-stone-500 dark:text-stone-400 italic mb-6 leading-relaxed">
+              <p className="font-serif text-xs text-stone-500 dark:text-byz-blue-200 italic mb-6 leading-relaxed">
                 {lang === 'RO' 
                   ? 'Donațiile pot fi efectuate direct prin transfer bancar către contul oficial al asociației noastre.'
                   : 'If you want to make a donation to support our Orthodox mission in Scunthorpe you can do it at:'}
@@ -80,12 +76,12 @@ export default function PangarDonations({ lang }: PangarDonationsProps) {
 
               <div className="space-y-4">
                 {/* Beneficiary Row */}
-                <div className="bg-stone-50 dark:bg-stone-900 border border-stone-100 dark:border-stone-850 p-3 rounded-xl flex flex-col space-y-1.5 text-xs text-left">
+                <div className="bg-byz-blue-50/40 dark:bg-byz-blue-950/60 border border-byz-blue-100 dark:border-byz-blue-800/45 p-3 rounded-xl flex flex-col space-y-1.5 text-xs text-left">
                   <div className="flex justify-between items-center w-full">
-                    <span className="text-stone-500 dark:text-stone-400 uppercase font-mono tracking-wider font-semibold text-[10px]">Beneficiary Name</span>
+                    <span className="text-stone-500 dark:text-byz-blue-300 uppercase font-mono tracking-wider font-semibold text-[10px]">Beneficiary Name</span>
                     <button
                       onClick={() => handleCopy(accountName, 'name')}
-                      className="p-1 text-stone-400 hover:text-gold-500 hover:bg-stone-200 dark:hover:bg-stone-800 rounded transition-all cursor-pointer"
+                      className="p-1 text-stone-400 hover:text-gold-500 hover:bg-byz-blue-100 dark:hover:bg-byz-blue-950 rounded transition-all cursor-pointer"
                       title="Copy Name"
                     >
                       {copiedField === 'name' ? <Check size={12} className="text-emerald-500" /> : <Copy size={12} />}
@@ -95,13 +91,13 @@ export default function PangarDonations({ lang }: PangarDonationsProps) {
                 </div>
 
                 {/* Sort Code Row */}
-                <div className="bg-stone-50 dark:bg-stone-900 border border-stone-100 dark:border-stone-850 p-3 rounded-xl flex justify-between items-center text-xs">
-                  <span className="text-stone-500 dark:text-stone-400 uppercase font-mono tracking-wider font-semibold text-[10px]">Sort Code</span>
+                <div className="bg-byz-blue-50/40 dark:bg-byz-blue-950/60 border border-byz-blue-100 dark:border-byz-blue-800/45 p-3 rounded-xl flex justify-between items-center text-xs">
+                  <span className="text-stone-500 dark:text-byz-blue-300 uppercase font-mono tracking-wider font-semibold text-[10px]">Sort Code</span>
                   <div className="flex items-center space-x-2">
                     <span className="font-mono font-bold text-stone-800 dark:text-stone-200">{sortCode}</span>
                     <button
                       onClick={() => handleCopy(sortCode, 'sort')}
-                      className="p-1 text-stone-400 hover:text-gold-500 hover:bg-stone-200 dark:hover:bg-stone-800 rounded transition-all cursor-pointer"
+                      className="p-1 text-stone-400 hover:text-gold-500 hover:bg-byz-blue-100 dark:hover:bg-byz-blue-950 rounded transition-all cursor-pointer"
                       title="Copy Sort Code"
                     >
                       {copiedField === 'sort' ? <Check size={12} className="text-emerald-500" /> : <Copy size={12} />}
@@ -110,13 +106,13 @@ export default function PangarDonations({ lang }: PangarDonationsProps) {
                 </div>
 
                 {/* Account Number Row */}
-                <div className="bg-stone-50 dark:bg-stone-900 border border-stone-100 dark:border-stone-850 p-3 rounded-xl flex justify-between items-center text-xs">
-                  <span className="text-stone-500 dark:text-stone-400 uppercase font-mono tracking-wider font-semibold text-[10px]">Account No</span>
+                <div className="bg-byz-blue-50/40 dark:bg-byz-blue-950/60 border border-byz-blue-100 dark:border-byz-blue-800/45 p-3 rounded-xl flex justify-between items-center text-xs">
+                  <span className="text-stone-500 dark:text-byz-blue-300 uppercase font-mono tracking-wider font-semibold text-[10px]">Account No</span>
                   <div className="flex items-center space-x-2">
                     <span className="font-mono font-bold text-stone-800 dark:text-stone-200">{accountNum}</span>
                     <button
                       onClick={() => handleCopy(accountNum, 'account')}
-                      className="p-1 text-stone-400 hover:text-gold-500 hover:bg-stone-200 dark:hover:bg-stone-800 rounded transition-all cursor-pointer"
+                      className="p-1 text-stone-400 hover:text-gold-500 hover:bg-byz-blue-100 dark:hover:bg-byz-blue-950 rounded transition-all cursor-pointer"
                       title="Copy Account Number"
                     >
                       {copiedField === 'account' ? <Check size={12} className="text-emerald-500" /> : <Copy size={12} />}
@@ -125,13 +121,13 @@ export default function PangarDonations({ lang }: PangarDonationsProps) {
                 </div>
 
                 {/* Charity Row */}
-                <div className="bg-stone-50 dark:bg-stone-900 border border-stone-100 dark:border-stone-850 p-3 rounded-xl flex justify-between items-center text-xs">
-                  <span className="text-stone-500 dark:text-stone-400 uppercase font-mono tracking-wider font-semibold text-[10px]">Charity No</span>
+                <div className="bg-byz-blue-50/40 dark:bg-byz-blue-950/60 border border-byz-blue-100 dark:border-byz-blue-800/45 p-3 rounded-xl flex justify-between items-center text-xs">
+                  <span className="text-stone-500 dark:text-byz-blue-300 uppercase font-mono tracking-wider font-semibold text-[10px]">Charity No</span>
                   <div className="flex items-center space-x-2">
                     <span className="font-mono font-bold text-stone-800 dark:text-stone-200">{charityNum}</span>
                     <button
                       onClick={() => handleCopy(charityNum, 'charity')}
-                      className="p-1 text-stone-400 hover:text-gold-500 hover:bg-stone-200 dark:hover:bg-stone-800 rounded transition-all cursor-pointer"
+                      className="p-1 text-stone-400 hover:text-gold-500 hover:bg-byz-blue-100 dark:hover:bg-byz-blue-950 rounded transition-all cursor-pointer"
                       title="Copy Charity Registration"
                     >
                       {copiedField === 'charity' ? <Check size={12} className="text-emerald-500" /> : <Copy size={12} />}
@@ -147,7 +143,7 @@ export default function PangarDonations({ lang }: PangarDonationsProps) {
           </div>
 
           {/* Box 2: Gift Aid UK explanation */}
-          <div className="bg-white dark:bg-stone-950 border border-stone-200 dark:border-stone-850 p-6 sm:p-8 rounded-3xl shadow-sm flex flex-col justify-between group hover:border-gold-500/30 transition-all duration-300">
+          <div className="bg-white dark:bg-byz-blue-900/40 border border-byz-blue-100 dark:border-byz-blue-800/60 p-6 sm:p-8 rounded-3xl shadow-sm flex flex-col justify-between group hover:border-gold-500/30 transition-all duration-300">
             <div>
               <div className="w-12 h-12 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 rounded-2xl flex items-center justify-center mb-6">
                 <ShieldCheck size={20} />
@@ -157,7 +153,7 @@ export default function PangarDonations({ lang }: PangarDonationsProps) {
                 {t.supportGiftAidTitle}
               </h3>
               
-              <div className="font-serif text-sm text-stone-600 dark:text-stone-400 italic leading-relaxed space-y-4 mb-6">
+              <div className="font-serif text-sm text-stone-600 dark:text-byz-blue-200 italic leading-relaxed space-y-4 mb-6">
                 <p>{t.supportGiftAidDesc}</p>
                 
                 <p>
@@ -179,7 +175,7 @@ export default function PangarDonations({ lang }: PangarDonationsProps) {
           </div>
 
           {/* Box 3: Wishlist items */}
-          <div className="bg-white dark:bg-stone-950 border border-stone-200 dark:border-stone-850 p-6 sm:p-8 rounded-3xl shadow-sm flex flex-col justify-between group hover:border-gold-500/30 transition-all duration-300">
+          <div className="bg-white dark:bg-byz-blue-900/40 border border-byz-blue-100 dark:border-byz-blue-800/60 p-6 sm:p-8 rounded-3xl shadow-sm flex flex-col justify-between group hover:border-gold-500/30 transition-all duration-300">
             <div>
               <div className="w-12 h-12 bg-gold-500/10 text-gold-600 dark:text-gold-400 border border-gold-500/20 rounded-2xl flex items-center justify-center mb-6">
                 <Package size={20} />
@@ -189,7 +185,7 @@ export default function PangarDonations({ lang }: PangarDonationsProps) {
                 {t.supportWishlistTitle}
               </h3>
               
-              <p className="font-serif text-xs text-stone-500 dark:text-stone-400 italic mb-6 leading-relaxed">
+              <p className="font-serif text-xs text-stone-500 dark:text-byz-blue-200 italic mb-6 leading-relaxed">
                 {t.supportWishlistDesc}
               </p>
 
@@ -206,7 +202,7 @@ export default function PangarDonations({ lang }: PangarDonationsProps) {
               </div>
             </div>
 
-            <div className="border-t border-stone-100 dark:border-stone-900 pt-5 mt-6 text-center text-xs font-serif italic text-gold-600 dark:text-gold-400">
+            <div className="border-t border-stone-100 dark:border-byz-blue-800 pt-5 mt-6 text-center text-xs font-serif italic text-gold-600 dark:text-gold-400">
               {lang === 'RO' ? '„Dumnezeu iubește pe cel care dă cu bucurie.”' : '“God loves a cheerful giver.” — 2 Cor 9:7'}
             </div>
           </div>

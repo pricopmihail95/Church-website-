@@ -251,10 +251,8 @@ export default function AdminPanel() {
   const compressImage = (file: File): Promise<string> => {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
-      reader.readAsDataURL(file);
       reader.onload = (event) => {
         const img = document.createElement('img') as HTMLImageElement;
-        img.src = event.target?.result as string;
         img.onload = () => {
           const canvas = document.createElement('canvas');
           const MAX_WIDTH = 1000;
@@ -281,8 +279,10 @@ export default function AdminPanel() {
           resolve(base64);
         };
         img.onerror = (e) => reject(e);
+        img.src = event.target?.result as string;
       };
       reader.onerror = (e) => reject(e);
+      reader.readAsDataURL(file);
     });
   };
 
