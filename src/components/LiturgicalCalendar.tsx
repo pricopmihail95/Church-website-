@@ -13,40 +13,18 @@ export default function LiturgicalCalendar({ lang, services }: LiturgicalCalenda
   const t = TRANSLATIONS[lang];
 
   // Fallback to static defaults if database array is empty or not yet loaded
-  const displayServices = (services && services.length > 0) ? services : SERVICES_SCHEDULING;
+  const rawServices = (services && services.length > 0) ? services : SERVICES_SCHEDULING;
   
-  const vespersService = displayServices.find((s: Service) => 
-    s.id === 'vespers' || 
-    s.type === 'vespers' || 
-    s.name?.RO?.toLowerCase()?.includes('vecern') || 
-    s.name?.EN?.toLowerCase()?.includes('vesper')
-  );
-  
-  const matinsService = displayServices.find((s: Service) => 
-    s.id === 'matins' || 
-    (s.type === 'liturgy' && (
-      s.id?.includes('matin') || 
-      s.name?.RO?.toLowerCase()?.includes('utren') || 
-      s.name?.EN?.toLowerCase()?.includes('matin')
-    ))
-  );
-  
-  const liturgyService = displayServices.find((s: Service) => 
-    s.id === 'liturgy' || 
-    (s.type === 'liturgy' && (
-      s.id?.includes('liturg') || 
-      s.name?.RO?.toLowerCase()?.includes('liturgh') || 
-      s.name?.EN?.toLowerCase()?.includes('liturg')
-    ))
-  );
-  
-  const refreshmentsService = displayServices.find((s: Service) => 
-    s.id === 'refreshments' || 
-    s.id === 'refreshment' || 
-    s.name?.RO?.toLowerCase()?.includes('agap') || 
-    s.name?.RO?.toLowerCase()?.includes('tratati') || 
-    s.name?.EN?.toLowerCase()?.includes('refreshment')
-  );
+  // Filter out any service that has been completely wiped, has no name/time, or is marked as hidden
+  const displayServices = rawServices.filter((s: Service) => {
+    if (s.hidden === true) return false;
+    const nameVal = typeof s.name === 'object' ? s.name[lang] : s.name;
+    return nameVal && nameVal.trim() !== '';
+  });
+
+  const halfLength = Math.ceil(displayServices.length / 2);
+  const leftServices = displayServices.slice(0, halfLength);
+  const rightServices = displayServices.slice(halfLength);
 
   const handleOpenMap = () => {
     window.open('https://maps.google.com/?q=Old+Brumby+United+Church+Scunthorpe', '_blank');
@@ -120,51 +98,29 @@ export default function LiturgicalCalendar({ lang, services }: LiturgicalCalenda
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-4">
-                  {vespersService && (
-                    <div className="flex justify-between items-start text-xs sm:text-sm border-b border-byz-blue-50 dark:border-byz-blue-950/40 pb-2.5">
+                  {leftServices.map((service, index) => (
+                    <div key={service.id || `left-${index}`} className="flex justify-between items-start text-xs sm:text-sm border-b border-byz-blue-50 dark:border-byz-blue-950/40 pb-2.5">
                       <div className="font-semibold text-byz-blue-950 dark:text-byz-blue-100">
-                        {typeof vespersService.day === 'object' ? vespersService.day[lang] : vespersService.day}:
+                        {typeof service.day === 'object' ? service.day[lang] : service.day}:
                       </div>
                       <div className="text-right text-stone-600 dark:text-byz-blue-300 font-mono text-xs font-semibold">
-                        {typeof vespersService.time === 'object' ? vespersService.time[lang] : vespersService.time} - {typeof vespersService.name === 'object' ? vespersService.name[lang] : vespersService.name}
+                        {typeof service.time === 'object' ? service.time[lang] : service.time} - {typeof service.name === 'object' ? service.name[lang] : service.name}
                       </div>
                     </div>
-                  )}
-
-                  {matinsService && (
-                    <div className="flex justify-between items-start text-xs sm:text-sm border-b border-byz-blue-50 dark:border-byz-blue-950/40 pb-2.5">
-                      <div className="font-semibold text-byz-blue-950 dark:text-byz-blue-100">
-                        {typeof matinsService.day === 'object' ? matinsService.day[lang] : matinsService.day}:
-                      </div>
-                      <div className="text-right text-stone-600 dark:text-byz-blue-300 font-mono text-xs font-semibold">
-                        {typeof matinsService.time === 'object' ? matinsService.time[lang] : matinsService.time} - {typeof matinsService.name === 'object' ? matinsService.name[lang] : matinsService.name}
-                      </div>
-                    </div>
-                  )}
+                  ))}
                 </div>
 
                 <div className="space-y-4">
-                  {liturgyService && (
-                    <div className="flex justify-between items-start text-xs sm:text-sm border-b border-byz-blue-50 dark:border-byz-blue-950/40 pb-2.5">
+                  {rightServices.map((service, index) => (
+                    <div key={service.id || `right-${index}`} className="flex justify-between items-start text-xs sm:text-sm border-b border-byz-blue-50 dark:border-byz-blue-950/40 pb-2.5">
                       <div className="font-semibold text-byz-blue-950 dark:text-byz-blue-100">
-                        {typeof liturgyService.day === 'object' ? liturgyService.day[lang] : liturgyService.day}:
+                        {typeof service.day === 'object' ? service.day[lang] : service.day}:
                       </div>
                       <div className="text-right text-stone-600 dark:text-byz-blue-300 font-mono text-xs font-semibold">
-                        {typeof liturgyService.time === 'object' ? liturgyService.time[lang] : liturgyService.time} - {typeof liturgyService.name === 'object' ? liturgyService.name[lang] : liturgyService.name}
+                        {typeof service.time === 'object' ? service.time[lang] : service.time} - {typeof service.name === 'object' ? service.name[lang] : service.name}
                       </div>
                     </div>
-                  )}
-
-                  {refreshmentsService && (
-                    <div className="flex justify-between items-start text-xs sm:text-sm border-b border-byz-blue-50 dark:border-byz-blue-950/40 pb-2.5">
-                      <div className="font-semibold text-byz-blue-950 dark:text-byz-blue-100">
-                        {typeof refreshmentsService.day === 'object' ? refreshmentsService.day[lang] : refreshmentsService.day}:
-                      </div>
-                      <div className="text-right text-stone-600 dark:text-byz-blue-300 font-mono text-xs font-semibold">
-                        {typeof refreshmentsService.time === 'object' ? refreshmentsService.time[lang] : refreshmentsService.time} - {typeof refreshmentsService.name === 'object' ? refreshmentsService.name[lang] : refreshmentsService.name}
-                      </div>
-                    </div>
-                  )}
+                  ))}
                 </div>
               </div>
 

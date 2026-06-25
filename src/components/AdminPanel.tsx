@@ -90,12 +90,22 @@ const SERVICE_PRESETS = [
 ];
 
 const safeConfirm = (message: string): boolean => {
-  try {
-    return window.confirm(message);
-  } catch (e) {
-    console.warn("window.confirm blocked in sandboxed iframe, auto-confirming.", e);
-    return true;
+  if (typeof window !== 'undefined') {
+    const isIframe = window.self !== window.top;
+    if (isIframe) {
+      console.warn("window.confirm bypassed in sandbox iframe, action auto-confirmed:", message);
+      return true;
+    }
+    try {
+      if (window.confirm) {
+        return window.confirm(message);
+      }
+    } catch (e) {
+      console.warn("window.confirm blocked or unavailable, auto-confirming.", e);
+      return true;
+    }
   }
+  return true;
 };
 
 export default function AdminPanel() {
@@ -185,11 +195,11 @@ export default function AdminPanel() {
         setSaveSuccess(true);
         setTimeout(() => setSaveSuccess(false), 4000);
       } else {
-        alert('Eroare la salvarea în Cloud (Cloudinary)! Datele au fost salvate doar local în browser pentru moment.');
+        alert('Eroare la salvarea în Baza de Date Firestore! Datele au fost salvate doar local în browser pentru moment.');
       }
     } catch (e) {
-      console.error('Error saving settings to Cloudinary:', e);
-      alert('A apărut o eroare la salvare: ' + (e instanceof Error ? e.message : String(e)));
+      console.error('Error saving settings to Firestore:', e);
+      alert('A apărut o eroare la salvare în Firestore: ' + (e instanceof Error ? e.message : String(e)));
     } finally {
       setSaving(false);
     }
@@ -353,11 +363,8 @@ export default function AdminPanel() {
       
       let finalUrl = '';
       try {
-        const res = await fetch(compressedDataUrl);
-        const blob = await res.blob();
-        
         const formData = new FormData();
-        formData.append('file', blob, file.name);
+        formData.append('file', compressedDataUrl);
         formData.append('upload_preset', 'preset_biserica');
         
         const response = await fetch('https://api.cloudinary.com/v1_1/da4ywersp/image/upload', {
@@ -390,6 +397,7 @@ export default function AdminPanel() {
       setGalleryStatus({ 
         type: 'success', 
         message: 'Fotografia a fost încărcată cu succes! Nu uitați să apăsați „Salvează toate modificările” în colțul din dreapta sus pentru confirmare.' 
+        + (finalUrl.startsWith('data:') ? ' (Atenție: s-a salvat ca imagine locală în browser deoarece serviciul Cloudinary nu a răspuns. O puteți folosi pe acest dispozitiv, dar se recomandă o conexiune stabilă de internet).' : '')
       });
     } catch (err) {
       console.error('Error handling file upload:', err);
@@ -674,7 +682,7 @@ export default function AdminPanel() {
 
                   {/* Simulated Liturgical Calendar Cards */}
                   <div className="space-y-4">
-                    <span className="text-[10px] font-mono uppercase tracking-widest text-byz-blue-400 block font-semibold">2. Simulare Carduri Slujbe de Bază (Sinergie 1-la-1 cu Pagina Principală):</span>
+                    <span className="text-[10px] font-mono uppercase tracking-widest text-byz-blue-400 block font-semibold">2. Simulare Carduri Slujbe (Sinergie 1-la-1 cu Pagina Principală):</span>
                     
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                       {/* Romanian Card Preview */}
@@ -691,77 +699,45 @@ export default function AdminPanel() {
                         <h3 className="font-display text-base font-semibold text-gold-100 mb-5">Programul Slujbelor</h3>
                         
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                          <div className="space-y-4">
-                            {/* Vespers Slot */}
-                            {services.find((s) => s.id === 'vespers' || s.type === 'vespers' || getFieldVal(s.name, 'RO').toLowerCase().includes('vecern')) ? (
-                              (() => {
-                                const s = services.find((s) => s.id === 'vespers' || s.type === 'vespers' || getFieldVal(s.name, 'RO').toLowerCase().includes('vecern'))!;
-                                return (
-                                  <div className="flex justify-between items-start text-xs border-b border-byz-blue-900/50 pb-2">
-                                    <span className="font-semibold text-white">{getFieldVal(s.day, 'RO')}:</span>
-                                    <span className="text-right text-byz-blue-300 font-mono text-[11px] font-semibold">
-                                      {getFieldVal(s.time, 'RO')} - {getFieldVal(s.name, 'RO')}
-                                    </span>
-                                  </div>
-                                );
-                              })()
-                            ) : (
-                              <div className="text-[10px] text-byz-blue-400 italic border-b border-dashed border-byz-blue-900 pb-2">Vesper-ul (Vecernia de sâmbătă) este retrasă</div>
-                            )}
+                          {(() => {
+                            const activeServicesRO = services.filter((s) => {
+                              if (s.hidden === true) return false;
+                              const nameVal = getFieldVal(s.name, 'RO');
+                              return nameVal && nameVal.trim() !== '';
+                            });
+                            const halfLength = Math.ceil(activeServicesRO.length / 2);
+                            const leftServices = activeServicesRO.slice(0, halfLength);
+                            const rightServices = activeServicesRO.slice(halfLength);
 
-                            {/* Matins Slot */}
-                            {services.find((s) => s.id === 'matins' || getFieldVal(s.name, 'RO').toLowerCase().includes('utreni')) ? (
-                              (() => {
-                                const s = services.find((s) => s.id === 'matins' || getFieldVal(s.name, 'RO').toLowerCase().includes('utreni'))!;
-                                return (
-                                  <div className="flex justify-between items-start text-xs border-b border-byz-blue-900/50 pb-2">
-                                    <span className="font-semibold text-white">{getFieldVal(s.day, 'RO')}:</span>
-                                    <span className="text-right text-byz-blue-300 font-mono text-[11px] font-semibold">
-                                      {getFieldVal(s.time, 'RO')} - {getFieldVal(s.name, 'RO')}
-                                    </span>
-                                  </div>
-                                );
-                              })()
-                            ) : (
-                              <div className="text-[10px] text-byz-blue-400 italic border-b border-dashed border-byz-blue-900 pb-2">Utrenia (Duminică Dimineață) este retrasă</div>
-                            )}
-                          </div>
+                            if (activeServicesRO.length === 0) {
+                              return <div className="col-span-2 text-center py-4 font-serif text-xs text-byz-blue-400 italic">Toate slujbele sunt ascunse sau nu există date.</div>;
+                            }
 
-                          <div className="space-y-4">
-                            {/* Liturgy Slot */}
-                            {services.find((s) => s.id === 'liturgy' || s.type === 'liturgy' || getFieldVal(s.name, 'RO').toLowerCase().includes('liturgh')) ? (
-                              (() => {
-                                const s = services.find((s) => s.id === 'liturgy' || s.type === 'liturgy' || getFieldVal(s.name, 'RO').toLowerCase().includes('liturgh'))!;
-                                return (
-                                  <div className="flex justify-between items-start text-xs border-b border-byz-blue-900/50 pb-2">
-                                    <span className="font-semibold text-white">{getFieldVal(s.day, 'RO')}:</span>
-                                    <span className="text-right text-byz-blue-300 font-mono text-[11px] font-semibold">
-                                      {getFieldVal(s.time, 'RO')} - {getFieldVal(s.name, 'RO')}
-                                    </span>
-                                  </div>
-                                );
-                              })()
-                            ) : (
-                              <div className="text-[10px] text-byz-blue-400 italic border-b border-dashed border-byz-blue-900 pb-2">Sfânta Liturghie este retrasă</div>
-                            )}
-
-                            {/* Refreshments Slot */}
-                            {services.find((s) => s.id === 'refreshments' || getFieldVal(s.name, 'RO').toLowerCase().includes('agap') || getFieldVal(s.name, 'RO').toLowerCase().includes('tratat')) ? (
-                              (() => {
-                                const s = services.find((s) => s.id === 'refreshments' || getFieldVal(s.name, 'RO').toLowerCase().includes('agap') || getFieldVal(s.name, 'RO').toLowerCase().includes('tratat'))!;
-                                return (
-                                  <div className="flex justify-between items-start text-xs border-b border-byz-blue-900/50 pb-2">
-                                    <span className="font-semibold text-white">{getFieldVal(s.day, 'RO')}:</span>
-                                    <span className="text-right text-byz-blue-300 font-mono text-[11px] font-semibold">
-                                      {getFieldVal(s.time, 'RO')} - {getFieldVal(s.name, 'RO')}
-                                    </span>
-                                  </div>
-                                );
-                              })()
-                            ) : (
-                              <div className="text-[10px] text-byz-blue-400 italic border-b border-dashed border-byz-blue-900 pb-2">Agape / Refreshments retras</div>
-                            )}
-                          </div>
+                            return (
+                              <>
+                                <div className="space-y-4">
+                                  {leftServices.map((service, idx) => (
+                                    <div key={service.id || `preview-ro-left-${idx}`} className="flex justify-between items-start text-xs border-b border-byz-blue-900/50 pb-2">
+                                      <span className="font-semibold text-white">{getFieldVal(service.day, 'RO')}:</span>
+                                      <span className="text-right text-byz-blue-300 font-mono text-[11px] font-semibold">
+                                        {getFieldVal(service.time, 'RO')} - {getFieldVal(service.name, 'RO')}
+                                      </span>
+                                    </div>
+                                  ))}
+                                </div>
+                                <div className="space-y-4">
+                                  {rightServices.map((service, idx) => (
+                                    <div key={service.id || `preview-ro-right-${idx}`} className="flex justify-between items-start text-xs border-b border-byz-blue-900/50 pb-2">
+                                      <span className="font-semibold text-white">{getFieldVal(service.day, 'RO')}:</span>
+                                      <span className="text-right text-byz-blue-300 font-mono text-[11px] font-semibold">
+                                        {getFieldVal(service.time, 'RO')} - {getFieldVal(service.name, 'RO')}
+                                      </span>
+                                    </div>
+                                  ))}
+                                </div>
+                              </>
+                            );
+                          })()}
                         </div>
                       </div>
 
@@ -779,77 +755,45 @@ export default function AdminPanel() {
                         <h3 className="font-display text-base font-semibold text-gold-100 mb-5">Schedule of Services</h3>
                         
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                          <div className="space-y-4">
-                            {/* Vespers Slot */}
-                            {services.find((s) => s.id === 'vespers' || s.type === 'vespers' || getFieldVal(s.name, 'RO').toLowerCase().includes('vecern')) ? (
-                              (() => {
-                                const s = services.find((s) => s.id === 'vespers' || s.type === 'vespers' || getFieldVal(s.name, 'RO').toLowerCase().includes('vecern'))!;
-                                return (
-                                  <div className="flex justify-between items-start text-xs border-b border-byz-blue-900/50 pb-2">
-                                    <span className="font-semibold text-white">{getFieldVal(s.day, 'EN')}:</span>
-                                    <span className="text-right text-byz-blue-300 font-mono text-[11px] font-semibold">
-                                      {getFieldVal(s.time, 'EN')} - {getFieldVal(s.name, 'EN')}
-                                    </span>
-                                  </div>
-                                );
-                              })()
-                            ) : (
-                              <div className="text-[10px] text-byz-blue-400 italic border-b border-dashed border-byz-blue-900 pb-2">Saturday Evening Vespers is removed</div>
-                            )}
+                          {(() => {
+                            const activeServicesEN = services.filter((s) => {
+                              if (s.hidden === true) return false;
+                              const nameVal = getFieldVal(s.name, 'EN');
+                              return nameVal && nameVal.trim() !== '';
+                            });
+                            const halfLength = Math.ceil(activeServicesEN.length / 2);
+                            const leftServices = activeServicesEN.slice(0, halfLength);
+                            const rightServices = activeServicesEN.slice(halfLength);
 
-                            {/* Matins Slot */}
-                            {services.find((s) => s.id === 'matins' || getFieldVal(s.name, 'RO').toLowerCase().includes('utreni')) ? (
-                              (() => {
-                                const s = services.find((s) => s.id === 'matins' || getFieldVal(s.name, 'RO').toLowerCase().includes('utreni'))!;
-                                return (
-                                  <div className="flex justify-between items-start text-xs border-b border-byz-blue-900/50 pb-2">
-                                    <span className="font-semibold text-white">{getFieldVal(s.day, 'EN')}:</span>
-                                    <span className="text-right text-byz-blue-300 font-mono text-[11px] font-semibold">
-                                      {getFieldVal(s.time, 'EN')} - {getFieldVal(s.name, 'EN')}
-                                    </span>
-                                  </div>
-                                );
-                              })()
-                            ) : (
-                              <div className="text-[10px] text-byz-blue-400 italic border-b border-dashed border-byz-blue-900 pb-2">Sunday Morning Matins is removed</div>
-                            )}
-                          </div>
+                            if (activeServicesEN.length === 0) {
+                              return <div className="col-span-2 text-center py-4 font-serif text-xs text-byz-blue-400 italic">All services are hidden or there is no data.</div>;
+                            }
 
-                          <div className="space-y-4">
-                            {/* Liturgy Slot */}
-                            {services.find((s) => s.id === 'liturgy' || s.type === 'liturgy' || getFieldVal(s.name, 'RO').toLowerCase().includes('liturgh')) ? (
-                              (() => {
-                                const s = services.find((s) => s.id === 'liturgy' || s.type === 'liturgy' || getFieldVal(s.name, 'RO').toLowerCase().includes('liturgh'))!;
-                                return (
-                                  <div className="flex justify-between items-start text-xs border-b border-byz-blue-900/50 pb-2">
-                                    <span className="font-semibold text-white">{getFieldVal(s.day, 'EN')}:</span>
-                                    <span className="text-right text-byz-blue-300 font-mono text-[11px] font-semibold">
-                                      {getFieldVal(s.time, 'EN')} - {getFieldVal(s.name, 'EN')}
-                                    </span>
-                                  </div>
-                                );
-                              })()
-                            ) : (
-                              <div className="text-[10px] text-byz-blue-400 italic border-b border-dashed border-byz-blue-900 pb-2">Divine Liturgy is removed</div>
-                            )}
-
-                            {/* Refreshments Slot */}
-                            {services.find((s) => s.id === 'refreshments' || getFieldVal(s.name, 'RO').toLowerCase().includes('agap') || getFieldVal(s.name, 'RO').toLowerCase().includes('tratat')) ? (
-                              (() => {
-                                const s = services.find((s) => s.id === 'refreshments' || getFieldVal(s.name, 'RO').toLowerCase().includes('agap') || getFieldVal(s.name, 'RO').toLowerCase().includes('tratat'))!;
-                                return (
-                                  <div className="flex justify-between items-start text-xs border-b border-byz-blue-900/50 pb-2">
-                                    <span className="font-semibold text-white">{getFieldVal(s.day, 'EN')}:</span>
-                                    <span className="text-right text-byz-blue-300 font-mono text-[11px] font-semibold">
-                                      {getFieldVal(s.time, 'EN')} - {getFieldVal(s.name, 'EN')}
-                                    </span>
-                                  </div>
-                                );
-                              })()
-                            ) : (
-                              <div className="text-[10px] text-byz-blue-400 italic border-b border-dashed border-byz-blue-900 pb-2">Agape / Refreshments is removed</div>
-                            )}
-                          </div>
+                            return (
+                              <>
+                                <div className="space-y-4">
+                                  {leftServices.map((service, idx) => (
+                                    <div key={service.id || `preview-en-left-${idx}`} className="flex justify-between items-start text-xs border-b border-byz-blue-900/50 pb-2">
+                                      <span className="font-semibold text-white">{getFieldVal(service.day, 'EN')}:</span>
+                                      <span className="text-right text-byz-blue-300 font-mono text-[11px] font-semibold">
+                                        {getFieldVal(service.time, 'EN')} - {getFieldVal(service.name, 'EN')}
+                                      </span>
+                                    </div>
+                                  ))}
+                                </div>
+                                <div className="space-y-4">
+                                  {rightServices.map((service, idx) => (
+                                    <div key={service.id || `preview-en-right-${idx}`} className="flex justify-between items-start text-xs border-b border-byz-blue-900/50 pb-2">
+                                      <span className="font-semibold text-white">{getFieldVal(service.day, 'EN')}:</span>
+                                      <span className="text-right text-byz-blue-300 font-mono text-[11px] font-semibold">
+                                        {getFieldVal(service.time, 'EN')} - {getFieldVal(service.name, 'EN')}
+                                      </span>
+                                    </div>
+                                  ))}
+                                </div>
+                              </>
+                            );
+                          })()}
                         </div>
                       </div>
                     </div>
@@ -1048,6 +992,12 @@ export default function AdminPanel() {
                           <span>Slujba #{index + 1}</span>
                         </div>
                         
+                        {service.hidden === true && (
+                          <div className="flex items-center space-x-1.5 text-[9px] font-sans uppercase tracking-wider text-red-300 bg-red-500/20 border border-red-500/40 px-2.5 py-1 rounded-full font-bold">
+                            <span>ASCUNSĂ / HIDDEN</span>
+                          </div>
+                        )}
+                        
                         {isVespersSlot && (
                           <div className="flex items-center space-x-1.5 text-[9px] font-sans uppercase tracking-wider text-indigo-300 bg-indigo-500/15 border border-indigo-500/30 px-2.5 py-1 rounded-full font-bold">
                             <Moon size={10} className="animate-pulse" />
@@ -1075,27 +1025,41 @@ export default function AdminPanel() {
                       </div>
 
                       {/* Presets and Wipe Actions Bar */}
-                      <div className="mb-5 p-3.5 bg-byz-blue-900/40 border border-byz-blue-800/60 rounded-xl flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
-                        <div className="flex flex-wrap items-center gap-2">
-                          <label className="text-[10px] uppercase font-mono tracking-wider text-byz-blue-300 font-bold">
-                            Încarcă Model (Preset):
+                      <div className="mb-5 p-3.5 bg-byz-blue-900/40 border border-byz-blue-800/60 rounded-xl flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-3">
+                        <div className="flex flex-wrap items-center gap-4">
+                          <div className="flex flex-wrap items-center gap-2">
+                            <label className="text-[10px] uppercase font-mono tracking-wider text-byz-blue-300 font-bold">
+                              Încarcă Model (Preset):
+                            </label>
+                            <select
+                              onChange={(e) => {
+                                if (e.target.value) {
+                                  applyPreset(index, e.target.value);
+                                  e.target.value = ""; // reset selection
+                                }
+                              }}
+                              defaultValue=""
+                              className="bg-byz-blue-950 border border-byz-blue-800 focus:border-gold-500 rounded-lg px-2.5 py-1 text-xs text-byz-blue-100 cursor-pointer focus:outline-none"
+                            >
+                              <option value="">-- Alege un Model --</option>
+                              <option value="vespers">Vecernie (Saturday Vespers)</option>
+                              <option value="matins">Utrenie (Sunday Matins)</option>
+                              <option value="liturgy">Sfânta Liturghie (Divine Liturgy)</option>
+                              <option value="refreshments">Agapă / Gustare (Refreshments for All)</option>
+                            </select>
+                          </div>
+
+                          <label className="flex items-center space-x-2 text-xs text-byz-blue-100 font-medium cursor-pointer select-none bg-byz-blue-950/40 hover:bg-byz-blue-950/80 px-3 py-1 rounded-lg border border-byz-blue-800/80 transition-all">
+                            <input
+                              type="checkbox"
+                              checked={service.hidden === true}
+                              onChange={(e) => updateServiceField(index, 'hidden', e.target.checked)}
+                              className="rounded border-byz-blue-800 text-gold-500 focus:ring-gold-500 focus:ring-offset-byz-blue-950 bg-byz-blue-950 cursor-pointer w-4 h-4"
+                            />
+                            <span className="font-mono text-[11px] uppercase tracking-wider text-stone-200">
+                              Ascunde / Hide
+                            </span>
                           </label>
-                          <select
-                            onChange={(e) => {
-                              if (e.target.value) {
-                                applyPreset(index, e.target.value);
-                                e.target.value = ""; // reset selection
-                              }
-                            }}
-                            defaultValue=""
-                            className="bg-byz-blue-950 border border-byz-blue-800 focus:border-gold-500 rounded-lg px-2.5 py-1 text-xs text-byz-blue-100 cursor-pointer focus:outline-none"
-                          >
-                            <option value="">-- Alege un Model --</option>
-                            <option value="vespers">Vecernie (Saturday Vespers)</option>
-                            <option value="matins">Utrenie (Sunday Matins)</option>
-                            <option value="liturgy">Sfânta Liturghie (Divine Liturgy)</option>
-                            <option value="refreshments">Agapă / Gustare (Refreshments for All)</option>
-                          </select>
                         </div>
 
                         <button

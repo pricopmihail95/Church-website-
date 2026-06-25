@@ -7,6 +7,7 @@ export interface Service {
   day: { RO: string; EN: string };
   description: { RO: string; EN: string };
   type: 'liturgy' | 'vespers' | 'sacrament' | 'special';
+  hidden?: boolean;
 }
 
 export interface SpiritualQuote {

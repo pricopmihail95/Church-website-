@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app';
-import { getFirestore } from 'firebase/firestore';
+import { initializeFirestore } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
 import { getStorage } from 'firebase/storage';
 
@@ -14,8 +14,10 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 
-// Initialize Firestore with the specific custom database ID
-export const db = getFirestore(app, "ai-studio-de65d319-12c4-44c6-b1c6-ecabdf4d2101");
+// Initialize Firestore with the specific custom database ID and long polling enabled
+export const db = initializeFirestore(app, {
+  experimentalForceLongPolling: true
+}, "ai-studio-de65d319-12c4-44c6-b1c6-ecabdf4d2101");
 export const auth = getAuth(app);
 export const storage = getStorage(app);
 

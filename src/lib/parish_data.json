@@ -1,0 +1,64 @@
+{
+  "announcement": {
+    "roTitle": "Anunț Important",
+    "roText": "Slujbele noastre de duminică încep cu Utrenia la ora 09:00 și Sfânta Liturghie la 10:00. Vă așteptăm cu drag în mica noastră comunitate!",
+    "enTitle": "Important Announcement",
+    "enText": "Our Sunday services begin with Matins at 09:00 and Holy Liturgy at 10:00. Everyone is warmly welcome to join us!",
+    "active": false
+  },
+  "services": [
+    {
+      "id": "vespers",
+      "name": {
+        "RO": "Vecernia",
+        "EN": "Vespers"
+      },
+      "time": "18:00",
+      "day": {
+        "RO": "Sâmbătă Seara",
+        "EN": "Saturday Evening"
+      },
+      "description": {
+        "RO": "Slujba de seară de sâmbătă prin care se intră în ziua Domnului, deschizând programul duminical.",
+        "EN": "The traditional evening service on Saturdays opening the Lord's Day."
+      },
+      "type": "vespers"
+    },
+    {
+      "id": "matins",
+      "name": {
+        "RO": "Utrenia (Slujba de Dimineață)",
+        "EN": "Matins (Morning Service)"
+      },
+      "time": "09:00",
+      "day": {
+        "RO": "În fiecare Duminică",
+        "EN": "Every Sunday"
+      },
+      "description": {
+        "RO": "Pregătirea duhovnicească a inimilor prin laude de dimineață înaintea Sfintei Liturghii.",
+        "EN": "The beautiful morning service of praise and preparation preceding the Holy Liturgy."
+      },
+      "type": "liturgy"
+    },
+    {
+      "id": "liturgy",
+      "name": {
+        "RO": "Sfânta și Dumnezeiasca Liturghie",
+        "EN": "The Holy Liturgy"
+      },
+      "time": "10:00",
+      "day": {
+        "RO": "În fiecare Duminică",
+        "EN": "Every Sunday"
+      },
+      "description": {
+        "RO": "Sfânta Jertfă Euharistică, inima comunității noastre. Săvârșită în limba engleză.",
+        "EN": "Our central Eucharistic worship. English language service - all are welcome to pray with us."
+      },
+      "type": "liturgy"
+    }
+  ],
+  "galleryPhotos": [],
+  "galleryVideos": []
+}
