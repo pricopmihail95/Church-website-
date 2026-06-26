@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Service, GalleryPhoto, GalleryVideo } from '../types';
 import { fetchParishData, saveParishData } from '../lib/cloudinaryData';
+import { storage } from '../firebase';
+import { ref, uploadString, getDownloadURL } from 'firebase/storage';
 import { SERVICES_SCHEDULING } from '../data';
 import { 
   Lock, 
@@ -360,41 +362,34 @@ export default function AdminPanel() {
       
       let finalUrl = '';
       try {
-        const formData = new FormData();
-        formData.append('file', compressedDataUrl);
-        formData.append('upload_preset', 'preset_biserica');
-        
-        const response = await fetch('https://api.cloudinary.com/v1_1/da4ywersp/image/upload', {
-          method: 'POST',
-          body: formData,
-        });
-        
-        if (!response.ok) {
-          throw new Error(`Cloudinary upload failed: ${response.statusText}`);
-        }
-        
-        const data = await response.json();
-        finalUrl = data.secure_url;
+        const photoId = Date.now().toString();
+        const storageRef = ref(storage, `gallery/${photoId}.jpg`);
+        await uploadString(storageRef, compressedDataUrl, 'data_url');
+        finalUrl = await getDownloadURL(storageRef);
       } catch (uploadError) {
-        console.warn('Cloudinary upload failed, falling back to local base64 compression:', uploadError);
+        console.warn('Firebase Storage upload failed, falling back to local base64 compression:', uploadError);
         finalUrl = compressedDataUrl;
       }
 
       const newPhoto: GalleryPhoto = {
         id: Date.now().toString(),
         url: finalUrl,
-        caption: photoCaption.trim() || undefined,
+        caption: photoCaption.trim() || '',
         createdAt: Date.now()
       };
 
       const updatedPhotos = [...galleryPhotos, newPhoto];
       setGalleryPhotos(updatedPhotos);
       localStorage.setItem('parish_gallery_photos', JSON.stringify(updatedPhotos));
+      
+      // Auto-save direct în Firestore pentru a apărea imediat pe site:
+      await saveParishData({ announcement, services, galleryPhotos: updatedPhotos, galleryVideos });
+      
       setPhotoCaption('');
       setGalleryStatus({ 
         type: 'success', 
-        message: 'Fotografia a fost încărcată cu succes! Nu uitați să apăsați „Salvează toate modificările” în colțul din dreapta sus pentru confirmare.' 
-        + (finalUrl.startsWith('data:') ? ' (Atenție: s-a salvat ca imagine locală în browser deoarece serviciul Cloudinary nu a răspuns. O puteți folosi pe acest dispozitiv, dar se recomandă o conexiune stabilă de internet).' : '')
+        message: 'Fotografia a fost încărcată și salvată online cu succes! (Va apărea imediat pe site)' 
+        + (finalUrl.startsWith('data:') ? ' (Atenție: s-a salvat local deoarece serviciul online a întâmpinat o problemă. Verificați conexiunea la internet).' : '')
       });
     } catch (err) {
       console.error('Error handling file upload:', err);
@@ -405,7 +400,7 @@ export default function AdminPanel() {
     }
   };
 
-  const handleAddPhotoByUrl = () => {
+  const handleAddPhotoByUrl = async () => {
     if (!photoUrlInput) {
       setGalleryStatus({ type: 'error', message: 'Te rog adaugă un link URL valid.' });
       return;
@@ -417,26 +412,33 @@ export default function AdminPanel() {
     const newPhoto: GalleryPhoto = {
       id: Date.now().toString(),
       url: photoUrlInput.trim(),
-      caption: photoCaption.trim() || undefined,
+      caption: photoCaption.trim() || '',
       createdAt: Date.now()
     };
     
     const updatedPhotos = [...galleryPhotos, newPhoto];
     setGalleryPhotos(updatedPhotos);
     localStorage.setItem('parish_gallery_photos', JSON.stringify(updatedPhotos));
+    
+    // Auto-save direct în Firestore
+    await saveParishData({ announcement, services, galleryPhotos: updatedPhotos, galleryVideos });
+    
     setPhotoUrlInput('');
     setPhotoCaption('');
-    setGalleryStatus({ type: 'success', message: 'Fotografia a fost adăugată prin URL! Nu uitați să salvați din panoul de sus.' });
+    setGalleryStatus({ type: 'success', message: 'Fotografia a fost adăugată și salvată online cu succes!' });
   };
 
-  const handleDeletePhoto = (photo: GalleryPhoto) => {
+  const handleDeletePhoto = async (photo: GalleryPhoto) => {
     const updatedPhotos = galleryPhotos.filter(p => p.id !== photo.id);
     setGalleryPhotos(updatedPhotos);
     localStorage.setItem('parish_gallery_photos', JSON.stringify(updatedPhotos));
-    setGalleryStatus({ type: 'success', message: 'Fotografia a fost ștearsă din listă. Salvează din panoul de sus.' });
+    
+    await saveParishData({ announcement, services, galleryPhotos: updatedPhotos, galleryVideos });
+    
+    setGalleryStatus({ type: 'success', message: 'Fotografia a fost ștearsă din listă.' });
   };
 
-  const handleAddVideo = () => {
+  const handleAddVideo = async () => {
     if (!newVideoUrl) {
       setGalleryStatus({ type: 'error', message: 'Vă rugăm să introduceți link-ul video-ului de YouTube.' });
       return;
@@ -453,15 +455,21 @@ export default function AdminPanel() {
       title: cleanTitle,
       createdAt: Date.now()
     };
-    setGalleryVideos(prev => [...prev, newVideo]);
+    
+    const updatedVideos = [...galleryVideos, newVideo];
+    setGalleryVideos(updatedVideos);
+    await saveParishData({ announcement, services, galleryPhotos, galleryVideos: updatedVideos });
+    
     setNewVideoUrl('');
     setNewVideoTitle('');
-    setGalleryStatus({ type: 'success', message: 'Video adăugat cu succes! Apăsați butonul principal de salvare din colțul de sus.' });
+    setGalleryStatus({ type: 'success', message: 'Video adăugat și salvat cu succes!' });
   };
 
-  const handleDeleteVideo = (id: string) => {
-    setGalleryVideos(prev => prev.filter(v => v.id !== id));
-    setGalleryStatus({ type: 'success', message: 'Video-ul a fost retras. Nu uitați să salvați modificările de sus.' });
+  const handleDeleteVideo = async (id: string) => {
+    const updatedVideos = galleryVideos.filter(v => v.id !== id);
+    setGalleryVideos(updatedVideos);
+    await saveParishData({ announcement, services, galleryPhotos, galleryVideos: updatedVideos });
+    setGalleryStatus({ type: 'success', message: 'Video-ul a fost retras.' });
   };
 
   const goBack = () => {

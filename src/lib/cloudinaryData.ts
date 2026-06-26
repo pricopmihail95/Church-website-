@@ -127,8 +127,16 @@ export async function saveParishData(data: ParishData): Promise<boolean> {
 
     // Save Gallery
     const galleryDocRef = doc(db, 'settings', 'gallery');
+    
+    // Firestore Nu suportă valori undefined. Curățăm undefined.
+    const cleanPhotos = (data.galleryPhotos || []).map(p => {
+      const cleanP = { ...p };
+      if (cleanP.caption === undefined) cleanP.caption = '';
+      return cleanP;
+    });
+
     await setDoc(galleryDocRef, {
-      photos: data.galleryPhotos || [],
+      photos: cleanPhotos,
       videos: data.galleryVideos || []
     });
 
