@@ -194,12 +194,9 @@ export default function AdminPanel() {
       if (success) {
         setSaveSuccess(true);
         setTimeout(() => setSaveSuccess(false), 4000);
-      } else {
-        alert('Eroare la salvarea în Baza de Date Firestore! Datele au fost salvate doar local în browser pentru moment.');
       }
     } catch (e) {
       console.error('Error saving settings to Firestore:', e);
-      alert('A apărut o eroare la salvare în Firestore: ' + (e instanceof Error ? e.message : String(e)));
     } finally {
       setSaving(false);
     }
@@ -350,8 +347,8 @@ export default function AdminPanel() {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    if (galleryPhotos.length >= 20) {
-      setGalleryStatus({ type: 'error', message: 'S-a atins limita maximă de 20 de fotografii parohiale. Ștergeți-le pe cele vechi.' });
+    if (galleryPhotos.length >= 500) {
+      setGalleryStatus({ type: 'error', message: 'S-a atins limita maximă de 500 de fotografii parohiale. Ștergeți-le pe cele vechi.' });
       return;
     }
 
@@ -413,8 +410,8 @@ export default function AdminPanel() {
       setGalleryStatus({ type: 'error', message: 'Te rog adaugă un link URL valid.' });
       return;
     }
-    if (galleryPhotos.length >= 20) {
-      setGalleryStatus({ type: 'error', message: 'Limita maximă este de 20 de fotografii parohiale.' });
+    if (galleryPhotos.length >= 500) {
+      setGalleryStatus({ type: 'error', message: 'Limita maximă este de 500 de fotografii parohiale.' });
       return;
     }
     const newPhoto: GalleryPhoto = {
@@ -1275,7 +1272,7 @@ export default function AdminPanel() {
                             onDrop={async (e) => {
                               e.preventDefault();
                               setIsDragging(false);
-                              if (uploadingPhoto || galleryPhotos.length >= 20) return;
+                              if (uploadingPhoto || galleryPhotos.length >= 500) return;
                               const file = e.dataTransfer.files?.[0];
                               if (file && file.type.startsWith('image/')) {
                                 const artificialEvent = {
@@ -1311,7 +1308,7 @@ export default function AdminPanel() {
                               type="file"
                               accept="image/*"
                               onChange={handleFileUpload}
-                              disabled={uploadingPhoto || galleryPhotos.length >= 20}
+                              disabled={uploadingPhoto || galleryPhotos.length >= 500}
                               className="hidden"
                             />
                           </label>
@@ -1330,7 +1327,7 @@ export default function AdminPanel() {
                           <button
                             type="button"
                             onClick={handleAddPhotoByUrl}
-                            disabled={galleryPhotos.length >= 20}
+                            disabled={galleryPhotos.length >= 500}
                             className="bg-gold-500 hover:bg-gold-400 text-byz-blue-950 font-bold px-3 py-1 text-[10px] uppercase tracking-wider rounded-lg transition-colors w-full cursor-pointer shadow-sm"
                           >
                             Adaugă Link Foto

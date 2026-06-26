@@ -1,5 +1,7 @@
 import { Service, GalleryPhoto, GalleryVideo } from '../types';
 import { SERVICES_SCHEDULING } from '../data';
+import { db, handleFirestoreError, OperationType } from '../firebase';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
 
 export interface ParishData {
   announcement: {
@@ -29,23 +31,59 @@ export const DEFAULT_PARISH_DATA: ParishData = {
 
 export async function fetchParishData(): Promise<ParishData> {
   try {
-    const res = await fetch('/api/parish-data');
-    if (!res.ok) {
-      throw new Error(`Server returned status ${res.status}`);
+    console.log('Fetching parish data directly from Firestore...');
+    // 1. Fetch Announcement
+    const announcementDocRef = doc(db, 'settings', 'announcement');
+    const announcementSnap = await getDoc(announcementDocRef);
+    let announcement = DEFAULT_PARISH_DATA.announcement;
+    if (announcementSnap.exists()) {
+      const d = announcementSnap.data();
+      announcement = {
+        roTitle: d.roTitle || announcement.roTitle,
+        roText: d.roText || announcement.roText,
+        enTitle: d.enTitle || announcement.enTitle,
+        enText: d.enText || announcement.enText,
+        active: typeof d.active === 'boolean' ? d.active : announcement.active,
+      };
     }
-    const data = await res.json();
+
+    // 2. Fetch Services
+    const servicesDocRef = doc(db, 'settings', 'services');
+    const servicesSnap = await getDoc(servicesDocRef);
+    let services = DEFAULT_PARISH_DATA.services;
+    if (servicesSnap.exists()) {
+      const d = servicesSnap.data();
+      if (Array.isArray(d.list)) {
+        services = d.list;
+      }
+    }
+
+    // 3. Fetch Gallery (Photos and Videos)
+    const galleryDocRef = doc(db, 'settings', 'gallery');
+    const gallerySnap = await getDoc(galleryDocRef);
+    let galleryPhotos: GalleryPhoto[] = [];
+    let galleryVideos: GalleryVideo[] = [];
+    if (gallerySnap.exists()) {
+      const d = gallerySnap.data();
+      if (Array.isArray(d.photos)) {
+        galleryPhotos = d.photos;
+      }
+      if (Array.isArray(d.videos)) {
+        galleryVideos = d.videos;
+      }
+    }
 
     const validatedData: ParishData = {
-      announcement: data.announcement || DEFAULT_PARISH_DATA.announcement,
-      services: Array.isArray(data.services) ? data.services : DEFAULT_PARISH_DATA.services,
-      galleryPhotos: Array.isArray(data.galleryPhotos) ? data.galleryPhotos : [],
-      galleryVideos: Array.isArray(data.galleryVideos) ? data.galleryVideos : []
+      announcement,
+      services,
+      galleryPhotos,
+      galleryVideos
     };
 
     localStorage.setItem('parish_live_data', JSON.stringify(validatedData));
     return validatedData;
   } catch (error) {
-    console.warn('Error fetching from Server API, trying local storage fallback:', error);
+    console.warn('Error fetching directly from Firestore, trying local storage fallback:', error);
     const local = localStorage.getItem('parish_live_data');
     if (local) {
       try {
@@ -69,23 +107,36 @@ export async function saveParishData(data: ParishData): Promise<boolean> {
   localStorage.setItem('parish_live_data', dataStr);
 
   try {
-    const res = await fetch('/api/parish-data', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: dataStr
+    console.log('Saving parish data directly to Firestore...');
+    // Save Announcement
+    const announcementDocRef = doc(db, 'settings', 'announcement');
+    await setDoc(announcementDocRef, {
+      roTitle: data.announcement?.roTitle || '',
+      roText: data.announcement?.roText || '',
+      enTitle: data.announcement?.enTitle || '',
+      enText: data.announcement?.enText || '',
+      active: !!data.announcement?.active
     });
 
-    if (!res.ok) {
-      throw new Error(`Server returned status ${res.status}`);
-    }
+    // Save Services List
+    const servicesDocRef = doc(db, 'settings', 'services');
+    await setDoc(servicesDocRef, {
+      list: data.services || [],
+      version: 1
+    });
 
-    const result = await res.json();
-    console.log('Successfully saved all parish settings to Server API!');
-    return !!result.success;
+    // Save Gallery
+    const galleryDocRef = doc(db, 'settings', 'gallery');
+    await setDoc(galleryDocRef, {
+      photos: data.galleryPhotos || [],
+      videos: data.galleryVideos || []
+    });
+
+    console.log('Successfully saved all parish settings directly to Firestore!');
+    return true;
   } catch (error) {
-    console.error('Error saving to Server API:', error);
+    console.error('Error saving to Firestore:', error);
+    handleFirestoreError(error, OperationType.WRITE, 'settings/*');
     return false;
   }
 }
