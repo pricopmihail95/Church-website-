@@ -24,7 +24,7 @@ import { motion, AnimatePresence } from 'motion/react';
 
 export default function App() {
   const [lang, setLang] = useState<Language>('EN');
-  const [darkMode, setDarkMode] = useState<boolean>(true);
+  const [darkMode, setDarkMode] = useState<boolean>(false);
 
   // Firestore States
   const [announcement, setAnnouncement] = useState<{
@@ -110,7 +110,16 @@ export default function App() {
 
   if (isGalleryView) {
     return (
-      <div className="min-h-screen bg-byz-blue-50/25 text-stone-900 dark:bg-byz-blue-950 dark:text-byz-blue-100 font-sans transition-colors duration-300 antialiased overflow-x-hidden selection:bg-gold-500/30 selection:text-gold-200 pt-20">
+      <div className="min-h-screen bg-[#DFD5C4] text-stone-900 dark:bg-byz-blue-950 dark:text-byz-blue-100 font-sans transition-colors duration-300 antialiased overflow-x-hidden selection:bg-gold-500/30 selection:text-gold-200 pt-20 relative">
+        {/* Watermark Cross */}
+        <div className="fixed inset-0 pointer-events-none z-0 flex items-center justify-center opacity-[0.03] dark:opacity-0 transition-opacity duration-300">
+          <svg viewBox="0 0 100 100" className="w-[150vw] h-[150vh] max-w-[800px] max-h-[800px] text-stone-950" fill="none" stroke="currentColor" strokeWidth="0.8">
+            <path d="M50 10 L50 90" />
+            <path d="M40 25 L60 25" />
+            <path d="M20 40 L80 40" />
+            <path d="M40 70 L60 60" />
+          </svg>
+        </div>
         
         {/* Dynamic Header Navbar with bilingual and dark theme selectors */}
         <Navbar 
@@ -132,8 +141,17 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen bg-byz-blue-50/25 text-stone-900 dark:bg-byz-blue-950 dark:text-byz-blue-100 font-sans transition-colors duration-300 antialiased overflow-x-hidden selection:bg-gold-500/30 selection:text-gold-200 pt-20">
-      
+    <div className="min-h-screen bg-[#DFD5C4] text-stone-900 dark:bg-byz-blue-950 dark:text-byz-blue-100 font-sans transition-colors duration-300 antialiased overflow-x-hidden selection:bg-gold-500/30 selection:text-gold-200 pt-20 relative">
+      {/* Watermark Cross */}
+      <div className="fixed inset-0 pointer-events-none z-0 flex items-center justify-center opacity-[0.03] dark:opacity-0 transition-opacity duration-300">
+        <svg viewBox="0 0 100 100" className="w-[150vw] h-[150vh] max-w-[800px] max-h-[800px] text-stone-950" fill="none" stroke="currentColor" strokeWidth="0.8">
+          <path d="M50 10 L50 90" />
+          <path d="M40 25 L60 25" />
+          <path d="M20 40 L80 40" />
+          <path d="M40 70 L60 60" />
+        </svg>
+      </div>
+
       {/* Dynamic Header Navbar with bilingual and dark theme selectors */}
       <Navbar 
         lang={lang} 

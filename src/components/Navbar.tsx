@@ -54,7 +54,7 @@ export default function Navbar({ lang, setLang, darkMode, setDarkMode }: NavbarP
   };
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 transition-all duration-300 backdrop-blur-md border-b bg-byz-blue-50/80 border-byz-blue-100/50 dark:bg-byz-blue-950/85 dark:border-byz-blue-900/50">
+    <nav className="fixed top-0 left-0 right-0 z-50 transition-all duration-300 backdrop-blur-md border-b bg-[#DFD5C4]/90 border-byz-blue-900/10 dark:bg-byz-blue-950/85 dark:border-byz-blue-900/50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
           
@@ -66,7 +66,7 @@ export default function Navbar({ lang, setLang, darkMode, setDarkMode }: NavbarP
             </div>
             
             <div className="flex flex-col text-left">
-              <span className="font-display text-sm xs:text-base tracking-widest font-semibold text-byz-blue-900 dark:text-gold-100 uppercase">
+              <span className="font-display text-sm xs:text-base tracking-widest font-semibold text-byz-blue-950 dark:text-gold-100 uppercase">
                 {lang === 'RO' ? 'ANTIOCHIA' : 'ANTIOCH'}
               </span>
               <span className="font-serif text-xs text-byz-blue-600 dark:text-byz-blue-300 -mt-0.5 italic">
@@ -82,7 +82,7 @@ export default function Navbar({ lang, setLang, darkMode, setDarkMode }: NavbarP
                 key={item.href}
                 href={item.href}
                 onClick={(e) => handleScroll(e, item.href)}
-                className="font-sans text-xs uppercase tracking-widest text-byz-blue-900 dark:text-byz-blue-100 hover:text-gold-600 dark:hover:text-gold-400 transition-colors duration-200 font-medium"
+                className="font-sans text-xs uppercase tracking-widest text-byz-blue-950 dark:text-byz-blue-100 hover:text-gold-600 dark:hover:text-gold-400 transition-colors duration-200 font-medium"
               >
                 {item.label}
               </a>
@@ -119,10 +119,10 @@ export default function Navbar({ lang, setLang, darkMode, setDarkMode }: NavbarP
             {/* Dark Mode Switcher */}
             <button
               onClick={() => setDarkMode(!darkMode)}
-              className="p-2 text-byz-blue-800 dark:text-byz-blue-300 hover:bg-byz-blue-100 dark:hover:bg-byz-blue-900 rounded-full transition-all cursor-pointer border border-byz-blue-200/20"
+              className="p-2 text-byz-blue-950 dark:text-byz-blue-300 hover:bg-byz-blue-100 dark:hover:bg-byz-blue-900 rounded-full transition-all cursor-pointer border border-byz-blue-200/20"
               aria-label="Toggle Theme"
             >
-              {darkMode ? <Sun size={17} className="text-gold-400" /> : <Moon size={17} className="text-byz-blue-800" />}
+              {!darkMode ? <Sun size={17} className="text-gold-500" /> : <Moon size={17} className="text-byz-blue-300" />}
             </button>
             
             <div className="text-[10px] uppercase font-mono tracking-wider text-amber-600 dark:text-amber-400 flex items-center bg-amber-500/10 border border-amber-500/20 px-2.5 py-1 rounded-full space-x-1.5">
@@ -167,9 +167,9 @@ export default function Navbar({ lang, setLang, darkMode, setDarkMode }: NavbarP
             {/* Theme switcher for mobile */}
             <button
               onClick={() => setDarkMode(!darkMode)}
-              className="p-2 text-byz-blue-800 dark:text-byz-blue-300 hover:bg-byz-blue-100 dark:hover:bg-byz-blue-900 rounded-full cursor-pointer"
+              className="p-2 text-byz-blue-950 dark:text-byz-blue-300 hover:bg-byz-blue-100 dark:hover:bg-byz-blue-900 rounded-full cursor-pointer"
             >
-              {darkMode ? <Sun size={17} className="text-gold-400" /> : <Moon size={17} />}
+              {!darkMode ? <Sun size={17} className="text-gold-500" /> : <Moon size={17} className="text-byz-blue-300" />}
             </button>
 
             {/* Language switcher for mobile */}
@@ -182,7 +182,7 @@ export default function Navbar({ lang, setLang, darkMode, setDarkMode }: NavbarP
 
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="p-2 text-byz-blue-800 dark:text-byz-blue-300 hover:bg-byz-blue-100 dark:hover:bg-byz-blue-900 rounded-full focus:outline-none"
+              className="p-2 text-byz-blue-950 dark:text-byz-blue-300 hover:bg-byz-blue-100 dark:hover:bg-byz-blue-900 rounded-full focus:outline-none"
               id="mobile-menu-btn"
             >
               {isOpen ? <X size={24} /> : <Menu size={24} />}

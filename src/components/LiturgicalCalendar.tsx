@@ -31,21 +31,21 @@ export default function LiturgicalCalendar({ lang, services }: LiturgicalCalenda
   };
 
   return (
-    <section id="services" className="py-24 bg-byz-blue-50/20 text-stone-900 dark:bg-byz-blue-950 dark:text-byz-blue-100 border-b border-byz-blue-100/50 dark:border-byz-blue-900 transition-colors duration-300">
+    <section id="services" className="py-24 bg-transparent text-stone-900 dark:bg-byz-blue-950 dark:text-byz-blue-100 border-b border-stone-800 dark:border-byz-blue-900 transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Header Title Block */}
-        <div className="text-center max-w-3xl mx-auto mb-16">
-          <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-byz-blue-50 dark:bg-byz-blue-900/60 text-byz-blue-700 dark:text-byz-blue-300 font-mono text-[10px] uppercase tracking-widest border border-byz-blue-100 dark:border-byz-blue-800/40 mb-4 font-semibold">
+        <div className="text-center max-w-3xl mx-auto mb-16 bg-stone-900 shadow-xl dark:bg-transparent p-8 rounded-3xl border border-stone-800 dark:border-none backdrop-blur-sm">
+          <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-gold-500/10 dark:bg-gold-500/15 text-gold-700 dark:text-gold-300 font-mono text-[10px] uppercase tracking-widest border border-stone-800 dark:border-byz-blue-800/40 mb-4 font-semibold">
             <Sparkles size={12} className="text-gold-500 animate-pulse" />
             <span>{lang === 'RO' ? 'Viața Comunității' : 'Parish Fellowship'}</span>
           </div>
           
-          <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-medium tracking-tight mb-4">
+          <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-medium tracking-tight mb-4 text-gold-400 dark:text-gold-50">
             {lang === 'RO' ? 'Slujbe & Comunitate' : 'Services & Community'}
           </h2>
           
-          <p className="font-serif text-stone-600 dark:text-byz-blue-200 text-sm sm:text-base italic max-w-2xl mx-auto leading-relaxed">
+          <p className="font-serif text-stone-200 dark:text-byz-blue-200 text-sm sm:text-base italic max-w-2xl mx-auto leading-relaxed">
             {lang === 'RO' 
               ? '„Să veghem unii asupra altora ca să ne îndemnăm la dragoste și la fapte bune.” (Evrei 10:24)'
               : '“Let us consider one another in order to stir up love and good works.” (Hebrews 10:24)'}
@@ -61,18 +61,18 @@ export default function LiturgicalCalendar({ lang, services }: LiturgicalCalenda
           <div className="lg:col-span-8 space-y-8">
             
             {/* About Community Section */}
-            <div className="bg-white dark:bg-byz-blue-900/40 border border-byz-blue-100/80 dark:border-byz-blue-900/60 p-6 sm:p-8 rounded-3xl shadow-sm">
-              <h3 className="font-display text-xl sm:text-2xl font-medium text-byz-blue-900 dark:text-gold-100 mb-4 border-b border-byz-blue-50 dark:border-byz-blue-900/80 pb-3">
+            <div className="bg-stone-900 shadow-xl dark:bg-byz-blue-900/40 border border-stone-800 dark:border-byz-blue-900/60 p-6 sm:p-8 rounded-3xl ">
+              <h3 className="font-display text-xl sm:text-2xl font-medium text-gold-400 dark:text-gold-100 mb-4 border-b border-white/10 dark:border-byz-blue-900/80 pb-3">
                 {lang === 'RO' ? 'Despre Comunitate' : 'About the Community'}
               </h3>
               
-              <p className="font-serif text-sm sm:text-base text-stone-700 dark:text-byz-blue-200 leading-relaxed italic mb-4">
+              <p className="font-serif text-sm sm:text-base text-stone-100 dark:text-byz-blue-200 leading-relaxed italic mb-4">
                 {lang === 'RO' 
                   ? 'Parohia noastră din Scunthorpe s-a născut din dorința de a oferi o casă spirituală credincioșilor ortodocși din nordul Lincolnshire. Sub oblăduirea canonică a Arhiepiscopiei Antiochiane a Insulelor Britanice și Irlandei, adunăm laolaltă credincioși de diverse naționalități, uniți în aceeași credință curată, săvârșind slujbe pline de pace și căldură sufletească în limba engleză.'
                   : 'Our community in Scunthorpe was born out of a desire to provide a spiritual home for Orthodox Christians in North Lincolnshire. Under the spiritual care of the Antiochian Orthodox Archdiocese of the British Isles and Ireland, we bring together believers of all nationalities — united in the same pristine faith, holding peaceful and warm services.'}
               </p>
               
-              <p className="font-sans text-xs sm:text-sm text-stone-600 dark:text-byz-blue-300 leading-relaxed">
+              <p className="font-sans text-xs sm:text-sm text-stone-200 dark:text-byz-blue-300 leading-relaxed">
                 {lang === 'RO'
                   ? 'Deși suntem o misiune relativ mică pe pământ britanic, dragostea frățească și deschiderea către credincioși de orice origine ne oferă puterea de a crește frumos în Hristos Domnul. Vă așteptăm cu bucurie să fiți parte din mica noastră familie duhovnicească.'
                   : 'Although we are a relatively small mission on British soil, brotherly love and openness to believers of all origins give us the strength to grow beautifully in Christ our Lord. We joyfully welcome you to be part of our small spiritual family.'}
@@ -80,30 +80,30 @@ export default function LiturgicalCalendar({ lang, services }: LiturgicalCalenda
             </div>
 
             {/* Schedule of Services Card */}
-            <div className="bg-white dark:bg-byz-blue-900/40 border border-byz-blue-100/80 dark:border-byz-blue-900/60 rounded-3xl p-6 sm:p-8 shadow-sm relative overflow-hidden group">
+            <div className="bg-stone-900 shadow-xl dark:bg-byz-blue-900/40 border border-stone-800 dark:border-byz-blue-900/60 rounded-3xl p-6 sm:p-8  relative overflow-hidden group">
               <div className="absolute top-0 right-0 h-16 w-16 bg-radial-gradient(ellipse_at_top_right,rgba(212,171,21,0.05),transparent_70%) pointer-events-none" />
               
-              <div className="flex items-center justify-between mb-4 pb-3 border-b border-byz-blue-50 dark:border-byz-blue-900/80">
-                <span className="text-[10px] uppercase font-mono tracking-widest text-byz-blue-750 dark:text-byz-blue-300 bg-byz-blue-50 dark:bg-byz-blue-950 px-2.5 py-1 rounded-full border border-byz-blue-100 dark:border-byz-blue-900">
+              <div className="flex items-center justify-between mb-4 pb-3 border-b border-white/10 dark:border-byz-blue-900/80">
+                <span className="text-[10px] uppercase font-mono tracking-widest text-gold-400 dark:text-byz-blue-300 bg-white/10 dark:bg-byz-blue-950 px-2.5 py-1 rounded-full border border-stone-800 dark:border-byz-blue-900">
                   {lang === 'RO' ? 'Program Slujbe' : 'Service Schedule'}
                 </span>
-                <div className="p-2 rounded-lg bg-byz-blue-50 dark:bg-byz-blue-950 text-byz-blue-700 dark:text-byz-blue-300 border border-byz-blue-100 dark:border-byz-blue-900">
+                <div className="p-2 rounded-lg bg-white/10 dark:bg-byz-blue-950 text-gold-400 dark:text-gold-400 border border-stone-800 dark:border-stone-800">
                   <Calendar size={16} />
                 </div>
               </div>
 
-              <h3 className="font-display text-xl sm:text-2xl font-medium text-byz-blue-900 dark:text-gold-100 mb-6">
+              <h3 className="font-display text-xl sm:text-2xl font-medium text-gold-400 dark:text-gold-100 mb-6">
                 {lang === 'RO' ? 'Programul Slujbelor' : 'Schedule of Services'}
               </h3>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-4">
                   {leftServices.map((service, index) => (
-                    <div key={service.id || `left-${index}`} className="flex justify-between items-start text-xs sm:text-sm border-b border-byz-blue-50 dark:border-byz-blue-950/40 pb-2.5">
-                      <div className="font-semibold text-byz-blue-950 dark:text-byz-blue-100">
+                    <div key={service.id || `left-${index}`} className="flex justify-between items-start text-xs sm:text-sm border-b border-white/10 dark:border-byz-blue-950/40 pb-2.5">
+                      <div className="font-semibold text-white dark:text-byz-blue-100">
                         {typeof service.day === 'object' ? service.day[lang] : service.day}:
                       </div>
-                      <div className="text-right text-stone-600 dark:text-byz-blue-300 font-mono text-xs font-semibold">
+                      <div className="text-right text-stone-200 dark:text-byz-blue-300 font-mono text-xs font-semibold">
                         {typeof service.time === 'object' ? service.time[lang] : service.time} - {typeof service.name === 'object' ? service.name[lang] : service.name}
                       </div>
                     </div>
@@ -112,11 +112,11 @@ export default function LiturgicalCalendar({ lang, services }: LiturgicalCalenda
 
                 <div className="space-y-4">
                   {rightServices.map((service, index) => (
-                    <div key={service.id || `right-${index}`} className="flex justify-between items-start text-xs sm:text-sm border-b border-byz-blue-50 dark:border-byz-blue-950/40 pb-2.5">
-                      <div className="font-semibold text-byz-blue-950 dark:text-byz-blue-100">
+                    <div key={service.id || `right-${index}`} className="flex justify-between items-start text-xs sm:text-sm border-b border-white/10 dark:border-byz-blue-950/40 pb-2.5">
+                      <div className="font-semibold text-white dark:text-byz-blue-100">
                         {typeof service.day === 'object' ? service.day[lang] : service.day}:
                       </div>
-                      <div className="text-right text-stone-600 dark:text-byz-blue-300 font-mono text-xs font-semibold">
+                      <div className="text-right text-stone-200 dark:text-byz-blue-300 font-mono text-xs font-semibold">
                         {typeof service.time === 'object' ? service.time[lang] : service.time} - {typeof service.name === 'object' ? service.name[lang] : service.name}
                       </div>
                     </div>
@@ -124,7 +124,7 @@ export default function LiturgicalCalendar({ lang, services }: LiturgicalCalenda
                 </div>
               </div>
 
-              <p className="text-stone-500 dark:text-byz-blue-300 text-[11px] sm:text-xs leading-relaxed italic mt-5 pt-4 border-t border-byz-blue-50 dark:border-byz-blue-900/50">
+              <p className="text-stone-300 dark:text-byz-blue-300 text-[11px] sm:text-xs leading-relaxed italic mt-5 pt-4 border-t border-white/10 dark:border-byz-blue-900/50">
                 {lang === 'RO'
                   ? '* Pentru sărbătorile din timpul săptămânii, urmăriți anunțurile de pe grupul de WhatsApp.'
                   : '* For weekday feast services, please follow the announcements on our parish WhatsApp group.'}
@@ -135,31 +135,31 @@ export default function LiturgicalCalendar({ lang, services }: LiturgicalCalenda
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               
               {/* Card 1: Services on Request / Sfinte Taine */}
-              <div className="bg-white dark:bg-byz-blue-900/40 border border-byz-blue-100/80 dark:border-byz-blue-900/60 rounded-3xl p-6 sm:p-7 flex flex-col justify-between hover:border-gold-500/30 transition-all duration-300 shadow-sm relative overflow-hidden group">
+              <div className="bg-stone-900 shadow-xl dark:bg-byz-blue-900/40 border border-stone-800 dark:border-byz-blue-900/60 rounded-3xl p-6 sm:p-7 flex flex-col justify-between hover:border-gold-500/30 transition-all duration-300  relative overflow-hidden group">
                 <div className="absolute top-0 right-0 h-16 w-16 bg-radial-gradient(ellipse_at_top_right,rgba(212,171,21,0.05),transparent_70%) pointer-events-none" />
                 
                 <div>
                   <div className="flex items-center justify-between mb-4">
-                    <span className="text-[10px] uppercase font-mono tracking-widest text-byz-blue-750 dark:text-byz-blue-300 bg-byz-blue-50 dark:bg-byz-blue-950 px-2.5 py-1 rounded-full border border-byz-blue-100 dark:border-byz-blue-900">
+                    <span className="text-[10px] uppercase font-mono tracking-widest text-gold-400 dark:text-byz-blue-300 bg-white/10 dark:bg-byz-blue-950 px-2.5 py-1 rounded-full border border-stone-800 dark:border-byz-blue-900">
                       {lang === 'RO' ? 'Servicii la Cerere' : 'Services on Request'}
                     </span>
-                    <div className="p-2 rounded-lg bg-byz-blue-50 dark:bg-byz-blue-950 text-byz-blue-750 dark:text-byz-blue-300 border border-byz-blue-100 dark:border-byz-blue-900">
+                    <div className="p-2 rounded-lg bg-white/10 dark:bg-byz-blue-950 text-gold-400 dark:text-byz-blue-300 border border-stone-800 dark:border-byz-blue-900">
                       <BookOpen size={16} />
                     </div>
                   </div>
 
-                  <h4 className="font-display text-lg font-semibold text-byz-blue-900 dark:text-stone-100 mb-2.5 group-hover:text-gold-600 dark:group-hover:text-gold-400 transition-colors">
+                  <h4 className="font-display text-lg font-semibold text-gold-400 dark:text-stone-100 mb-2.5 group-hover:text-gold-600 dark:group-hover:text-gold-400 transition-colors">
                     {lang === 'RO' ? 'Sfintele Taine & Ierurgii' : 'Holy Sacraments & Prayers'}
                   </h4>
 
-                  <p className="font-serif text-xs sm:text-sm text-stone-600 dark:text-byz-blue-200 leading-relaxed italic mb-4">
+                  <p className="font-serif text-xs sm:text-sm text-stone-200 dark:text-byz-blue-200 leading-relaxed italic mb-4">
                     {lang === 'RO'
                       ? 'Părintele Paroh Mihai Cerghit este oricând disponibil pentru săvârșirea Sfintelor Taine: Sfânta Spovedanie, Sfântul Botez, Cununia Sfântă, precum și sfeștanii de casă, rugăciuni la boli și pomeniri.'
                       : 'Parish Priest Father Mihai Cerghit is always available for the Holy Sacraments: Confession, Holy Baptism, Holy Matrimony, as well as house blessings, prayers for healing, and memorials.'}
                   </p>
                 </div>
 
-                <div className="pt-4 border-t border-byz-blue-50 dark:border-byz-blue-900/50 flex justify-between items-center text-xs font-mono text-gold-600 dark:text-gold-400">
+                <div className="pt-4 border-t border-white/10 dark:border-byz-blue-900/50 flex justify-between items-center text-xs font-mono text-gold-600 dark:text-gold-400">
                   <span>{lang === 'RO' ? '✝ Contactați Părintele' : '✝ Contact Priest'}</span>
                   <a href="#contact" className="hover:underline flex items-center gap-1 font-semibold">
                     {lang === 'RO' ? 'Detalii' : 'Details'} →
@@ -168,31 +168,31 @@ export default function LiturgicalCalendar({ lang, services }: LiturgicalCalenda
               </div>
 
               {/* Card 2: Philanthropy Actions */}
-              <div className="bg-white dark:bg-byz-blue-900/40 border border-byz-blue-100/80 dark:border-byz-blue-900/60 rounded-3xl p-6 sm:p-7 flex flex-col justify-between hover:border-gold-500/30 transition-all duration-300 shadow-sm relative overflow-hidden group">
+              <div className="bg-stone-900 shadow-xl dark:bg-byz-blue-900/40 border border-stone-800 dark:border-byz-blue-900/60 rounded-3xl p-6 sm:p-7 flex flex-col justify-between hover:border-gold-500/30 transition-all duration-300  relative overflow-hidden group">
                 <div className="absolute top-0 right-0 h-16 w-16 bg-radial-gradient(ellipse_at_top_right,rgba(212,171,21,0.05),transparent_70%) pointer-events-none" />
                 
                 <div>
                   <div className="flex items-center justify-between mb-4">
-                    <span className="text-[10px] uppercase font-mono tracking-widest text-rose-650 dark:text-rose-450 bg-rose-50 dark:bg-rose-950 px-2.5 py-1 rounded-full border border-rose-100 dark:border-rose-900">
+                    <span className="text-[10px] uppercase font-mono tracking-widest text-rose-200 dark:text-rose-450 bg-rose-500/20 dark:bg-rose-950 px-2.5 py-1 rounded-full border border-rose-500/30 dark:border-rose-900">
                       {lang === 'RO' ? 'Caritate & Sprijin' : 'Charity & Alms'}
                     </span>
-                    <div className="p-2 rounded-lg bg-rose-50 dark:bg-rose-950 text-rose-650 dark:text-rose-450 border border-rose-100 dark:border-rose-900">
+                    <div className="p-2 rounded-lg bg-rose-500/20 dark:bg-rose-950 text-rose-200 dark:text-rose-450 border border-rose-500/30 dark:border-rose-900">
                       <HeartHandshake size={16} />
                     </div>
                   </div>
 
-                  <h4 className="font-display text-lg font-semibold text-byz-blue-900 dark:text-stone-100 mb-2.5 group-hover:text-gold-600 dark:group-hover:text-gold-400 transition-colors">
+                  <h4 className="font-display text-lg font-semibold text-gold-400 dark:text-stone-100 mb-2.5 group-hover:text-gold-600 dark:group-hover:text-gold-400 transition-colors">
                     {lang === 'RO' ? 'Acțiuni Filantropice' : 'Philanthropic Outreaches'}
                   </h4>
 
-                  <p className="font-serif text-xs sm:text-sm text-stone-600 dark:text-byz-blue-200 leading-relaxed italic mb-4">
+                  <p className="font-serif text-xs sm:text-sm text-stone-200 dark:text-byz-blue-200 leading-relaxed italic mb-4">
                     {lang === 'RO'
                       ? 'Cum ne organizăm pentru a întinde o mână de ajutor celor aflați în dificultate și a oferi sprijin material și sufletesc persoanelor defavorizate ori nou-venite în zona Doncaster / Scunthorpe.'
                       : 'How we organize as a parish family to extend a helping hand to those undergoing hardships, offering material and spiritual care for vulnerable people or newcomers in Scunthorpe.'}
                   </p>
                 </div>
 
-                <div className="pt-4 border-t border-byz-blue-50 dark:border-byz-blue-900/50 flex justify-between items-center text-xs font-mono text-gold-600 dark:text-gold-400">
+                <div className="pt-4 border-t border-white/10 dark:border-byz-blue-900/50 flex justify-between items-center text-xs font-mono text-gold-600 dark:text-gold-400">
                   <span>{lang === 'RO' ? 'Registered Charity 1208759' : 'Charity No: 1208759'}</span>
                   <a href="#support" className="hover:underline flex items-center gap-1 font-semibold">
                     {lang === 'RO' ? 'Susține' : 'Sustain'} →
@@ -238,19 +238,19 @@ export default function LiturgicalCalendar({ lang, services }: LiturgicalCalenda
             </div>
 
             {/* Box 2: Unde ne găsiți (Google Maps box) */}
-            <div className="bg-white dark:bg-byz-blue-900/40 border border-byz-blue-100/80 dark:border-byz-blue-900/60 p-6 sm:p-7 rounded-3xl shadow-sm">
-              <h3 className="font-display text-lg font-semibold text-byz-blue-900 dark:text-white mb-4">
+            <div className="bg-stone-900 shadow-xl dark:bg-byz-blue-900/40 border border-stone-800 dark:border-byz-blue-900/60 p-6 sm:p-7 rounded-3xl ">
+              <h3 className="font-display text-lg font-semibold text-gold-400 dark:text-white mb-4">
                 {lang === 'RO' ? 'Unde ne găsiți' : 'Where to Find Us'}
               </h3>
               
-              <div className="flex items-start space-x-3 text-xs sm:text-sm text-stone-600 dark:text-byz-blue-200 italic font-serif leading-relaxed mb-4">
+              <div className="flex items-start space-x-3 text-xs sm:text-sm text-stone-200 dark:text-byz-blue-200 italic font-serif leading-relaxed mb-4">
                 <MapPin size={18} className="text-gold-500 flex-shrink-0 mt-0.5" />
                 <p>
                   Old Brumby United Church / Methodist Church, 185 Ashby Rd, Scunthorpe DN16 2AQ
                 </p>
               </div>
 
-              <div className="relative w-full h-[220px] rounded-xl overflow-hidden border border-byz-blue-100 dark:border-byz-blue-900/60 mb-4 shadow-inner">
+              <div className="relative w-full h-[220px] rounded-xl overflow-hidden border border-stone-800 dark:border-byz-blue-900/60 mb-4 shadow-inner">
                 <iframe
                   title="Google Map Location"
                   src="https://maps.google.com/maps?q=Old%20Brumby%20United%20Church,%20185%20Ashby%20Rd,%20Scunthorpe%20DN16%202AQ&t=&z=15&ie=UTF8&iwloc=&output=embed"
@@ -260,7 +260,7 @@ export default function LiturgicalCalendar({ lang, services }: LiturgicalCalenda
                 />
               </div>
 
-              <p className="text-[11px] sm:text-xs text-stone-500 dark:text-byz-blue-300 leading-normal mb-5">
+              <p className="text-[11px] sm:text-xs text-stone-300 dark:text-byz-blue-300 leading-normal mb-5">
                 {lang === 'RO'
                   ? 'Slujbele noastre se țin în format fizic la adresa comunității. Parcare auto gratuită disponibilă în zona din spate a clădirii.'
                   : 'Our services are held physically at the community address. Free car parking is available in the rear area of the church building.'}

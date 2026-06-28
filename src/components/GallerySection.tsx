@@ -63,7 +63,7 @@ export default function GallerySection({ lang, isSeparatePage = false }: Gallery
 
   if (loading) {
     return (
-      <section id="gallery" className="py-20 bg-byz-blue-50/20 dark:bg-byz-blue-950 border-b border-byz-blue-100 dark:border-byz-blue-900 text-center text-stone-500">
+      <section id="gallery" className="py-20 bg-transparent dark:bg-byz-blue-950 border-b border-[#4D6D8A]/20 dark:border-byz-blue-900 text-center text-stone-300">
         <div className="max-w-7xl mx-auto px-4">
           <p className="animate-pulse font-serif italic text-sm">
             {lang === 'RO' ? 'Se deschide albumul parohial...' : 'Opening the parish album...'}
@@ -76,21 +76,21 @@ export default function GallerySection({ lang, isSeparatePage = false }: Gallery
   if (!isSeparatePage) {
     // Teaser / Door Mode on the home page
     return (
-      <section id="gallery" className="py-24 bg-byz-blue-50/20 dark:bg-byz-blue-950 border-b border-byz-blue-100/70 dark:border-byz-blue-900 transition-colors duration-300">
+      <section id="gallery" className="py-24 bg-transparent dark:bg-byz-blue-950 border-b border-[#4D6D8A]/20 dark:border-byz-blue-900 transition-colors duration-300">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
             
             {/* Descriptive Content Door - Left Side */}
-            <div className="lg:col-span-5 space-y-6">
+            <div className="lg:col-span-5 space-y-6 bg-stone-900 shadow-xl dark:bg-transparent p-8 rounded-3xl border border-stone-800 dark:border-none backdrop-blur-sm">
               <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-gold-500/10 text-amber-700 dark:text-gold-400 font-mono text-[10px] uppercase tracking-wider font-semibold border border-gold-500/25">
                 <Film size={11} className="text-amber-500" />
                 <span>{lang === 'RO' ? 'Viața Parohiei' : 'Parish Life'}</span>
               </div>
-              <h2 className="font-display text-3xl sm:text-4xl font-medium tracking-tight text-stone-900 dark:text-gold-50">
+              <h2 className="font-display text-3xl sm:text-4xl font-medium tracking-tight text-gold-400 dark:text-gold-50">
                 {lang === 'RO' ? 'Galerie Foto & Video' : 'Photos & Videos'}
               </h2>
-              <p className="font-serif italic text-stone-600 dark:text-stone-400 text-sm sm:text-base leading-relaxed">
+              <p className="font-serif italic text-stone-200 dark:text-stone-400 text-sm sm:text-base leading-relaxed">
                 {lang === 'RO' 
                   ? 'Vă invităm să priviți momentele sfinte, slujbele și bucuriile trăite împreună în sufletul micii noastre misiuni.' 
                   : 'We invite you to browse through liturgical moments, services, and warm fellowships celebrated in our small parish family.'}
@@ -112,7 +112,7 @@ export default function GallerySection({ lang, isSeparatePage = false }: Gallery
               </div>
 
               {/* Little info row summarizing available media */}
-              <div className="pt-4 flex items-center space-x-6 border-t border-stone-200 dark:border-stone-800/60 font-mono text-xs text-stone-500 dark:text-stone-400">
+              <div className="pt-4 flex items-center space-x-6 border-t border-stone-200 dark:border-stone-800/60 font-mono text-xs text-stone-300 dark:text-stone-400">
                 <div className="flex items-center space-x-2">
                   <Image size={14} className="text-gold-500" />
                   <span><strong>{photos.length}</strong> {lang === 'RO' ? 'Fotografii' : 'Photos'}</span>
@@ -127,7 +127,7 @@ export default function GallerySection({ lang, isSeparatePage = false }: Gallery
             {/* Photos Preview Doors - Right Side */}
             <div className="lg:col-span-7">
               {photos.length === 0 ? (
-                <div className="text-center py-16 bg-white dark:bg-byz-blue-900/40 border border-byz-blue-100 dark:border-byz-blue-800/60 rounded-3xl">
+                <div className="text-center py-16 bg-stone-900 shadow-xl dark:bg-byz-blue-900/40 border border-stone-800 dark:border-byz-blue-800/60 rounded-3xl">
                   <p className="font-serif italic text-stone-400 text-xs sm:text-sm">
                     {lang === 'RO' ? 'Nicio fotografie publicată momentan.' : 'No photos published at this moment.'}
                   </p>
@@ -171,7 +171,7 @@ export default function GallerySection({ lang, isSeparatePage = false }: Gallery
   }
 
   return (
-    <section id="gallery" className="py-24 bg-byz-blue-50/20 dark:bg-byz-blue-950 border-b border-byz-blue-100 dark:border-byz-blue-900 transition-colors duration-300 min-h-screen">
+    <section id="gallery" className="py-24 bg-transparent dark:bg-byz-blue-950 border-b border-[#4D6D8A]/20 dark:border-byz-blue-900 transition-colors duration-300 min-h-screen">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Back Link */}
@@ -183,7 +183,7 @@ export default function GallerySection({ lang, isSeparatePage = false }: Gallery
                 e.preventDefault();
                 window.location.hash = '#home';
               }}
-              className="inline-flex items-center space-x-2 text-xs font-semibold uppercase tracking-wider text-amber-700 hover:text-amber-800 dark:text-gold-400 dark:hover:text-gold-300 hover:bg-byz-blue-100 dark:hover:bg-byz-blue-900/50 px-3.5 py-2 rounded-xl transition-all cursor-pointer border border-byz-blue-100 dark:border-byz-blue-800/40"
+              className="inline-flex items-center space-x-2 text-xs font-semibold uppercase tracking-wider text-amber-700 hover:text-amber-800 dark:text-gold-400 dark:hover:text-gold-300 hover:bg-byz-blue-100 dark:hover:bg-byz-blue-900/50 px-3.5 py-2 rounded-xl transition-all cursor-pointer border border-stone-800 dark:border-byz-blue-800/40"
             >
               <ArrowLeft size={14} />
               <span>{lang === 'RO' ? 'Înapoi la prima pagină' : 'Back to Home'}</span>
@@ -192,15 +192,15 @@ export default function GallerySection({ lang, isSeparatePage = false }: Gallery
         )}
         
         {/* Section Header */}
-        <div className="text-center mb-12">
+        <div className="text-center mb-12 bg-stone-900 shadow-xl dark:bg-transparent p-8 rounded-3xl border border-stone-800 dark:border-none backdrop-blur-sm max-w-3xl mx-auto">
           <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-gold-500/10 text-amber-700 dark:text-gold-400 font-mono text-[10px] uppercase tracking-wider mb-4 font-semibold border border-gold-500/25">
             <Film size={11} className="text-amber-500" />
             <span>{lang === 'RO' ? 'Viața Parohiei' : 'Parish Life'}</span>
           </div>
-          <h2 className="font-display text-3xl sm:text-4xl font-medium tracking-tight mb-4 text-stone-900 dark:text-gold-50">
+          <h2 className="font-display text-3xl sm:text-4xl font-medium tracking-tight mb-4 text-gold-400 dark:text-gold-50">
             {lang === 'RO' ? 'Galerie Foto & Video' : 'Photos & Videos'}
           </h2>
-          <p className="font-serif italic text-stone-600 dark:text-stone-400 text-sm sm:text-base max-w-2xl mx-auto leading-relaxed">
+          <p className="font-serif italic text-stone-200 dark:text-stone-400 text-sm sm:text-base max-w-2xl mx-auto leading-relaxed">
             {lang === 'RO' 
               ? 'Momente din viața liturgică a micii noastre misiuni. Rugăciune, bucurie și simplitate în Hristos.' 
               : 'Glimpses into the liturgical and community life of our humble mission. Prayer, joy, and simplicity in Christ.'}
@@ -223,7 +223,7 @@ export default function GallerySection({ lang, isSeparatePage = false }: Gallery
                   className={`px-4 py-1.5 text-xs font-medium uppercase tracking-wider rounded-full transition-all cursor-pointer ${
                     isActive 
                       ? 'bg-amber-600 text-white dark:bg-gold-500 dark:text-stone-950 font-semibold shadow-sm' 
-                      : 'text-stone-500 hover:text-stone-900 dark:text-stone-400 dark:hover:text-stone-100 hover:bg-byz-blue-100/60 dark:hover:bg-byz-blue-900/40'
+                      : 'text-stone-300 hover:text-white dark:text-stone-400 dark:hover:text-stone-100 hover:bg-byz-blue-100/60 dark:hover:bg-byz-blue-900/40'
                   }`}
                 >
                   {label}
@@ -236,16 +236,16 @@ export default function GallerySection({ lang, isSeparatePage = false }: Gallery
         {/* Photos Grid Section */}
         {(activeTab === 'all' || activeTab === 'photos') && (
           <div className="mb-16">
-            <div className="flex items-center space-x-2 mb-6 border-b border-byz-blue-100 dark:border-byz-blue-900 pb-2">
+            <div className="flex items-center space-x-2 mb-6 border-b border-[#4D6D8A]/20 dark:border-byz-blue-900 pb-2">
               <Image size={16} className="text-amber-600 dark:text-gold-400" />
-              <h3 className="font-display text-lg font-bold tracking-tight text-stone-800 dark:text-stone-100">
+              <h3 className="font-display text-lg font-bold tracking-tight text-stone-900 dark:text-stone-100">
                 {lang === 'RO' ? 'Fotografii Parohiale' : 'Parish Photos'}
               </h3>
               <span className="text-xs text-stone-400 font-mono">({photos.length})</span>
             </div>
 
             {photos.length === 0 ? (
-              <div className="text-center py-12 bg-white dark:bg-byz-blue-900/30 border border-byz-blue-100 dark:border-byz-blue-850/50 rounded-2xl">
+              <div className="text-center py-12 bg-stone-900 shadow-xl dark:bg-byz-blue-900/30 border border-stone-800 dark:border-byz-blue-850/50 rounded-2xl">
                 <p className="font-serif italic text-stone-400 text-xs sm:text-sm">
                   {lang === 'RO' ? 'Nu s-au adăugat fotografii încă.' : 'No photos uploaded yet.'}
                 </p>
@@ -255,7 +255,7 @@ export default function GallerySection({ lang, isSeparatePage = false }: Gallery
                 {photos.map((photo) => (
                   <div
                     key={photo.id}
-                    className="bg-white dark:bg-byz-blue-900/40 border border-byz-blue-100 dark:border-byz-blue-800/60 p-2.5 rounded-2xl flex flex-col shadow-sm hover:shadow-md hover:border-gold-500/20 transition-all duration-300 group"
+                    className="bg-stone-900 shadow-xl dark:bg-byz-blue-900/40 border border-stone-800 dark:border-byz-blue-800/60 p-2.5 rounded-2xl flex flex-col  hover:shadow-md hover:border-gold-500/20 transition-all duration-300 group"
                   >
                     <div className="relative aspect-[4/3] rounded-xl overflow-hidden bg-byz-blue-50 dark:bg-byz-blue-950">
                       <img
@@ -267,7 +267,7 @@ export default function GallerySection({ lang, isSeparatePage = false }: Gallery
                       />
                     </div>
                     {photo.caption && (
-                      <p className="font-serif italic text-stone-600 dark:text-stone-300 text-xs mt-3 px-1 leading-relaxed text-center">
+                      <p className="font-serif italic text-stone-200 dark:text-stone-300 text-xs mt-3 px-1 leading-relaxed text-center">
                         {photo.caption}
                       </p>
                     )}
@@ -281,16 +281,16 @@ export default function GallerySection({ lang, isSeparatePage = false }: Gallery
         {/* Videos Grid Section */}
         {(activeTab === 'all' || activeTab === 'videos') && (
           <div>
-            <div className="flex items-center space-x-2 mb-6 border-b border-byz-blue-100 dark:border-byz-blue-900 pb-2">
+            <div className="flex items-center space-x-2 mb-6 border-b border-[#4D6D8A]/20 dark:border-byz-blue-900 pb-2">
               <Video size={16} className="text-amber-600 dark:text-gold-400" />
-              <h3 className="font-display text-lg font-bold tracking-tight text-stone-800 dark:text-stone-100">
+              <h3 className="font-display text-lg font-bold tracking-tight text-stone-900 dark:text-stone-100">
                 {lang === 'RO' ? 'Slujbe și Materiale Video' : 'Services & Videos'}
               </h3>
               <span className="text-xs text-stone-400 font-mono">({videos.length})</span>
             </div>
 
             {videos.length === 0 ? (
-              <div className="text-center py-12 bg-white dark:bg-byz-blue-900/30 border border-byz-blue-100 dark:border-byz-blue-850/50 rounded-2xl">
+              <div className="text-center py-12 bg-stone-900 shadow-xl dark:bg-byz-blue-900/30 border border-stone-800 dark:border-byz-blue-850/50 rounded-2xl">
                 <p className="font-serif italic text-stone-400 text-xs sm:text-sm">
                   {lang === 'RO' ? 'Nu s-au adăugat materiale video încă.' : 'No videos added yet.'}
                 </p>
@@ -304,7 +304,7 @@ export default function GallerySection({ lang, isSeparatePage = false }: Gallery
                   return (
                     <div
                       key={video.id}
-                      className="bg-white dark:bg-byz-blue-900/40 border border-byz-blue-100 dark:border-byz-blue-800/60 p-3 rounded-2xl flex flex-col shadow-sm hover:shadow-md hover:border-gold-500/20 transition-all duration-300"
+                      className="bg-stone-900 shadow-xl dark:bg-byz-blue-900/40 border border-stone-800 dark:border-byz-blue-800/60 p-3 rounded-2xl flex flex-col  hover:shadow-md hover:border-gold-500/20 transition-all duration-300"
                     >
                       <div className="relative aspect-video rounded-xl overflow-hidden bg-byz-blue-950 flex flex-col justify-center items-center group">
                         {isPlaying && yid ? (
@@ -327,7 +327,7 @@ export default function GallerySection({ lang, isSeparatePage = false }: Gallery
                                 loading="lazy"
                               />
                             ) : (
-                              <div className="absolute inset-0 bg-byz-blue-900 flex flex-col items-center justify-center text-stone-500">
+                              <div className="absolute inset-0 bg-byz-blue-900 flex flex-col items-center justify-center text-stone-300">
                                 <Video size={36} />
                               </div>
                             )}
@@ -359,7 +359,7 @@ export default function GallerySection({ lang, isSeparatePage = false }: Gallery
                         )}
                       </div>
                       
-                      <h4 className="font-serif font-semibold text-stone-850 dark:text-gold-200 text-sm mt-3.5 px-1 leading-snug">
+                      <h4 className="font-serif font-semibold text-white dark:text-gold-200 text-sm mt-3.5 px-1 leading-snug">
                         {video.title}
                       </h4>
                     </div>

@@ -1,11 +1,15 @@
-@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap");
 @import "tailwindcss";
 
+@custom-variant dark (&:is(.dark *));
+
 @theme {
-  --font-serif: "Cormorant Garamond", ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+  --font-serif:
+    "Cormorant Garamond", ui-serif, Georgia, Cambria, "Times New Roman", Times,
+    serif;
   --font-display: "Cinzel", "Cormorant Garamond", serif;
   --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, sans-serif;
-  
+
   --color-byz-blue-50: #f5f8fc;
   --color-byz-blue-100: #e9f0fa;
   --color-byz-blue-200: #d6e4f5;
@@ -17,7 +21,7 @@
   --color-byz-blue-800: #0f2b60;
   --color-byz-blue-900: #0a1c40;
   --color-byz-blue-950: #050e24;
-  
+
   --color-gold-50: #fefcf0;
   --color-gold-100: #fbf5cd;
   --color-gold-200: #f7ea9b;
@@ -29,7 +33,7 @@
   --color-gold-800: #764f11;
   --color-gold-900: #654113;
   --color-gold-950: #3b2108;
-  
+
   --color-crimson-50: #fff1f2;
   --color-crimson-100: #ffe4e6;
   --color-crimson-200: #fecdd3;
@@ -45,20 +49,28 @@
 
 @layer utilities {
   @keyframes candle-flicker {
-    0%, 100% {
+    0%,
+    100% {
       transform: scale(1) rotate(-1deg);
       opacity: 0.95;
-      box-shadow: 0 0 14px 4px rgba(245, 158, 11, 0.6), 0 0 28px 8px rgba(245, 158, 11, 0.4);
+      box-shadow:
+        0 0 14px 4px rgba(245, 158, 11, 0.6),
+        0 0 28px 8px rgba(245, 158, 11, 0.4);
     }
     50% {
       transform: scale(1.08) rotate(1deg);
       opacity: 1;
-      box-shadow: 0 0 18px 6px rgba(245, 158, 11, 0.7), 0 0 36px 12px rgba(245, 158, 11, 0.5);
+      box-shadow:
+        0 0 18px 6px rgba(245, 158, 11, 0.7),
+        0 0 36px 12px rgba(245, 158, 11, 0.5);
     }
-    25%, 75% {
+    25%,
+    75% {
       transform: scale(0.95) rotate(-0.5deg);
       opacity: 0.9;
-      box-shadow: 0 0 12px 3px rgba(245, 158, 11, 0.5), 0 0 24px 6px rgba(245, 158, 11, 0.3);
+      box-shadow:
+        0 0 12px 3px rgba(245, 158, 11, 0.5),
+        0 0 24px 6px rgba(245, 158, 11, 0.3);
     }
   }
 
@@ -80,9 +92,8 @@
   .animate-flicker {
     animation: candle-flicker 1.8s infinite ease-in-out;
   }
-  
+
   .animate-smoke {
     animation: drift-smoke 3s infinite linear;
   }
 }
-

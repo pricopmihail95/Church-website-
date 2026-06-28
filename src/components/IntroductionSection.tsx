@@ -9,11 +9,11 @@ interface IntroductionSectionProps {
 
 export default function IntroductionSection({ lang }: IntroductionSectionProps) {
   return (
-    <section id="introduction" className="py-20 bg-byz-blue-50/30 text-stone-900 dark:bg-byz-blue-950 dark:text-byz-blue-100 border-b border-byz-blue-100 dark:border-byz-blue-900 transition-colors duration-300">
+    <section id="introduction" className="py-20 bg-transparent text-stone-900 dark:bg-byz-blue-950 dark:text-byz-blue-100 border-b border-stone-800 dark:border-byz-blue-900 transition-colors duration-300">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Welcome Statement */}
-        <div className="bg-white dark:bg-byz-blue-900/40 border border-byz-blue-100 dark:border-byz-blue-800/60 p-8 sm:p-10 rounded-3xl shadow-sm mb-12 text-center relative overflow-hidden">
+        <div className="bg-stone-900 shadow-xl dark:bg-byz-blue-900/40 border border-stone-800 dark:border-byz-blue-800/60 p-8 sm:p-10 rounded-3xl  mb-12 text-center relative overflow-hidden">
           {/* Subtle golden accent ribbon */}
           <div className="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-amber-500/20 via-gold-500 to-amber-500/20" />
           
@@ -26,7 +26,7 @@ export default function IntroductionSection({ lang }: IntroductionSectionProps) 
             {lang === 'RO' ? 'Bine ai venit în mica noastră familie' : 'Welcome to Our Small Family'}
           </h2>
 
-          <p className="font-serif text-stone-700 dark:text-byz-blue-100 text-sm sm:text-base leading-relaxed max-w-3xl mx-auto">
+          <p className="font-serif text-stone-100 dark:text-byz-blue-100 text-sm sm:text-base leading-relaxed max-w-3xl mx-auto">
             {lang === 'RO' ? (
               <>
                 Suntem o comunitate ortodoxă mică, aflată la început de drum în Scunthorpe (înființată de aproximativ 2-3 ani). Pe parcursul anului, suntem o mână de oameni calzi, adunând de la 6 la 30 de suflete într-o duminică obișnuită, însă ne bucurăm să fim peste 100 de credincioși la Slujba de Înviere. Aici nu vei găsi măreția unei catedrale grandioase, ci simplitatea și dragostea unei familii deschise pentru toți cei dornici să-L caute pe Dumnezeu.
@@ -40,7 +40,7 @@ export default function IntroductionSection({ lang }: IntroductionSectionProps) 
         </div>
 
         {/* Priest Welcome Message Card */}
-        <div className="bg-gradient-to-br from-byz-blue-900 to-byz-blue-950 border border-gold-500/30 p-8 sm:p-10 rounded-3xl shadow-xl mb-12 relative overflow-hidden text-stone-100">
+        <div className="bg-stone-900 shadow-xl dark:bg-byz-blue-900/40 border border-stone-800 dark:border-byz-blue-800/60 p-8 sm:p-10 rounded-3xl mb-12 relative overflow-hidden text-stone-100">
           {/* Decorative Byzantine corner designs */}
           <div className="absolute top-0 right-0 w-16 h-16 border-t-2 border-r-2 border-gold-500/20 rounded-tr-3xl pointer-events-none" />
           <div className="absolute bottom-0 left-0 w-16 h-16 border-b-2 border-l-2 border-gold-500/20 rounded-bl-3xl pointer-events-none" />

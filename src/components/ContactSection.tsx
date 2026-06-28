@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { TRANSLATIONS } from '../data';
 import { Language } from '../types';
-import { Mail, Phone, MapPin, Send, Compass, CheckCircle, Copy } from 'lucide-react';
+import { Mail, Phone, MapPin, Send, Compass, CheckCircle, Copy, ChevronDown } from 'lucide-react';
 
 interface ContactSectionProps {
   lang: Language;
@@ -22,6 +22,7 @@ export default function ContactSection({ lang }: ContactSectionProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [copiedZip, setCopiedZip] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -49,7 +50,7 @@ export default function ContactSection({ lang }: ContactSectionProps) {
   };
 
   return (
-    <section id="contact" className="py-24 bg-byz-blue-950 text-stone-100 border-b border-byz-blue-950 relative overflow-hidden transition-colors duration-300">
+    <section id="contact" className="py-24 bg-transparent dark:bg-byz-blue-950 text-stone-900 dark:text-stone-100 border-b border-transparent dark:border-byz-blue-950 relative overflow-hidden transition-colors duration-300">
       
       {/* Background radial atmosphere */}
       <div className="absolute inset-0 z-0">
@@ -58,18 +59,40 @@ export default function ContactSection({ lang }: ContactSectionProps) {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
-        {/* Section Title Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16">
+        {/* Mobile Drop Bar Header */}
+        <div 
+          className="lg:hidden bg-stone-900 shadow-xl dark:bg-byz-blue-900/40 border border-stone-800 dark:border-byz-blue-800/60 rounded-3xl p-5 sm:p-7  mb-8 flex flex-row items-center justify-between cursor-pointer transition-all active:scale-[0.98]"
+          onClick={() => setIsExpanded(!isExpanded)}
+        >
+          <div className="flex flex-col text-left pr-4">
+            <div className="inline-flex items-center space-x-2 px-3 py-1.5 rounded-full bg-amber-500/10 text-gold-400 font-mono text-[10px] uppercase tracking-widest border border-amber-500/20 mb-3 w-fit">
+              <Mail size={12} className="text-gold-400 rotate-12" />
+              <span>{lang === 'RO' ? 'Misiune & Comunitate' : 'Mission & Fellowship'}</span>
+            </div>
+            <h2 className="font-display text-xl sm:text-2xl font-medium tracking-tight text-white leading-tight">
+              {t.contactTitle}
+            </h2>
+            <p className={`mt-2 text-xs text-stone-300/80 font-serif italic transition-all duration-300 ${isExpanded ? '' : 'line-clamp-2'}`}>
+              "{t.contactSubtitle}"
+            </p>
+          </div>
+          <div className={`flex items-center justify-center w-12 h-12 flex-shrink-0 bg-gradient-to-tr from-gold-600 to-amber-500 rounded-full text-white shadow-lg shadow-gold-500/20 transition-transform duration-500 ${isExpanded ? 'rotate-180' : ''}`}>
+             <ChevronDown size={24} />
+          </div>
+        </div>
+
+        {/* Desktop Title Header */}
+        <div className="hidden lg:block text-center max-w-3xl mx-auto mb-16">
           <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-amber-500/10 text-gold-400 font-mono text-[10px] uppercase tracking-widest border border-amber-500/20 mb-4">
             <Mail size={12} className="text-gold-400 rotate-12" />
             <span>{lang === 'RO' ? 'Misiune & Comunitate' : 'Mission & Fellowship'}</span>
           </div>
           
-          <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-medium tracking-tight text-white mb-4 animate-fade-in">
+          <h2 className="font-display text-4xl lg:text-5xl font-medium tracking-tight text-gold-400 dark:text-white mb-4 animate-fade-in">
             {t.contactTitle}
           </h2>
           
-          <p className="font-serif text-stone-300 text-sm sm:text-base italic max-w-2xl mx-auto leading-relaxed">
+          <p className="font-serif text-stone-700 dark:text-stone-300 text-base italic max-w-2xl mx-auto leading-relaxed">
             "{t.contactSubtitle}"
           </p>
 
@@ -77,10 +100,10 @@ export default function ContactSection({ lang }: ContactSectionProps) {
         </div>
 
         {/* Info Grid Splitter */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 max-w-6xl mx-auto">
+        <div className={`grid grid-cols-1 lg:grid-cols-12 gap-8 max-w-6xl mx-auto transition-all duration-500 ease-in-out ${isExpanded ? 'opacity-100 max-h-[2500px]' : 'opacity-0 max-h-0 overflow-hidden'} lg:opacity-100 lg:max-h-none lg:overflow-visible`}>
           
           {/* Left Block (5/12): Contact form */}
-          <div className="lg:col-span-5 bg-byz-blue-900/30 border border-byz-blue-800/50 p-6 sm:p-8 rounded-3xl shadow-2xl">
+          <div className="lg:col-span-5 bg-stone-900 shadow-xl dark:bg-byz-blue-900/30 border border-stone-800 dark:border-byz-blue-800/50 p-6 sm:p-8 rounded-3xl ">
             <h3 className="font-display text-lg sm:text-xl font-medium text-gold-400 mb-6 border-b border-stone-850 pb-4">
               {lang === 'RO' ? 'Laolaltă în rugăciune' : 'Parish Request Box'}
             </h3>
@@ -157,7 +180,7 @@ export default function ContactSection({ lang }: ContactSectionProps) {
 
           {/* Right Block (7/12): Contact information card */}
           <div className="lg:col-span-7">
-            <div className="bg-byz-blue-900/30 border border-byz-blue-800/50 rounded-3xl p-8 sm:p-10 shadow-2xl h-full flex flex-col justify-center">
+            <div className="bg-stone-900 shadow-xl dark:bg-byz-blue-900/30 border border-stone-800 dark:border-byz-blue-800/50 rounded-3xl p-8 sm:p-10  h-full flex flex-col justify-center">
               {/* Info contacts list */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div>

@@ -119,7 +119,7 @@ export default function Hero({ lang }: HeroProps) {
   return (
     <section 
       id="home" 
-      className="relative min-h-screen flex items-center justify-center pt-20 overflow-hidden bg-gradient-to-b from-byz-blue-950 via-byz-blue-900 to-byz-blue-950 border-b border-byz-blue-900"
+      className="relative min-h-screen flex items-center justify-center pt-20 overflow-hidden bg-transparent dark:bg-gradient-to-b dark:from-byz-blue-950 dark:via-byz-blue-900 dark:to-byz-blue-950 border-b border-transparent dark:border-byz-blue-900"
     >
       {/* Absolute background color and lighting layer */}
       <div className="absolute inset-0 z-0">
@@ -168,7 +168,7 @@ export default function Hero({ lang }: HeroProps) {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.2, duration: 0.6 }}
-          className="font-sans text-xs sm:text-sm tracking-[0.25em] font-semibold text-gold-400 uppercase mb-3"
+          className="font-sans text-xs sm:text-sm tracking-[0.25em] font-semibold text-stone-900 dark:text-gold-400 uppercase mb-3"
         >
           {t.heroTagline}
         </motion.p>
@@ -178,7 +178,7 @@ export default function Hero({ lang }: HeroProps) {
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3, duration: 0.8 }}
-          className="font-display text-3xl sm:text-5xl lg:text-6xl text-white font-medium tracking-tight leading-[1.1] mb-6"
+          className="font-display text-3xl sm:text-5xl lg:text-6xl text-stone-900 dark:text-white font-medium tracking-tight leading-[1.1] mb-6"
         >
           {t.heroTitle}
         </motion.h1>
@@ -188,7 +188,7 @@ export default function Hero({ lang }: HeroProps) {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.5, duration: 0.8 }}
-          className="max-w-2xl mx-auto font-serif text-stone-300 text-sm sm:text-base lg:text-lg leading-relaxed italic mb-10"
+          className="max-w-2xl mx-auto font-serif text-stone-700 dark:text-stone-300 text-sm sm:text-base lg:text-lg leading-relaxed italic mb-10"
         >
           "{t.heroSubtitle}"
         </motion.p>
@@ -210,7 +210,7 @@ export default function Hero({ lang }: HeroProps) {
           
           <button
             onClick={() => smoothScrollTo('contact')}
-            className="w-full sm:w-auto flex items-center justify-center space-x-2.5 px-8 py-4 bg-stone-800/80 hover:bg-stone-850 text-gold-200 border border-gold-500/30 hover:border-gold-500/60 rounded-xl font-medium tracking-wider text-xs uppercase transition-all duration-300 backdrop-blur-sm transform hover:-translate-y-0.5"
+            className="w-full sm:w-auto flex items-center justify-center space-x-2.5 px-8 py-4 bg-stone-900/90 dark:bg-stone-800/80 hover:bg-stone-800 dark:hover:bg-stone-850 text-gold-200 border border-gold-500/30 hover:border-gold-500/60 rounded-xl font-medium tracking-wider text-xs uppercase transition-all duration-300 backdrop-blur-sm transform hover:-translate-y-0.5"
           >
             <Navigation size={14} />
             <span>{t.heroContactBtn}</span>
@@ -222,7 +222,7 @@ export default function Hero({ lang }: HeroProps) {
           initial={{ opacity: 0 }}
           animate={{ opacity: 0.5 }}
           transition={{ delay: 1, duration: 1 }}
-          className="mt-14 inline-flex items-center space-x-2 border border-stone-800 bg-stone-900/50 px-4 py-2 rounded-full text-xs text-stone-400 font-serif italic"
+          className="mt-14 inline-flex items-center space-x-2 border border-stone-200 dark:border-stone-800 bg-white/50 dark:bg-stone-900/50 px-4 py-2 rounded-full text-xs text-stone-600 dark:text-stone-400 font-serif italic"
         >
           <Heart size={10} className="text-crimson-500 animate-pulse" />
           <span>Under the Archdiocese of the British Isles and Ireland</span>

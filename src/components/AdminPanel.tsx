@@ -814,7 +814,7 @@ export default function AdminPanel() {
                   <Megaphone size={18} />
                 </div>
                 <div>
-                  <h2 className="font-display font-bold text-lg text-white">Anunț Altar (Banner principal)</h2>
+                  <h2 className="font-display font-bold text-lg text-gold-400">Anunț Altar (Banner principal)</h2>
                   <p className="font-serif text-xs text-byz-blue-300 italic">Afișat în partea de sus a sălii de calendar pentru enoriași</p>
                 </div>
               </div>
@@ -900,7 +900,7 @@ export default function AdminPanel() {
                     <Calendar size={18} />
                   </div>
                   <div>
-                    <h2 className="font-display font-bold text-lg text-white">Programul Sfintelor Slujbe</h2>
+                    <h2 className="font-display font-bold text-lg text-gold-400">Programul Sfintelor Slujbe</h2>
                     <p className="font-serif text-xs text-byz-blue-300 italic">Administrează în timp real slots, zile și ore pentru enoriași</p>
                   </div>
                 </div>
@@ -1222,7 +1222,7 @@ export default function AdminPanel() {
                     <ImageIcon size={18} />
                   </div>
                   <div>
-                    <h2 className="font-display font-bold text-lg text-white">Administrare Galerie (Foto & Video)</h2>
+                    <h2 className="font-display font-bold text-lg text-gold-400">Administrare Galerie (Foto & Video)</h2>
                     <p className="font-serif text-xs text-byz-blue-300 italic">Încărcați fotografii reprezentative și adăugați link-uri video YouTube pentru enoriași</p>
                   </div>
                 </div>
