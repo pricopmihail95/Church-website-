@@ -36,6 +36,8 @@ export default function App() {
   } | null>(null);
   
   const [servicesList, setServicesList] = useState<Service[]>(SERVICES_SCHEDULING);
+  const [logos, setLogos] = useState<{mainLogoUrl?: string, canonicalLogoUrl?: string}>({ mainLogoUrl: "", canonicalLogoUrl: "" });
+  const [mainPhotoUrl, setMainPhotoUrl] = useState<string>("");
   const [dismissedAnnouncement, setDismissedAnnouncement] = useState(false);
 
   // Route / Page Detection State
@@ -80,6 +82,8 @@ export default function App() {
         if (!active) return;
         
         setServicesList(data.services);
+        if (data.logos) setLogos(data.logos);
+        if (data.mainPhotoUrl) setMainPhotoUrl(data.mainPhotoUrl);
         setAnnouncement(data.announcement);
 
         // Reset dismissed state if announcement content changed
@@ -126,7 +130,8 @@ export default function App() {
           lang={lang} 
           setLang={setLang} 
           darkMode={darkMode} 
-          setDarkMode={setDarkMode} 
+          setDarkMode={setDarkMode}
+          mainLogoUrl={logos.mainLogoUrl} 
         />
 
         <main className="relative">
@@ -154,11 +159,12 @@ export default function App() {
 
       {/* Dynamic Header Navbar with bilingual and dark theme selectors */}
       <Navbar 
-        lang={lang} 
-        setLang={setLang} 
-        darkMode={darkMode} 
-        setDarkMode={setDarkMode} 
-      />
+          lang={lang} 
+          setLang={setLang} 
+          darkMode={darkMode} 
+          setDarkMode={setDarkMode}
+          mainLogoUrl={logos.mainLogoUrl} 
+        />
 
       {/* Realtime Announcement Banner */}
       <AnimatePresence>
@@ -196,7 +202,7 @@ export default function App() {
       </AnimatePresence>
 
       {/* Liturgical Hero and drift golden embers background */}
-      <Hero lang={lang} />
+      <Hero lang={lang} mainPhotoUrl={mainPhotoUrl} />
 
       {/* Main Page Layout Wrapper */}
       <main className="relative">
@@ -218,7 +224,7 @@ export default function App() {
           viewport={{ once: true, margin: '-100px' }}
           transition={{ duration: 0.6 }}
         >
-          <LiturgicalCalendar lang={lang} services={servicesList} />
+          <LiturgicalCalendar lang={lang} services={servicesList} canonicalLogoUrl={logos.canonicalLogoUrl} />
         </motion.div>
 
         {/* Modular Explanatory Cards */}

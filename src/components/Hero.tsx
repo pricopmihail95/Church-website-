@@ -6,9 +6,10 @@ import { motion } from 'motion/react';
 
 interface HeroProps {
   lang: Language;
+  mainPhotoUrl?: string;
 }
 
-export default function Hero({ lang }: HeroProps) {
+export default function Hero({ lang, mainPhotoUrl }: HeroProps) {
   const t = TRANSLATIONS[lang];
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
@@ -121,6 +122,17 @@ export default function Hero({ lang }: HeroProps) {
       id="home" 
       className="relative min-h-screen flex items-center justify-center pt-20 overflow-hidden bg-transparent dark:bg-gradient-to-b dark:from-byz-blue-950 dark:via-byz-blue-900 dark:to-byz-blue-950 border-b border-transparent dark:border-byz-blue-900"
     >
+      {mainPhotoUrl && (
+        <div className="absolute inset-0 z-0 pointer-events-none flex items-start">
+          <div 
+            className="w-full h-[60vh] sm:h-[70vh] bg-cover bg-top relative"
+            style={{ backgroundImage: `url(${mainPhotoUrl})` }}
+          >
+            <div className="absolute inset-0 bg-gradient-to-b from-stone-900/10 via-[#DFD5C4]/60 to-[#DFD5C4] dark:from-stone-900/40 dark:via-byz-blue-950/80 dark:to-byz-blue-950" />
+          </div>
+        </div>
+      )}
+
       {/* Absolute background color and lighting layer */}
       <div className="absolute inset-0 z-0">
         <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 sm:w-[500px] sm:h-[500px] bg-gold-600/10 dark:bg-gold-500/10 blur-[120px] rounded-full pointer-events-none" />
@@ -168,7 +180,7 @@ export default function Hero({ lang }: HeroProps) {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.2, duration: 0.6 }}
-          className="font-sans text-xs sm:text-sm tracking-[0.25em] font-semibold text-stone-900 dark:text-gold-400 uppercase mb-3"
+          className="font-sans text-xs sm:text-sm tracking-[0.25em] font-semibold text-stone-900 uppercase mb-3"
         >
           {t.heroTagline}
         </motion.p>
@@ -178,7 +190,7 @@ export default function Hero({ lang }: HeroProps) {
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3, duration: 0.8 }}
-          className="font-display text-3xl sm:text-5xl lg:text-6xl text-stone-900 dark:text-white font-medium tracking-tight leading-[1.1] mb-6"
+          className="font-display text-3xl sm:text-5xl lg:text-6xl text-stone-900 font-medium tracking-tight leading-[1.1] mb-6"
         >
           {t.heroTitle}
         </motion.h1>

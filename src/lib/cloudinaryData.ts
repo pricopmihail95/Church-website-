@@ -14,6 +14,11 @@ export interface ParishData {
   services: Service[];
   galleryPhotos: GalleryPhoto[];
   galleryVideos: GalleryVideo[];
+  mainPhotoUrl?: string;
+  logos?: {
+    mainLogoUrl?: string;
+    canonicalLogoUrl?: string;
+  };
 }
 
 export const DEFAULT_PARISH_DATA: ParishData = {
@@ -26,7 +31,12 @@ export const DEFAULT_PARISH_DATA: ParishData = {
   },
   services: SERVICES_SCHEDULING,
   galleryPhotos: [],
-  galleryVideos: []
+  galleryVideos: [],
+  mainPhotoUrl: '',
+  logos: {
+    mainLogoUrl: '',
+    canonicalLogoUrl: ''
+  }
 };
 
 export async function fetchParishData(): Promise<ParishData> {
@@ -73,11 +83,33 @@ export async function fetchParishData(): Promise<ParishData> {
       }
     }
 
+    // 4. Fetch Logos
+    const logosDocRef = doc(db, 'settings', 'logos');
+    const logosSnap = await getDoc(logosDocRef);
+    let logos = DEFAULT_PARISH_DATA.logos;
+    if (logosSnap.exists()) {
+      const d = logosSnap.data();
+      logos = {
+        mainLogoUrl: d.mainLogoUrl || '',
+        canonicalLogoUrl: d.canonicalLogoUrl || ''
+      };
+    }
+
+    // 5. Fetch Main Photo
+    const mainPhotoDocRef = doc(db, 'settings', 'mainPhoto');
+    const mainPhotoSnap = await getDoc(mainPhotoDocRef);
+    let mainPhotoUrl = DEFAULT_PARISH_DATA.mainPhotoUrl;
+    if (mainPhotoSnap.exists()) {
+      mainPhotoUrl = mainPhotoSnap.data()?.url || '';
+    }
+
     const validatedData: ParishData = {
       announcement,
       services,
       galleryPhotos,
-      galleryVideos
+      galleryVideos,
+      mainPhotoUrl,
+      logos
     };
 
     localStorage.setItem('parish_live_data', JSON.stringify(validatedData));
@@ -92,7 +124,9 @@ export async function fetchParishData(): Promise<ParishData> {
           announcement: parsed.announcement || DEFAULT_PARISH_DATA.announcement,
           services: Array.isArray(parsed.services) ? parsed.services : DEFAULT_PARISH_DATA.services,
           galleryPhotos: Array.isArray(parsed.galleryPhotos) ? parsed.galleryPhotos : [],
-          galleryVideos: Array.isArray(parsed.galleryVideos) ? parsed.galleryVideos : []
+          galleryVideos: Array.isArray(parsed.galleryVideos) ? parsed.galleryVideos : [],
+          mainPhotoUrl: parsed.mainPhotoUrl || DEFAULT_PARISH_DATA.mainPhotoUrl,
+          logos: parsed.logos || DEFAULT_PARISH_DATA.logos
         };
       } catch (e) {
         console.error('Error parsing local fallback data:', e);
@@ -128,7 +162,6 @@ export async function saveParishData(data: ParishData): Promise<boolean> {
     // Save Gallery
     const galleryDocRef = doc(db, 'settings', 'gallery');
     
-    // Firestore Nu suportă valori undefined. Curățăm undefined.
     const cleanPhotos = (data.galleryPhotos || []).map(p => {
       const cleanP = { ...p };
       if (cleanP.caption === undefined) cleanP.caption = '';
@@ -139,6 +172,23 @@ export async function saveParishData(data: ParishData): Promise<boolean> {
       photos: cleanPhotos,
       videos: data.galleryVideos || []
     });
+
+    // Save Logos
+    if (data.logos) {
+      const logosDocRef = doc(db, 'settings', 'logos');
+      await setDoc(logosDocRef, {
+        mainLogoUrl: data.logos.mainLogoUrl || '',
+        canonicalLogoUrl: data.logos.canonicalLogoUrl || ''
+      });
+    }
+
+    // Save Main Photo
+    if (data.mainPhotoUrl !== undefined) {
+      const mainPhotoDocRef = doc(db, 'settings', 'mainPhoto');
+      await setDoc(mainPhotoDocRef, {
+        url: data.mainPhotoUrl || ''
+      });
+    }
 
     console.log('Successfully saved all parish settings directly to Firestore!');
     return true;

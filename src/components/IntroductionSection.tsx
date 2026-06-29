@@ -40,7 +40,7 @@ export default function IntroductionSection({ lang }: IntroductionSectionProps) 
         </div>
 
         {/* Priest Welcome Message Card */}
-        <div className="bg-stone-900 shadow-xl dark:bg-byz-blue-900/40 border border-stone-800 dark:border-byz-blue-800/60 p-8 sm:p-10 rounded-3xl mb-12 relative overflow-hidden text-stone-100">
+        <div className="bg-stone-900 shadow-xl border border-stone-800 p-8 sm:p-10 rounded-3xl mb-12 relative overflow-hidden text-stone-100">
           {/* Decorative Byzantine corner designs */}
           <div className="absolute top-0 right-0 w-16 h-16 border-t-2 border-r-2 border-gold-500/20 rounded-tr-3xl pointer-events-none" />
           <div className="absolute bottom-0 left-0 w-16 h-16 border-b-2 border-l-2 border-gold-500/20 rounded-bl-3xl pointer-events-none" />

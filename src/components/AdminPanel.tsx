@@ -19,7 +19,7 @@ import {
   ArrowDown,
   Clock,
   Sparkles,
-  Image as ImageIcon,
+  Image as ImageIcon, ChevronDown, ChevronUp,
   Video as VideoIcon,
   Upload,
   Link,
@@ -128,6 +128,9 @@ export default function AdminPanel() {
   const [services, setServices] = useState<Service[]>([]);
   const [galleryPhotos, setGalleryPhotos] = useState<GalleryPhoto[]>([]);
   const [galleryVideos, setGalleryVideos] = useState<GalleryVideo[]>([]);
+  const [logos, setLogos] = useState({ mainLogoUrl: "", canonicalLogoUrl: "" });
+  const [mainPhotoUrl, setMainPhotoUrl] = useState<string>("");
+  const [uploadingMainPhoto, setUploadingMainPhoto] = useState(false);
   
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -139,6 +142,7 @@ export default function AdminPanel() {
   const [photoCaption, setPhotoCaption] = useState('');
   const [photoUrlInput, setPhotoUrlInput] = useState(''); // manually paste url fallback
   const [uploadingPhoto, setUploadingPhoto] = useState(false);
+  const [uploadingLogo, setUploadingLogo] = useState<"main" | "canonical" | null>(null);
   const [galleryStatus, setGalleryStatus] = useState<{ type: 'success' | 'error' | ''; message: string }>({ type: '', message: '' });
 
   // Drag and Drop State
@@ -146,6 +150,9 @@ export default function AdminPanel() {
 
   // Live Preview State
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
+  const [isServicesOpen, setIsServicesOpen] = useState(false);
+  const [isLogosOpen, setIsLogosOpen] = useState(false);
+  const [isMainPhotoOpen, setIsMainPhotoOpen] = useState(false);
 
   // Load from Cloudinary/localStorage
   const loadData = async () => {
@@ -157,6 +164,8 @@ export default function AdminPanel() {
       setServices(data.services);
       setGalleryPhotos(data.galleryPhotos);
       setGalleryVideos(data.galleryVideos);
+      if (data.logos) { setLogos({ mainLogoUrl: data.logos.mainLogoUrl || "", canonicalLogoUrl: data.logos.canonicalLogoUrl || "" }); }
+      if (data.mainPhotoUrl) { setMainPhotoUrl(data.mainPhotoUrl); }
     } catch (e) {
       console.error('Error loading parish settings:', e);
       setServices(SERVICES_SCHEDULING);
@@ -169,6 +178,7 @@ export default function AdminPanel() {
     loadData();
   }, []);
 
+  
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
     const cleanPassword = password.trim().toLowerCase();
@@ -177,8 +187,13 @@ export default function AdminPanel() {
       setIsAuthorized(true);
       setErrorMsg('');
     } else {
-      setErrorMsg('Parolă incorectă! Încearcă "Scunthorpe" sau "sfhybald".');
+      setErrorMsg('Parolă incorectă! Încearcă "parohie", "scunthorpe" sau "sfhybald".');
     }
+  };
+
+  const handleLogout = () => {
+    setIsAuthorized(false);
+    setPassword('');
   };
 
   const handleSave = async () => {
@@ -190,7 +205,9 @@ export default function AdminPanel() {
         announcement,
         services,
         galleryPhotos,
-        galleryVideos
+        galleryVideos,
+        logos,
+        mainPhotoUrl
       });
 
       if (success) {
@@ -314,8 +331,8 @@ export default function AdminPanel() {
         const img = document.createElement('img') as HTMLImageElement;
         img.onload = () => {
           const canvas = document.createElement('canvas');
-          const MAX_WIDTH = 1000;
-          const MAX_HEIGHT = 1000;
+          const MAX_WIDTH = 800;
+          const MAX_HEIGHT = 800;
           let width = img.width;
           let height = img.height;
           
@@ -334,7 +351,7 @@ export default function AdminPanel() {
           canvas.height = height;
           const ctx = canvas.getContext('2d');
           ctx?.drawImage(img, 0, 0, width, height);
-          const base64 = canvas.toDataURL('image/jpeg', 0.82);
+          const base64 = canvas.toDataURL('image/jpeg', 0.65);
           resolve(base64);
         };
         img.onerror = (e) => reject(e);
@@ -383,13 +400,12 @@ export default function AdminPanel() {
       localStorage.setItem('parish_gallery_photos', JSON.stringify(updatedPhotos));
       
       // Auto-save direct în Firestore pentru a apărea imediat pe site:
-      await saveParishData({ announcement, services, galleryPhotos: updatedPhotos, galleryVideos });
+      await saveParishData({ announcement, services, galleryPhotos: updatedPhotos, galleryVideos, logos });
       
       setPhotoCaption('');
       setGalleryStatus({ 
         type: 'success', 
-        message: 'Fotografia a fost încărcată și salvată online cu succes! (Va apărea imediat pe site)' 
-        + (finalUrl.startsWith('data:') ? ' (Atenție: s-a salvat local deoarece serviciul online a întâmpinat o problemă. Verificați conexiunea la internet).' : '')
+        message: 'Fotografia a fost încărcată cu succes și este vizibilă pe site!' 
       });
     } catch (err) {
       console.error('Error handling file upload:', err);
@@ -398,6 +414,90 @@ export default function AdminPanel() {
       setUploadingPhoto(false);
       if (e.target) e.target.value = '';
     }
+  };
+
+  
+  const handleLogoUpload = async (e: React.ChangeEvent<HTMLInputElement>, type: 'main' | 'canonical') => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    try {
+      setUploadingLogo(type);
+      setGalleryStatus({ type: '', message: '' });
+
+      const compressedDataUrl = await compressImage(file);
+      
+      let finalUrl = '';
+      try {
+        const photoId = type + '_' + Date.now().toString();
+        const storageRef = ref(storage, `gallery/${photoId}.jpg`);
+        await uploadString(storageRef, compressedDataUrl, 'data_url');
+        finalUrl = await getDownloadURL(storageRef);
+      } catch (uploadError) {
+        console.warn('Firebase Storage upload failed, falling back to local base64 compression:', uploadError);
+        finalUrl = compressedDataUrl;
+      }
+
+      const newLogos = { ...logos };
+      if (type === 'main') newLogos.mainLogoUrl = finalUrl;
+      if (type === 'canonical') newLogos.canonicalLogoUrl = finalUrl;
+      setLogos(newLogos);
+      
+      // Auto-save direct în Firestore
+      await saveParishData({ announcement, services, galleryPhotos, galleryVideos, logos: newLogos, mainPhotoUrl });
+      setGalleryStatus({ type: 'success', message: 'Logoul a fost încărcat și salvat online cu succes!' });
+    } catch (err) {
+      console.error('Error handling logo upload:', err);
+      setGalleryStatus({ type: 'error', message: 'Eroare la procesare: ' + (err instanceof Error ? err.message : String(err)) });
+    } finally {
+      setUploadingLogo(null);
+      if (e.target) e.target.value = '';
+    }
+  };
+
+  const handleSaveLogoUrl = async (type: 'main' | 'canonical') => {
+    await saveParishData({ announcement, services, galleryPhotos, galleryVideos, logos, mainPhotoUrl });
+    setGalleryStatus({ type: 'success', message: 'Logoul a fost salvat online cu succes!' });
+  };
+
+  const handleMainPhotoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    try {
+      setUploadingMainPhoto(true);
+      setGalleryStatus({ type: '', message: '' });
+
+      const compressedDataUrl = await compressImage(file);
+      
+      let finalUrl = '';
+      try {
+        const photoId = 'mainPhoto_' + Date.now().toString();
+        const storageRef = ref(storage, `gallery/${photoId}.jpg`);
+        await uploadString(storageRef, compressedDataUrl, 'data_url');
+        finalUrl = await getDownloadURL(storageRef);
+      } catch (uploadError) {
+        console.warn('Firebase Storage upload failed, falling back to local base64 compression:', uploadError);
+        finalUrl = compressedDataUrl;
+      }
+
+      setMainPhotoUrl(finalUrl);
+      
+      // Auto-save direct în Firestore
+      await saveParishData({ announcement, services, galleryPhotos, galleryVideos, logos, mainPhotoUrl: finalUrl });
+      setGalleryStatus({ type: 'success', message: 'Fotografia principală a fost încărcată și salvată online cu succes!' });
+    } catch (err) {
+      console.error('Error handling main photo upload:', err);
+      setGalleryStatus({ type: 'error', message: 'Eroare la procesare: ' + (err instanceof Error ? err.message : String(err)) });
+    } finally {
+      setUploadingMainPhoto(false);
+      if (e.target) e.target.value = '';
+    }
+  };
+
+  const handleSaveMainPhotoUrl = async () => {
+    await saveParishData({ announcement, services, galleryPhotos, galleryVideos, logos, mainPhotoUrl });
+    setGalleryStatus({ type: 'success', message: 'Fotografia principală a fost salvată online cu succes!' });
   };
 
   const handleAddPhotoByUrl = async () => {
@@ -421,7 +521,7 @@ export default function AdminPanel() {
     localStorage.setItem('parish_gallery_photos', JSON.stringify(updatedPhotos));
     
     // Auto-save direct în Firestore
-    await saveParishData({ announcement, services, galleryPhotos: updatedPhotos, galleryVideos });
+    await saveParishData({ announcement, services, galleryPhotos: updatedPhotos, galleryVideos, logos });
     
     setPhotoUrlInput('');
     setPhotoCaption('');
@@ -433,7 +533,7 @@ export default function AdminPanel() {
     setGalleryPhotos(updatedPhotos);
     localStorage.setItem('parish_gallery_photos', JSON.stringify(updatedPhotos));
     
-    await saveParishData({ announcement, services, galleryPhotos: updatedPhotos, galleryVideos });
+    await saveParishData({ announcement, services, galleryPhotos: updatedPhotos, galleryVideos, logos });
     
     setGalleryStatus({ type: 'success', message: 'Fotografia a fost ștearsă din listă.' });
   };
@@ -458,7 +558,7 @@ export default function AdminPanel() {
     
     const updatedVideos = [...galleryVideos, newVideo];
     setGalleryVideos(updatedVideos);
-    await saveParishData({ announcement, services, galleryPhotos, galleryVideos: updatedVideos });
+    await saveParishData({ announcement, services, galleryPhotos, galleryVideos: updatedVideos, logos });
     
     setNewVideoUrl('');
     setNewVideoTitle('');
@@ -468,7 +568,7 @@ export default function AdminPanel() {
   const handleDeleteVideo = async (id: string) => {
     const updatedVideos = galleryVideos.filter(v => v.id !== id);
     setGalleryVideos(updatedVideos);
-    await saveParishData({ announcement, services, galleryPhotos, galleryVideos: updatedVideos });
+    await saveParishData({ announcement, services, galleryPhotos, galleryVideos: updatedVideos, logos, mainPhotoUrl });
     setGalleryStatus({ type: 'success', message: 'Video-ul a fost retras.' });
   };
 
@@ -500,10 +600,11 @@ export default function AdminPanel() {
             </p>
           </div>
 
+          
           <form onSubmit={handleLogin} className="space-y-6">
             <div>
               <label className="block text-xs uppercase tracking-widest font-mono text-byz-blue-300 font-semibold mb-2">
-                Parolă Acces (De ex. Scunthorpe)
+                Parolă Acces (De ex. parohie)
               </label>
               <div className="relative">
                 <input
@@ -535,12 +636,13 @@ export default function AdminPanel() {
 
             <button
               type="submit"
-              className="w-full bg-gold-500 hover:bg-gold-400 text-byz-blue-950 font-semibold py-3 rounded-xl transition-all duration-350 cursor-pointer flex items-center justify-center space-x-2 shadow-[0_4px_15px_rgba(212,171,21,0.2)] font-display text-xs uppercase tracking-wider"
+              className="w-full bg-gold-500 hover:bg-gold-400 text-byz-blue-950 font-bold py-3 px-4 rounded-xl transition-all duration-300 flex items-center justify-center space-x-2 uppercase tracking-widest text-sm shadow-[0_0_20px_rgba(212,171,21,0.2)] hover:shadow-[0_0_25px_rgba(212,171,21,0.4)]"
             >
-              <span>Accesează Panoul</span>
-              <Unlock size={14} />
+              <span>Autentificare</span>
+              <Unlock size={16} />
             </button>
           </form>
+
 
           <button
             onClick={goBack}
@@ -580,6 +682,13 @@ export default function AdminPanel() {
           </div>
 
           <div className="flex items-center space-x-3">
+            <button
+              onClick={handleLogout}
+              className="flex items-center space-x-1.5 px-3 py-2 sm:px-4 sm:py-2.5 rounded-xl border border-red-500/20 text-red-400 hover:bg-red-500/10 hover:border-red-500/40 text-[10px] sm:text-xs font-bold tracking-widest uppercase transition-all"
+            >
+              <Unlock size={14} />
+              <span className="hidden sm:inline">Deconectare</span>
+            </button>
             {saveSuccess && (
               <motion.div 
                 initial={{ opacity: 0, scale: 0.9 }}
@@ -895,13 +1004,18 @@ export default function AdminPanel() {
             {/* SERVICES EDIT BLOCK */}
             <section className="bg-byz-blue-900/40 border border-byz-blue-800/40 p-6 sm:p-8 rounded-3xl shadow-md">
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6 pb-4 border-b border-byz-blue-800/40">
-                <div className="flex items-center space-x-3">
-                  <div className="p-2.5 bg-gold-500/10 text-gold-400 border border-gold-500/20 rounded-xl">
-                    <Calendar size={18} />
+                <div className="flex items-center justify-between cursor-pointer group" onClick={() => setIsServicesOpen(!isServicesOpen)}>
+                  <div className="flex items-center space-x-3">
+                    <div className="p-2.5 bg-gold-500/10 text-gold-400 border border-gold-500/20 rounded-xl group-hover:bg-gold-500/20 transition-colors">
+                      <Calendar size={18} />
+                    </div>
+                    <div>
+                      <h2 className="font-display font-bold text-lg text-gold-400">Programul Sfintelor Slujbe</h2>
+                      <p className="font-serif text-xs text-byz-blue-300 italic">Administrează în timp real slots, zile și ore pentru enoriași</p>
+                    </div>
                   </div>
-                  <div>
-                    <h2 className="font-display font-bold text-lg text-gold-400">Programul Sfintelor Slujbe</h2>
-                    <p className="font-serif text-xs text-byz-blue-300 italic">Administrează în timp real slots, zile și ore pentru enoriași</p>
+                  <div className="text-gold-400">
+                    {isServicesOpen ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
                   </div>
                 </div>
 
@@ -935,6 +1049,7 @@ export default function AdminPanel() {
                 </div>
               </div>
 
+              {isServicesOpen && (<>
               {/* Informative Help Box */}
               <div className="bg-gradient-to-r from-gold-950/15 via-byz-blue-950/50 to-gold-950/15 border border-gold-500/20 p-4.5 rounded-2xl mb-8">
                 <h4 className="text-xs uppercase font-display font-bold text-gold-400 tracking-wider mb-1.5 flex items-center gap-1.5">
@@ -1212,6 +1327,127 @@ export default function AdminPanel() {
                   </div>
                 )}
               </div>
+              </>)}
+            </section>
+
+            {/* LOGOS MANAGEMENT SECTION */}
+            <section className="bg-byz-blue-900/40 border border-byz-blue-800/40 p-6 sm:p-8 rounded-3xl shadow-md mt-8">
+                <div className="flex items-center justify-between cursor-pointer group" onClick={() => setIsLogosOpen(!isLogosOpen)}>
+                  <div className="flex items-center space-x-3">
+                    <div className="p-2.5 bg-gold-500/10 text-gold-400 border border-gold-500/20 rounded-xl group-hover:bg-gold-500/20 transition-colors">
+                      <ImageIcon size={18} />
+                    </div>
+                    <div>
+                      <h2 className="font-display font-bold text-lg text-gold-400">Logos</h2>
+                      <p className="font-serif text-xs text-byz-blue-300 italic">Administrează logo-urile aplicației</p>
+                    </div>
+                  </div>
+                  <div className="text-gold-400">
+                    {isLogosOpen ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+                  </div>
+                </div>
+                {isLogosOpen && (
+                  <div className="mt-8 space-y-6">
+                    <div>
+                      <label className="block text-[11px] font-semibold text-gold-400 uppercase tracking-widest mb-2">
+                        Logo Parohie (Același logo se aplică pe toată pagina)
+                      </label>
+                      
+                      <div className="flex items-center space-x-2">
+                        <input
+                          type="text"
+                          placeholder="URL-ul imaginii (ex: https://... din Firebase Storage)"
+                          value={logos.mainLogoUrl}
+                          onChange={(e) => setLogos({ mainLogoUrl: e.target.value, canonicalLogoUrl: e.target.value })}
+                          className="flex-1 bg-byz-blue-950/80 border border-byz-blue-800 focus:border-gold-500/50 rounded-xl px-4 py-3 text-sm text-byz-blue-100 focus:outline-none transition-all"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => handleSaveLogoUrl('main')}
+                          className="bg-gold-500 hover:bg-gold-400 text-byz-blue-950 px-4 py-3 rounded-xl font-bold uppercase tracking-wider text-xs transition-colors whitespace-nowrap shadow-md"
+                        >
+                          Salvează Link
+                        </button>
+                      </div>
+
+                      <p className="font-serif text-[10px] text-byz-blue-400 italic mt-1.5">Introduceți link-ul imaginii. Dacă este lăsat gol, se va folosi emblema implicită. Pentru a afișa imagini din Firebase, Firebase Storage are nevoie de reguli publice de citire (allow read: if true;).</p>
+                      {logos.mainLogoUrl && (
+                        <img src={logos.mainLogoUrl} alt="Preview" className="mt-3 h-16 w-16 object-contain rounded-full border border-byz-blue-800 bg-stone-900" />
+                      )}
+                    </div>
+                  </div>
+                )}
+            </section>
+
+            {/* MAIN PHOTO MANAGEMENT SECTION */}
+            <section className="bg-byz-blue-900/40 border border-byz-blue-800/40 p-6 sm:p-8 rounded-3xl shadow-md mt-8">
+                <div className="flex items-center justify-between cursor-pointer group" onClick={() => setIsMainPhotoOpen(!isMainPhotoOpen)}>
+                  <div className="flex items-center space-x-3">
+                    <div className="p-2.5 bg-gold-500/10 text-gold-400 border border-gold-500/20 rounded-xl group-hover:bg-gold-500/20 transition-colors">
+                      <ImageIcon size={18} />
+                    </div>
+                    <div>
+                      <h2 className="font-display font-bold text-lg text-gold-400">Main Photo</h2>
+                      <p className="font-serif text-xs text-byz-blue-300 italic">Imagine principală la începutul paginii (Preot și Mitropolit)</p>
+                    </div>
+                  </div>
+                  <div className="text-gold-400">
+                    {isMainPhotoOpen ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+                  </div>
+                </div>
+                {isMainPhotoOpen && (
+                  <div className="mt-8 space-y-6">
+                    <div>
+                      <label className="block text-[11px] font-semibold text-gold-400 uppercase tracking-widest mb-2">
+                        Fotografie Principală Hero
+                      </label>
+                      
+                      <div className="flex items-center space-x-2">
+                        <input
+                          type="text"
+                          placeholder="URL-ul imaginii"
+                          value={mainPhotoUrl}
+                          onChange={(e) => setMainPhotoUrl(e.target.value)}
+                          className="flex-1 bg-byz-blue-950/80 border border-byz-blue-800 focus:border-gold-500/50 rounded-xl px-4 py-3 text-sm text-byz-blue-100 focus:outline-none transition-all"
+                        />
+                        <button
+                          type="button"
+                          onClick={handleSaveMainPhotoUrl}
+                          className="bg-gold-500 hover:bg-gold-400 text-byz-blue-950 px-4 py-3 rounded-xl font-bold uppercase tracking-wider text-xs transition-colors whitespace-nowrap shadow-md"
+                        >
+                          Salvează Link
+                        </button>
+                      </div>
+
+                      <div className="relative mt-4">
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={handleMainPhotoUpload}
+                          className="hidden"
+                          id="photo-main-upload"
+                        />
+                        <label
+                          htmlFor="photo-main-upload"
+                          className="flex items-center justify-center w-full bg-byz-blue-900/50 hover:bg-byz-blue-800 border border-byz-blue-700 hover:border-gold-500/50 text-gold-200 py-3 rounded-xl cursor-pointer transition-all duration-300 font-medium text-sm space-x-2"
+                        >
+                          {uploadingMainPhoto ? (
+                            <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-gold-400" />
+                          ) : (
+                            <>
+                              <Upload size={18} />
+                              <span>Încarcă Imagine (Fișier)</span>
+                            </>
+                          )}
+                        </label>
+                      </div>
+
+                      {mainPhotoUrl && (
+                        <img src={mainPhotoUrl} alt="Preview" className="mt-3 h-24 w-auto object-cover rounded border border-byz-blue-800 bg-stone-900" />
+                      )}
+                    </div>
+                  </div>
+                )}
             </section>
 
             {/* GALLERY MANAGEMENT SECTION */}

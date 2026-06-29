@@ -7,9 +7,10 @@ import ArchdioceseLogo from './ArchdioceseLogo';
 interface LiturgicalCalendarProps {
   lang: Language;
   services?: any[];
+  canonicalLogoUrl?: string;
 }
 
-export default function LiturgicalCalendar({ lang, services }: LiturgicalCalendarProps) {
+export default function LiturgicalCalendar({ lang, services, canonicalLogoUrl }: LiturgicalCalendarProps) {
   const t = TRANSLATIONS[lang];
 
   // Fallback to static defaults if database array is empty or not yet loaded
@@ -208,12 +209,16 @@ export default function LiturgicalCalendar({ lang, services }: LiturgicalCalenda
           <div className="lg:col-span-4 space-y-6">
             
             {/* Box 0: Canonical Archdiocese Authority (Requested Logo in the Right Section) */}
-            <div className="bg-gradient-to-br from-byz-blue-900 to-byz-blue-950 border border-gold-500/25 p-6 rounded-2xl text-center relative overflow-hidden group">
+            <div className="bg-stone-900 shadow-xl border border-stone-800 p-6 rounded-3xl text-center relative overflow-hidden group">
               <div className="absolute top-0 right-0 w-12 h-12 bg-radial-gradient(ellipse_at_top_right,rgba(212,171,21,0.06),transparent_70%) pointer-events-none" />
               
               {/* Authentic representation of the uploaded black & white circular crest of the Archdiocese */}
               <div className="mx-auto w-24 h-24 mb-4 text-white relative flex items-center justify-center bg-stone-950 rounded-full p-2 border border-gold-500/30">
-                <ArchdioceseLogo className="w-20 h-20 text-white" />
+                {canonicalLogoUrl ? (
+                  <img src={canonicalLogoUrl} alt="Canonical Logo" className="w-20 h-20 object-contain rounded-full" />
+                ) : (
+                  <ArchdioceseLogo className="w-20 h-20 text-white" />
+                )}
                 <div className="absolute inset-0 rounded-full border border-gold-500/10 group-hover:scale-105 transition-transform duration-500 pointer-events-none" />
               </div>
 
@@ -221,12 +226,12 @@ export default function LiturgicalCalendar({ lang, services }: LiturgicalCalenda
                 {lang === 'RO' ? 'Autoritate Canonică' : 'Canonical Authority'}
               </span>
               
-              <h4 className="font-display text-xs font-bold text-white leading-tight uppercase tracking-wider mb-2">
+              <h4 className="font-display text-xs font-bold text-stone-100 leading-tight uppercase tracking-wider mb-2">
                 {lang === 'RO' 
                   ? 'Arhiepiscopia Ortodoxă Antiochiană' 
                   : 'Antiochian Orthodox Archdiocese'}
               </h4>
-              <p className="font-serif text-[11px] text-byz-blue-200 leading-normal italic mb-4">
+              <p className="font-serif text-[11px] text-stone-400 leading-normal italic mb-4">
                 {lang === 'RO'
                   ? 'a Insulelor Britanice și Irlandei • Sub oblăduirea ÎPS Mitropolit Silouan'
                   : 'of the British Isles and Ireland • Under Metropolitan Silouan'}

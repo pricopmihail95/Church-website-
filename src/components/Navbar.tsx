@@ -10,9 +10,10 @@ interface NavbarProps {
   setLang: (l: Language) => void;
   darkMode: boolean;
   setDarkMode: (d: boolean) => void;
+  mainLogoUrl?: string;
 }
 
-export default function Navbar({ lang, setLang, darkMode, setDarkMode }: NavbarProps) {
+export default function Navbar({ lang, setLang, darkMode, setDarkMode, mainLogoUrl }: NavbarProps) {
   const [isOpen, setIsOpen] = useState(false);
   const t = TRANSLATIONS[lang];
 
@@ -61,7 +62,11 @@ export default function Navbar({ lang, setLang, darkMode, setDarkMode }: NavbarP
           {/* Logo with Archdiocese Seal */}
           <div className="flex-shrink-0 flex items-center space-x-3">
             <div className="relative w-12 h-12 flex items-center justify-center rounded-full bg-stone-950 text-white border border-gold-500/40 shadow-md">
-              <ArchdioceseLogo className="w-10 h-10 text-white" />
+              {mainLogoUrl ? (
+                <img src={mainLogoUrl} alt="Logo" className="w-10 h-10 rounded-full object-contain" />
+              ) : (
+                <ArchdioceseLogo className="w-10 h-10 text-white" />
+              )}
               <div className="absolute top-0 left-0 w-full h-full rounded-full border border-gold-400/15 animate-pulse pointer-events-none" />
             </div>
             

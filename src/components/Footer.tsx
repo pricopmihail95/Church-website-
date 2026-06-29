@@ -125,7 +125,7 @@ export default function Footer({ lang }: FooterProps) {
                   : 'We are fully committed to protecting children and vulnerable adults. In accordance with UK regulations:'}
               </p>
               <p className="font-sans font-semibold text-white">
-                {lang === 'RO' ? 'Ofițer Safeguarding:' : 'Safeguarding Officer:'} <span className="text-gold-400 font-normal">Psa. Adina Cerghit</span>
+                {lang === 'RO' ? 'Ofițer Safeguarding:' : 'Safeguarding Officer:'} <span className="text-gold-400 font-normal">MR Valentin Torcea</span>
               </p>
               <p>
                 <a 
