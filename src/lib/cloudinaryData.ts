@@ -19,6 +19,10 @@ export interface ParishData {
     mainLogoUrl?: string;
     canonicalLogoUrl?: string;
   };
+  patronSaint?: {
+    imageUrl?: string;
+    moreInfoUrl?: string;
+  };
 }
 
 export const DEFAULT_PARISH_DATA: ParishData = {
@@ -36,6 +40,10 @@ export const DEFAULT_PARISH_DATA: ParishData = {
   logos: {
     mainLogoUrl: '',
     canonicalLogoUrl: ''
+  },
+  patronSaint: {
+    imageUrl: '',
+    moreInfoUrl: ''
   }
 };
 
@@ -95,7 +103,19 @@ export async function fetchParishData(): Promise<ParishData> {
       };
     }
 
-    // 5. Fetch Main Photo
+    // 5. Fetch Patron Saint
+    const patronDocRef = doc(db, 'settings', 'patronSaint');
+    const patronSnap = await getDoc(patronDocRef);
+    let patronSaint = DEFAULT_PARISH_DATA.patronSaint;
+    if (patronSnap.exists()) {
+      const d = patronSnap.data();
+      patronSaint = {
+        imageUrl: d.imageUrl || '',
+        moreInfoUrl: d.moreInfoUrl || ''
+      };
+    }
+
+    // 6. Fetch Main Photo
     const mainPhotoDocRef = doc(db, 'settings', 'mainPhoto');
     const mainPhotoSnap = await getDoc(mainPhotoDocRef);
     let mainPhotoUrl = DEFAULT_PARISH_DATA.mainPhotoUrl;
@@ -109,7 +129,8 @@ export async function fetchParishData(): Promise<ParishData> {
       galleryPhotos,
       galleryVideos,
       mainPhotoUrl,
-      logos
+      logos,
+      patronSaint
     };
 
     localStorage.setItem('parish_live_data', JSON.stringify(validatedData));
@@ -126,7 +147,8 @@ export async function fetchParishData(): Promise<ParishData> {
           galleryPhotos: Array.isArray(parsed.galleryPhotos) ? parsed.galleryPhotos : [],
           galleryVideos: Array.isArray(parsed.galleryVideos) ? parsed.galleryVideos : [],
           mainPhotoUrl: parsed.mainPhotoUrl || DEFAULT_PARISH_DATA.mainPhotoUrl,
-          logos: parsed.logos || DEFAULT_PARISH_DATA.logos
+          logos: parsed.logos || DEFAULT_PARISH_DATA.logos,
+          patronSaint: parsed.patronSaint || DEFAULT_PARISH_DATA.patronSaint
         };
       } catch (e) {
         console.error('Error parsing local fallback data:', e);
@@ -172,6 +194,15 @@ export async function saveParishData(data: ParishData): Promise<boolean> {
       photos: cleanPhotos,
       videos: data.galleryVideos || []
     });
+
+    // Save Patron Saint
+    if (data.patronSaint) {
+      const patronDocRef = doc(db, 'settings', 'patronSaint');
+      await setDoc(patronDocRef, {
+        imageUrl: data.patronSaint.imageUrl || '',
+        moreInfoUrl: data.patronSaint.moreInfoUrl || ''
+      });
+    }
 
     // Save Logos
     if (data.logos) {

@@ -37,6 +37,7 @@ export default function App() {
   
   const [servicesList, setServicesList] = useState<Service[]>(SERVICES_SCHEDULING);
   const [logos, setLogos] = useState<{mainLogoUrl?: string, canonicalLogoUrl?: string}>({ mainLogoUrl: "", canonicalLogoUrl: "" });
+  const [parishData, setParishData] = useState<any>({});
   const [mainPhotoUrl, setMainPhotoUrl] = useState<string>("");
   const [dismissedAnnouncement, setDismissedAnnouncement] = useState(false);
 
@@ -83,6 +84,7 @@ export default function App() {
         
         setServicesList(data.services);
         if (data.logos) setLogos(data.logos);
+        setParishData(data);
         if (data.mainPhotoUrl) setMainPhotoUrl(data.mainPhotoUrl);
         setAnnouncement(data.announcement);
 
@@ -224,7 +226,7 @@ export default function App() {
           viewport={{ once: true, margin: '-100px' }}
           transition={{ duration: 0.6 }}
         >
-          <LiturgicalCalendar lang={lang} services={servicesList} canonicalLogoUrl={logos.canonicalLogoUrl} />
+          <LiturgicalCalendar lang={lang} services={servicesList} canonicalLogoUrl={logos.canonicalLogoUrl} parishData={parishData} />
         </motion.div>
 
         {/* Modular Explanatory Cards */}
