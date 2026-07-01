@@ -292,7 +292,7 @@ export default function AdminPanel({ darkMode, setDarkMode }: { darkMode?: boole
       name: { RO: 'New Service', EN: 'New Service' },
       time: { RO: '18:00', EN: '18:00' },
       day: { RO: 'Saturday', EN: 'Saturday' },
-      description: { RO: 'Description of the new service.', EN: 'Description of the new service.' },
+      description: { RO: 'Descrierea slujbei noi.', EN: 'Description of the new service.' },
       type: 'special'
     };
     setServices([...services, newService]);
@@ -412,7 +412,7 @@ export default function AdminPanel({ darkMode, setDarkMode }: { darkMode?: boole
       });
     } catch (err) {
       console.error('Error handling file upload:', err);
-      setGalleryStatus({ type: 'error', message: 'Processing error: ' + (err instanceof Error ? err.message : String(err)) });
+      setGalleryStatus({ type: 'error', message: 'Eroare la procesare: ' + (err instanceof Error ? err.message : String(err)) });
     } finally {
       setUploadingPhoto(false);
       if (e.target) e.target.value = '';
@@ -451,7 +451,7 @@ export default function AdminPanel({ darkMode, setDarkMode }: { darkMode?: boole
       setGalleryStatus({ type: 'success', message: 'Logo successfully uploaded and saved online!' });
     } catch (err) {
       console.error('Error handling logo upload:', err);
-      setGalleryStatus({ type: 'error', message: 'Processing error: ' + (err instanceof Error ? err.message : String(err)) });
+      setGalleryStatus({ type: 'error', message: 'Eroare la procesare: ' + (err instanceof Error ? err.message : String(err)) });
     } finally {
       setUploadingLogo(null);
       if (e.target) e.target.value = '';
@@ -460,7 +460,7 @@ export default function AdminPanel({ darkMode, setDarkMode }: { darkMode?: boole
 
   const handleSaveLogoUrl = async (type: 'main' | 'canonical') => {
     await saveParishData({ announcement, services, galleryPhotos, galleryVideos, logos, mainPhotoUrl });
-    setGalleryStatus({ type: 'success', message: 'Logo saved online successfully!' });
+    setGalleryStatus({ type: 'success', message: 'Logoul a fost salvat online cu succes!' });
   };
 
   const handleMainPhotoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -491,7 +491,7 @@ export default function AdminPanel({ darkMode, setDarkMode }: { darkMode?: boole
       setGalleryStatus({ type: 'success', message: 'Main photo successfully uploaded and saved online!' });
     } catch (err) {
       console.error('Error handling main photo upload:', err);
-      setGalleryStatus({ type: 'error', message: 'Processing error: ' + (err instanceof Error ? err.message : String(err)) });
+      setGalleryStatus({ type: 'error', message: 'Eroare la procesare: ' + (err instanceof Error ? err.message : String(err)) });
     } finally {
       setUploadingMainPhoto(false);
       if (e.target) e.target.value = '';
@@ -572,7 +572,7 @@ export default function AdminPanel({ darkMode, setDarkMode }: { darkMode?: boole
     const updatedVideos = galleryVideos.filter(v => v.id !== id);
     setGalleryVideos(updatedVideos);
     await saveParishData({ announcement, services, galleryPhotos, galleryVideos: updatedVideos, logos, mainPhotoUrl });
-    setGalleryStatus({ type: 'success', message: 'Video successfully removed.' });
+    setGalleryStatus({ type: 'success', message: 'Video-ul a fost retras.' });
   };
 
   const goBack = () => {
@@ -582,14 +582,14 @@ export default function AdminPanel({ darkMode, setDarkMode }: { darkMode?: boole
 
   if (!isAuthorized) {
     return (
-      <div className="min-h-screen dark:bg-byz-blue-950 bg-[#DFD5C4] flex items-center justify-center p-4 selection:bg-gold-500/30 selection:text-gold-200 relative">
+      <div className="min-h-screen dark:bg-byz-blue-950 bg-[#e4d8c1] flex items-center justify-center p-4 selection:bg-gold-500/30 selection:text-gold-200 relative" style={{ backgroundImage: !darkMode ? "url(\'https://www.transparenttextures.com/patterns/church.png\')" : "none" }}>
         {setDarkMode && (
           <button
             onClick={() => setDarkMode(!darkMode)}
-            className="absolute top-6 right-6 p-3 dark:text-byz-blue-100 text-stone-100 hover:dark:bg-byz-blue-900 bg-stone-800 rounded-full transition-all cursor-pointer border dark:dark:border-byz-blue-800 border-stone-800 border-stone-800 hover:border-gold-500/30 z-50"
+            className="absolute top-6 right-6 p-3 dark:text-byz-blue-100 text-[#4a3b3b] hover:dark:bg-byz-blue-900 bg-[#d8c8ac] rounded-full transition-all cursor-pointer border dark:dark:border-byz-blue-800 border-[#c5a682]/70 border-[#c5a682]/60 hover:border-gold-500/30 z-50"
             aria-label="Toggle Theme"
           >
-            {!darkMode ? <Sun size={20} className="text-gold-500 dark:text-gold-500" /> : <Moon size={20} className="dark:text-byz-blue-300 text-stone-300" />}
+            {!darkMode ? <Sun size={20} className="text-gold-500" /> : <Moon size={20} className="dark:text-byz-blue-300 text-[#7d6969]" />}
           </button>
         )}
         <div className="absolute inset-0 z-0 opacity-10 bg-[radial-gradient(#d4ab15_1px,transparent_1px)] [background-size:24px_24px] pointer-events-none" />
@@ -597,17 +597,17 @@ export default function AdminPanel({ darkMode, setDarkMode }: { darkMode?: boole
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="relative w-full max-w-md dark:bg-byz-blue-900 bg-stone-800 border border-gold-500/30 rounded-3xl p-8 sm:p-10 shadow-2xl z-10"
+          className="relative w-full max-w-md dark:bg-byz-blue-900 bg-[#d8c8ac] border border-gold-500/30 rounded-3xl p-8 sm:p-10 shadow-2xl z-10"
         >
           {/* Altar Golden Cross header style */}
           <div className="flex flex-col items-center mb-8">
-            <div className="w-14 h-14 bg-gold-500/10 border border-gold-500/40 rounded-full flex items-center justify-center text-gold-400 dark:text-gold-400 mb-4 shadow-[0_0_15px_rgba(212,171,21,0.2)]">
+            <div className="w-14 h-14 bg-gold-500/10 border border-gold-500/40 rounded-full flex items-center justify-center text-gold-400 mb-4 shadow-[0_0_15px_rgba(212,171,21,0.2)]">
               <Lock size={24} />
             </div>
-            <h1 className="font-display text-2xl font-semibold dark:text-white text-stone-100 tracking-wider uppercase text-center">
-              Mission Administration
+            <h1 className="font-display text-2xl font-semibold dark:text-white text-[#3b2f2f] tracking-wider uppercase text-center">
+              Administrare Misiune
             </h1>
-            <p className="font-serif dark:text-byz-blue-200 text-stone-300 text-xs text-center mt-2 italic">
+            <p className="font-serif dark:text-byz-blue-200 text-[#5a4a4a] text-xs text-center mt-2 italic">
               Enter the access password to edit the schedule or announcements.
             </p>
           </div>
@@ -615,7 +615,7 @@ export default function AdminPanel({ darkMode, setDarkMode }: { darkMode?: boole
           
           <form onSubmit={handleLogin} className="space-y-6">
             <div>
-              <label className="block text-xs uppercase tracking-widest font-mono dark:text-byz-blue-300 text-stone-300 font-semibold mb-2 text-center">
+              <label className="block text-xs uppercase tracking-widest font-mono dark:text-byz-blue-300 text-[#7d6969] font-semibold mb-2 text-center">
                 Access Password
               </label>
               <div className="relative">
@@ -624,14 +624,14 @@ export default function AdminPanel({ darkMode, setDarkMode }: { darkMode?: boole
                   placeholder="Enter password..."
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full dark:bg-byz-blue-950 bg-stone-800 border dark:border-byz-blue-800 border-stone-700 focus:border-gold-500 rounded-xl pl-4 pr-12 py-3 dark:text-byz-blue-100 text-stone-100 placeholder-byz-blue-600/50 focus:outline-none transition-all duration-300 font-mono text-center tracking-widest"
+                  className="w-full dark:bg-byz-blue-950 bg-[#e4d8c1]/80 border dark:border-byz-blue-800 border-[#c5a682] focus:border-gold-500 rounded-xl pl-4 pr-12 py-3 dark:text-byz-blue-100 text-[#4a3b3b] placeholder-byz-blue-600/50 focus:outline-none transition-all duration-300 font-mono text-center tracking-widest"
                   required
                   autoFocus
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3.5 top-1/2 -translate-y-1/2 dark:text-byz-blue-400 text-stone-400 hover:dark:text-byz-blue-200 text-stone-300 transition-colors cursor-pointer"
+                  className="absolute right-3.5 top-1/2 -translate-y-1/2 dark:text-byz-blue-400 text-[#9c8989] hover:dark:text-byz-blue-200 text-[#5a4a4a] transition-colors cursor-pointer"
                   title={showPassword ? "Hide password" : "Show password"}
                 >
                   {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
@@ -650,7 +650,7 @@ export default function AdminPanel({ darkMode, setDarkMode }: { darkMode?: boole
               type="submit"
               className="w-full bg-gold-500 hover:bg-gold-400 text-byz-blue-950 font-bold py-3 px-4 rounded-xl transition-all duration-300 flex items-center justify-center space-x-2 uppercase tracking-widest text-sm shadow-[0_0_20px_rgba(212,171,21,0.2)] hover:shadow-[0_0_25px_rgba(212,171,21,0.4)]"
             >
-              <span>Login</span>
+              <span>Autentificare</span>
               <Unlock size={16} />
             </button>
           </form>
@@ -658,7 +658,7 @@ export default function AdminPanel({ darkMode, setDarkMode }: { darkMode?: boole
 
           <button
             onClick={goBack}
-            className="w-full mt-6 flex items-center justify-center space-x-2 dark:text-byz-blue-400 text-stone-400 hover:dark:text-byz-blue-200 text-stone-300 transition-colors text-xs font-mono tracking-wider uppercase cursor-pointer"
+            className="w-full mt-6 flex items-center justify-center space-x-2 dark:text-byz-blue-400 text-[#9c8989] hover:dark:text-byz-blue-200 text-[#5a4a4a] transition-colors text-xs font-mono tracking-wider uppercase cursor-pointer"
           >
             <ArrowLeft size={12} />
             <span>Back to Site</span>
@@ -669,25 +669,25 @@ export default function AdminPanel({ darkMode, setDarkMode }: { darkMode?: boole
   }
 
   return (
-    <div className="min-h-screen dark:bg-byz-blue-950 bg-[#DFD5C4] dark:text-byz-blue-100 text-stone-900 pb-24 selection:bg-gold-500/30 selection:text-gold-200">
+    <div className="min-h-screen dark:bg-byz-blue-950 bg-[#e4d8c1] dark:text-byz-blue-100 text-[#4a3b3b] pb-24 selection:bg-gold-500/30 selection:text-gold-200" style={{ backgroundImage: !darkMode ? "url('https://www.transparenttextures.com/patterns/church.png')" : "none" }}>
       <div className="absolute inset-0 z-0 opacity-[0.04] bg-[radial-gradient(#d4ab15_1px,transparent_1px)] [background-size:24px_24px] pointer-events-none" />
       
       {/* Top Header Controls Bar */}
-      <header className="sticky top-0 dark:bg-byz-blue-950 bg-stone-800/95 border-b dark:dark:border-byz-blue-800 border-stone-800 border-stone-800 z-40 backdrop-blur-md">
+      <header className="sticky top-0 dark:bg-byz-blue-950 bg-[#e4d8c1]/95 border-b dark:dark:border-byz-blue-800 border-[#c5a682]/70 border-[#c5a682]/60 z-40 backdrop-blur-md">
         <div className="max-w-6xl mx-auto px-2 sm:px-4 py-4 flex items-center justify-between">
           <div className="flex items-center space-x-1.5 sm:space-x-3">
             <button
               onClick={goBack}
-              className="p-2 dark:bg-byz-blue-900 bg-stone-800 hover:dark:bg-byz-blue-800 bg-amber-100/50 border dark:border-byz-blue-800 border-stone-800 hover:border-gold-500/30 dark:text-byz-blue-100 text-stone-100 rounded-xl transition-all cursor-pointer"
+              className="p-2 dark:bg-byz-blue-900 bg-[#d8c8ac] hover:dark:bg-byz-blue-800 bg-[#cca87d] border dark:border-byz-blue-800 border-[#c5a682] hover:border-gold-500/30 dark:text-byz-blue-100 text-[#4a3b3b] rounded-xl transition-all cursor-pointer"
               title="Back to Site"
             >
               <ArrowLeft size={16} />
             </button>
             <div>
-              <h1 className="font-display text-sm sm:text-lg font-bold text-gold-400 dark:text-gold-400 tracking-wider uppercase">
+              <h1 className="font-display text-sm sm:text-lg font-bold text-gold-400 tracking-wider uppercase">
                 Mission Control Panel
               </h1>
-              <p className="font-serif text-[10px] dark:text-byz-blue-300 text-stone-300 italic hidden sm:block">
+              <p className="font-serif text-[10px] dark:text-byz-blue-300 text-[#7d6969] italic hidden sm:block">
                 Edit announcements and service schedule in real-time
               </p>
             </div>
@@ -697,10 +697,10 @@ export default function AdminPanel({ darkMode, setDarkMode }: { darkMode?: boole
             {setDarkMode && (
               <button
                 onClick={() => setDarkMode(!darkMode)}
-                className="p-2 sm:p-2.5 dark:text-byz-blue-100 text-stone-100 hover:dark:bg-byz-blue-900 bg-stone-800 rounded-full transition-all cursor-pointer border dark:dark:border-byz-blue-800 border-stone-800 border-stone-800 hover:border-gold-500/30"
+                className="p-2 sm:p-2.5 dark:text-byz-blue-100 text-[#4a3b3b] hover:dark:bg-byz-blue-900 bg-[#d8c8ac] rounded-full transition-all cursor-pointer border dark:dark:border-byz-blue-800 border-[#c5a682]/70 border-[#c5a682]/60 hover:border-gold-500/30"
                 aria-label="Toggle Theme"
               >
-                {!darkMode ? <Sun size={18} className="text-gold-500 dark:text-gold-500" /> : <Moon size={18} className="dark:text-byz-blue-300 text-stone-300" />}
+                {!darkMode ? <Sun size={18} className="text-gold-500" /> : <Moon size={18} className="dark:text-byz-blue-300 text-[#7d6969]" />}
               </button>
             )}
             <button
@@ -728,7 +728,7 @@ export default function AdminPanel({ darkMode, setDarkMode }: { darkMode?: boole
                 }
               }}
               disabled={saving || loading}
-              className="dark:bg-byz-blue-900 bg-stone-800 hover:dark:bg-byz-blue-850 bg-stone-800 border dark:border-byz-blue-800 border-stone-800 dark:text-byz-blue-100 text-stone-100 font-medium px-3.5 py-2.5 rounded-xl transition-all cursor-pointer flex items-center space-x-2 text-xs uppercase disabled:opacity-50"
+              className="dark:bg-byz-blue-900 bg-[#d8c8ac] hover:dark:bg-byz-blue-850 bg-[#d8c8ac] border dark:border-byz-blue-800 border-[#c5a682] dark:text-byz-blue-100 text-[#4a3b3b] font-medium px-3.5 py-2.5 rounded-xl transition-all cursor-pointer flex items-center space-x-2 text-xs uppercase disabled:opacity-50"
               title="Discard unsaved changes"
             >
               <RotateCcw size={14} />
@@ -763,75 +763,75 @@ export default function AdminPanel({ darkMode, setDarkMode }: { darkMode?: boole
         {loading ? (
           <div className="py-20 text-center flex flex-col items-center justify-center space-y-4">
             <div className="w-12 h-12 border-2 border-gold-500/20 border-t-gold-500 rounded-full animate-spin" />
-            <p className="font-serif dark:text-byz-blue-300 text-stone-300 italic text-sm">Loading data from Firestore database...</p>
+            <p className="font-serif dark:text-byz-blue-300 text-[#7d6969] italic text-sm">Loading data from Firestore database...</p>
           </div>
         ) : (
           <div className="space-y-10">
             
             {/* REAL-TIME PREVIEW SECTION */}
-            <section className="dark:bg-byz-blue-900 bg-stone-900 shadow-xl dark:bg-byz-blue-900/40 border border-stone-800 dark:border-byz-blue-900/60 rounded-3xl overflow-hidden transition-all duration-300">
+            <section className="dark:bg-byz-blue-900 bg-[#d8c8ac]/30 border dark:dark:border-byz-blue-800 border-[#c5a682]/70 border-[#c5a682]/60 rounded-3xl overflow-hidden transition-all duration-300">
               <button
                 type="button"
                 onClick={() => setIsPreviewOpen(!isPreviewOpen)}
-                className="w-full flex items-center justify-between p-5 sm:p-6 dark:bg-byz-blue-900 bg-stone-800/60 hover:dark:bg-byz-blue-900 bg-stone-800 hover:text-gold-400 dark:text-gold-400 dark:text-byz-blue-100 text-stone-100 font-display font-bold text-sm uppercase tracking-wider transition-colors cursor-pointer border-b dark:dark:border-byz-blue-800 border-stone-800 border-stone-800"
+                className="w-full flex items-center justify-between p-5 sm:p-6 dark:bg-byz-blue-900 bg-[#d8c8ac]/60 hover:dark:bg-byz-blue-900 bg-[#d8c8ac]/80 hover:text-gold-400 dark:text-byz-blue-100 text-[#4a3b3b] font-display font-bold text-sm uppercase tracking-wider transition-colors cursor-pointer border-b dark:dark:border-byz-blue-800 border-[#c5a682]/70 border-[#c5a682]/60"
               >
                 <div className="flex items-center space-x-2.5">
-                  <Sparkles size={16} className="text-gold-400 dark:text-gold-400 animate-pulse" />
+                  <Sparkles size={16} className="text-gold-400 animate-pulse" />
                   <span>Real-time Preview (Direct Synergy with Public Page)</span>
                 </div>
-                <div className="flex items-center space-x-2 text-xs font-mono dark:text-byz-blue-300 text-stone-300 font-normal normal-case">
+                <div className="flex items-center space-x-2 text-xs font-mono dark:text-byz-blue-300 text-[#7d6969] font-normal normal-case">
                   <span>{isPreviewOpen ? 'Hide preview' : 'Show preview'}</span>
                   {isPreviewOpen ? <ArrowUp size={14} /> : <ArrowDown size={14} />}
                 </div>
               </button>
 
               {isPreviewOpen && (
-                <div className="p-6 sm:p-8 dark:bg-byz-blue-950 bg-stone-800/95 space-y-8 animate-fade-in">
-                  <p className="text-xs dark:text-byz-blue-300 text-stone-300 font-serif italic mb-2">
+                <div className="p-6 sm:p-8 dark:bg-byz-blue-950 bg-[#e4d8c1]/95 space-y-8 animate-fade-in">
+                  <p className="text-xs dark:text-byz-blue-300 text-[#7d6969] font-serif italic mb-2">
                     * This section simulates how the announcement and services will look on the site main page with current changes (even unsaved ones).
                   </p>
 
                   {/* Simulated Announcement Banner */}
                   <div className="space-y-2">
-                    <span className="text-[10px] font-mono uppercase tracking-widest dark:text-byz-blue-400 text-stone-400 block font-semibold">1. Altar Announcement Banner Simulation (Top of Site):</span>
+                    <span className="text-[10px] font-mono uppercase tracking-widest dark:text-byz-blue-400 text-[#9c8989] block font-semibold">1. Altar Announcement Banner Simulation (Top of Site):</span>
                     {announcement.active ? (
                       <div className="bg-gradient-to-r from-gold-950/25 via-gold-500/15 to-gold-950/25 border border-gold-500/35 rounded-xl p-4 flex items-center space-x-3">
-                        <div className="p-1.5 bg-gold-500/15 text-gold-400 dark:text-gold-400 border border-gold-500/20 rounded-lg animate-pulse flex-shrink-0">
+                        <div className="p-1.5 bg-gold-500/15 text-gold-400 border border-gold-500/20 rounded-lg animate-pulse flex-shrink-0">
                           <Megaphone size={14} />
                         </div>
                         <div className="text-xs sm:text-sm leading-relaxed">
                           <span className="font-display font-bold text-gold-200 uppercase tracking-wider mr-2">
                             {announcement.roTitle}:
                           </span>
-                          <span className="font-serif italic dark:text-byz-blue-100 text-stone-100">
+                          <span className="font-serif italic dark:text-byz-blue-100 text-[#4a3b3b]">
                             {announcement.roText}
                           </span>
                         </div>
                       </div>
                     ) : (
-                      <div className="border dark:border-byz-blue-800 border-stone-800/30 dark:bg-byz-blue-900 bg-stone-800/10 rounded-xl p-4 text-center">
-                        <p className="text-xs dark:text-byz-blue-400 text-stone-400 font-serif italic">The announcement banner is currently disabled.</p>
+                      <div className="border dark:border-byz-blue-800 border-[#c5a682]/30 dark:bg-byz-blue-900 bg-[#d8c8ac]/10 rounded-xl p-4 text-center">
+                        <p className="text-xs dark:text-byz-blue-400 text-[#9c8989] font-serif italic">The announcement banner is currently disabled.</p>
                       </div>
                     )}
                   </div>
 
                   {/* Simulated Liturgical Calendar Cards */}
                   <div className="space-y-4">
-                    <span className="text-[10px] font-mono uppercase tracking-widest dark:text-byz-blue-400 text-stone-400 block font-semibold">2. Service Cards Simulation (1-to-1 Synergy with Main Page):</span>
+                    <span className="text-[10px] font-mono uppercase tracking-widest dark:text-byz-blue-400 text-[#9c8989] block font-semibold">2. Service Cards Simulation (1-to-1 Synergy with Main Page):</span>
                     
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                       {/* Romanian Card Preview */}
-                      <div className="dark:bg-byz-blue-900 bg-stone-900 border dark:border-byz-blue-100/10 border-stone-800 text-stone-100 rounded-3xl p-6 shadow-md relative overflow-hidden">
+                      <div className="dark:dark:bg-byz-blue-900 bg-[#d8c8ac]/40 bg-[#e4d8c1] border dark:border-byz-blue-100/10 border-[#c5a682]/70 dark:border-byz-blue-900/60 rounded-3xl p-6 shadow-md relative overflow-hidden">
                         <div className="absolute top-0 right-0 h-16 w-16 bg-radial-gradient(ellipse_at_top_right,rgba(212,171,21,0.05),transparent_70%) pointer-events-none" />
-                        <div className="flex items-center justify-between mb-4 pb-3 border-b dark:border-byz-blue-900/80 border-white/10">
-                          <span className="text-[9px] uppercase font-mono tracking-widest text-gold-400 dark:text-byz-blue-300 bg-stone-800/10 dark:bg-byz-blue-950 px-2.5 py-1 rounded-full border border-stone-800 dark:border-byz-blue-900">
+                        <div className="flex items-center justify-between mb-4 pb-3 border-b border-byz-blue-900/80">
+                          <span className="text-[9px] uppercase font-mono tracking-widest text-gold-400 dark:bg-byz-blue-950 bg-[#e4d8c1] px-2.5 py-1 rounded-full border border-byz-blue-900">
                             Romanian / RO
                           </span>
-                          <div className="p-1.5 rounded-lg bg-stone-800/10 dark:bg-byz-blue-950 text-gold-400 dark:text-gold-400 border border-stone-800 dark:border-stone-800">
+                          <div className="p-1.5 rounded-lg dark:bg-byz-blue-950 bg-[#e4d8c1] text-gold-400 border border-byz-blue-900">
                             <Calendar size={12} />
                           </div>
                         </div>
-                        <h3 className="font-display text-base font-semibold text-stone-100 mb-5">Service Schedule</h3>
+                        <h3 className="font-display text-base font-semibold text-gold-100 mb-5">Service Schedule</h3>
                         
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                           {(() => {
@@ -845,16 +845,16 @@ export default function AdminPanel({ darkMode, setDarkMode }: { darkMode?: boole
                             const rightServices = activeServicesRO.slice(halfLength);
 
                             if (activeServicesRO.length === 0) {
-                              return <div className="col-span-2 text-center py-4 font-serif text-xs dark:text-byz-blue-400 text-stone-400 italic">All services are hidden or no data exists.</div>;
+                              return <div className="col-span-2 text-center py-4 font-serif text-xs dark:text-byz-blue-400 text-[#9c8989] italic">All services are hidden or no data exists.</div>;
                             }
 
                             return (
                               <>
                                 <div className="space-y-4">
                                   {leftServices.map((service, idx) => (
-                                    <div key={service.id || `preview-ro-left-${idx}`} className="flex justify-between items-start text-xs border-b dark:border-byz-blue-900/50 border-white/10 pb-2">
-                                      <span className="font-semibold dark:text-white text-stone-100">{getFieldVal(service.day, 'RO')}:</span>
-                                      <span className="text-right dark:text-byz-blue-300 text-stone-300 font-mono text-[11px] font-semibold">
+                                    <div key={service.id || `preview-ro-left-${idx}`} className="flex justify-between items-start text-xs border-b border-byz-blue-900/50 pb-2">
+                                      <span className="font-semibold dark:text-white text-[#3b2f2f]">{getFieldVal(service.day, 'RO')}:</span>
+                                      <span className="text-right dark:text-byz-blue-300 text-[#7d6969] font-mono text-[11px] font-semibold">
                                         {getFieldVal(service.time, 'RO')} - {getFieldVal(service.name, 'RO')}
                                       </span>
                                     </div>
@@ -862,9 +862,9 @@ export default function AdminPanel({ darkMode, setDarkMode }: { darkMode?: boole
                                 </div>
                                 <div className="space-y-4">
                                   {rightServices.map((service, idx) => (
-                                    <div key={service.id || `preview-ro-right-${idx}`} className="flex justify-between items-start text-xs border-b dark:border-byz-blue-900/50 border-white/10 pb-2">
-                                      <span className="font-semibold dark:text-white text-stone-100">{getFieldVal(service.day, 'RO')}:</span>
-                                      <span className="text-right dark:text-byz-blue-300 text-stone-300 font-mono text-[11px] font-semibold">
+                                    <div key={service.id || `preview-ro-right-${idx}`} className="flex justify-between items-start text-xs border-b border-byz-blue-900/50 pb-2">
+                                      <span className="font-semibold dark:text-white text-[#3b2f2f]">{getFieldVal(service.day, 'RO')}:</span>
+                                      <span className="text-right dark:text-byz-blue-300 text-[#7d6969] font-mono text-[11px] font-semibold">
                                         {getFieldVal(service.time, 'RO')} - {getFieldVal(service.name, 'RO')}
                                       </span>
                                     </div>
@@ -877,17 +877,17 @@ export default function AdminPanel({ darkMode, setDarkMode }: { darkMode?: boole
                       </div>
 
                       {/* English Card Preview */}
-                      <div className="dark:bg-byz-blue-900 bg-stone-900 border dark:border-byz-blue-100/10 border-stone-800 text-stone-100 rounded-3xl p-6 shadow-md relative overflow-hidden">
+                      <div className="dark:dark:bg-byz-blue-900 bg-[#d8c8ac]/40 bg-[#e4d8c1] border dark:border-byz-blue-100/10 border-[#c5a682]/70 dark:border-byz-blue-900/60 rounded-3xl p-6 shadow-md relative overflow-hidden">
                         <div className="absolute top-0 right-0 h-16 w-16 bg-radial-gradient(ellipse_at_top_right,rgba(212,171,21,0.05),transparent_70%) pointer-events-none" />
-                        <div className="flex items-center justify-between mb-4 pb-3 border-b dark:border-byz-blue-900/80 border-white/10">
-                          <span className="text-[9px] uppercase font-mono tracking-widest text-gold-400 dark:text-byz-blue-300 bg-stone-800/10 dark:bg-byz-blue-950 px-2.5 py-1 rounded-full border border-stone-800 dark:border-byz-blue-900">
+                        <div className="flex items-center justify-between mb-4 pb-3 border-b border-byz-blue-900/80">
+                          <span className="text-[9px] uppercase font-mono tracking-widest text-gold-400 dark:bg-byz-blue-950 bg-[#e4d8c1] px-2.5 py-1 rounded-full border border-byz-blue-900">
                             English / EN
                           </span>
-                          <div className="p-1.5 rounded-lg bg-stone-800/10 dark:bg-byz-blue-950 text-gold-400 dark:text-gold-400 border border-stone-800 dark:border-stone-800">
+                          <div className="p-1.5 rounded-lg dark:bg-byz-blue-950 bg-[#e4d8c1] text-gold-400 border border-byz-blue-900">
                             <Calendar size={12} />
                           </div>
                         </div>
-                        <h3 className="font-display text-base font-semibold text-stone-100 mb-5">Schedule of Services</h3>
+                        <h3 className="font-display text-base font-semibold text-gold-100 mb-5">Schedule of Services</h3>
                         
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                           {(() => {
@@ -901,16 +901,16 @@ export default function AdminPanel({ darkMode, setDarkMode }: { darkMode?: boole
                             const rightServices = activeServicesEN.slice(halfLength);
 
                             if (activeServicesEN.length === 0) {
-                              return <div className="col-span-2 text-center py-4 font-serif text-xs dark:text-byz-blue-400 text-stone-400 italic">All services are hidden or there is no data.</div>;
+                              return <div className="col-span-2 text-center py-4 font-serif text-xs dark:text-byz-blue-400 text-[#9c8989] italic">All services are hidden or there is no data.</div>;
                             }
 
                             return (
                               <>
                                 <div className="space-y-4">
                                   {leftServices.map((service, idx) => (
-                                    <div key={service.id || `preview-en-left-${idx}`} className="flex justify-between items-start text-xs border-b dark:border-byz-blue-900/50 border-white/10 pb-2">
-                                      <span className="font-semibold dark:text-white text-stone-100">{getFieldVal(service.day, 'EN')}:</span>
-                                      <span className="text-right dark:text-byz-blue-300 text-stone-300 font-mono text-[11px] font-semibold">
+                                    <div key={service.id || `preview-en-left-${idx}`} className="flex justify-between items-start text-xs border-b border-byz-blue-900/50 pb-2">
+                                      <span className="font-semibold dark:text-white text-[#3b2f2f]">{getFieldVal(service.day, 'EN')}:</span>
+                                      <span className="text-right dark:text-byz-blue-300 text-[#7d6969] font-mono text-[11px] font-semibold">
                                         {getFieldVal(service.time, 'EN')} - {getFieldVal(service.name, 'EN')}
                                       </span>
                                     </div>
@@ -918,9 +918,9 @@ export default function AdminPanel({ darkMode, setDarkMode }: { darkMode?: boole
                                 </div>
                                 <div className="space-y-4">
                                   {rightServices.map((service, idx) => (
-                                    <div key={service.id || `preview-en-right-${idx}`} className="flex justify-between items-start text-xs border-b dark:border-byz-blue-900/50 border-white/10 pb-2">
-                                      <span className="font-semibold dark:text-white text-stone-100">{getFieldVal(service.day, 'EN')}:</span>
-                                      <span className="text-right dark:text-byz-blue-300 text-stone-300 font-mono text-[11px] font-semibold">
+                                    <div key={service.id || `preview-en-right-${idx}`} className="flex justify-between items-start text-xs border-b border-byz-blue-900/50 pb-2">
+                                      <span className="font-semibold dark:text-white text-[#3b2f2f]">{getFieldVal(service.day, 'EN')}:</span>
+                                      <span className="text-right dark:text-byz-blue-300 text-[#7d6969] font-mono text-[11px] font-semibold">
                                         {getFieldVal(service.time, 'EN')} - {getFieldVal(service.name, 'EN')}
                                       </span>
                                     </div>
@@ -938,31 +938,31 @@ export default function AdminPanel({ darkMode, setDarkMode }: { darkMode?: boole
             </section>
 
             {/* ANNOUNCEMENT EDIT BLOCK */}
-            <section className="dark:bg-byz-blue-900 bg-stone-900 shadow-xl dark:bg-byz-blue-900/40 border border-stone-800 dark:border-byz-blue-900/60 p-6 sm:p-8 rounded-3xl shadow-md animate-fade-in">
+            <section className="dark:dark:bg-byz-blue-900 bg-[#d8c8ac]/40 bg-[#e4d8c1] border dark:dark:border-byz-blue-800 border-[#c5a682]/70 border-[#c5a682]/60 p-6 sm:p-8 rounded-3xl shadow-md animate-fade-in">
               <div 
                 className="flex items-center justify-between cursor-pointer group mb-2" 
                 onClick={() => setIsAnnouncementsOpen(!isAnnouncementsOpen)}
               >
                 <div className="flex items-center space-x-3">
-                  <div className="p-2.5 bg-gold-500/10 text-gold-400 dark:text-gold-400 border border-gold-500/20 rounded-xl group-hover:bg-gold-500/20 transition-colors">
+                  <div className="p-2.5 bg-gold-500/10 text-gold-400 border border-gold-500/20 rounded-xl group-hover:bg-gold-500/20 transition-colors">
                     <Megaphone size={18} />
                   </div>
                   <div>
-                    <h2 className="font-display font-bold text-lg text-gold-400 dark:text-gold-400">Altar Announcement (Main Banner)</h2>
-                    <p className="font-serif text-xs dark:text-byz-blue-300 text-stone-300 italic">Displayed at the top of the calendar section for parishioners</p>
+                    <h2 className="font-display font-bold text-lg text-gold-400">Altar Announcement (Main Banner)</h2>
+                    <p className="font-serif text-xs dark:text-byz-blue-300 text-[#7d6969] italic">Displayed at the top of the calendar section for parishioners</p>
                   </div>
                 </div>
-                <div className="text-gold-400 dark:text-gold-400 p-2 border border-transparent group-hover:border-gold-500/30 rounded-lg transition-colors">
+                <div className="text-gold-400 p-2 border border-transparent group-hover:border-gold-500/30 rounded-lg transition-colors">
                   {isAnnouncementsOpen ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
                 </div>
               </div>
 
-              {isAnnouncementsOpen && (<div className="pt-4 mt-4 border-t dark:border-byz-blue-800 border-stone-800 space-y-6">
+              {isAnnouncementsOpen && (<div className="pt-4 mt-4 border-t dark:border-byz-blue-800 border-[#c5a682]/60 space-y-6">
                 {/* Active Toggle Switch */}
-                <div className="flex items-center justify-between p-4 dark:bg-byz-blue-950 bg-stone-800/50 border dark:dark:border-byz-blue-800 border-stone-800 border-stone-800 rounded-xl">
+                <div className="flex items-center justify-between p-4 dark:bg-byz-blue-950 bg-[#e4d8c1]/50 border dark:dark:border-byz-blue-800 border-[#c5a682]/70 border-[#c5a682]/60 rounded-xl">
                   <div>
-                    <h4 className="font-display font-semibold text-sm dark:text-byz-blue-100 text-stone-100">Enable Announcement on Site</h4>
-                    <p className="text-[11px] dark:text-byz-blue-400 text-stone-400 font-serif italic mt-0.5">Check for announcement to appear on screen, uncheck to hide it.</p>
+                    <h4 className="font-display font-semibold text-sm dark:text-byz-blue-100 text-[#4a3b3b]">Enable Announcement on Site</h4>
+                    <p className="text-[11px] dark:text-byz-blue-400 text-[#9c8989] font-serif italic mt-0.5">Check for announcement to appear on screen, uncheck to hide it.</p>
                   </div>
                   <input
                     type="checkbox"
@@ -974,54 +974,54 @@ export default function AdminPanel({ darkMode, setDarkMode }: { darkMode?: boole
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {/* Romanian Column */}
-                  <div className="space-y-4 dark:bg-byz-blue-950 bg-stone-800/30 p-4 rounded-2xl border dark:border-byz-blue-900 border-stone-700/50">
+                  <div className="space-y-4 dark:bg-byz-blue-950 bg-[#e4d8c1]/30 p-4 rounded-2xl border border-byz-blue-900/50">
                     <span className="text-[10px] uppercase font-mono tracking-wider bg-red-500/10 text-red-400 border border-red-500/20 px-2 py-0.5 rounded-full font-semibold">Romanian</span>
                     
                     <div>
-                      <label className="block text-xs dark:text-byz-blue-200 text-stone-300 font-medium mb-1.5 font-sans">Announcement Title (RO)</label>
+                      <label className="block text-xs dark:text-byz-blue-200 text-[#5a4a4a] font-medium mb-1.5 font-sans">Announcement Title (RO)</label>
                       <input
                         type="text"
                         value={announcement.roTitle}
                         onChange={(e) => setAnnouncement({ ...announcement, roTitle: e.target.value })}
-                        className="w-full dark:bg-byz-blue-950 bg-stone-800 border dark:border-byz-blue-800 border-stone-700 focus:border-gold-500/50 rounded-xl px-3.5 py-2.5 text-xs dark:text-byz-blue-100 text-stone-100 placeholder-byz-blue-600/50 focus:outline-none"
-                        placeholder="E.g., Schedule Change"
+                        className="w-full dark:bg-byz-blue-950 bg-[#e4d8c1]/80 border dark:border-byz-blue-800 border-[#c5a682] focus:border-gold-500/50 rounded-xl px-3.5 py-2.5 text-xs dark:text-byz-blue-100 text-[#4a3b3b] placeholder-byz-blue-600/50 focus:outline-none"
+                        placeholder="Ex: Schimbare de Program"
                       />
                     </div>
 
                     <div>
-                      <label className="block text-xs dark:text-byz-blue-200 text-stone-300 font-medium mb-1.5 font-sans">Announcement Text / Content (RO)</label>
+                      <label className="block text-xs dark:text-byz-blue-200 text-[#5a4a4a] font-medium mb-1.5 font-sans">Announcement Text / Content (RO)</label>
                       <textarea
                         rows={3}
                         value={announcement.roText}
                         onChange={(e) => setAnnouncement({ ...announcement, roText: e.target.value })}
-                        className="w-full dark:bg-byz-blue-950 bg-stone-800 border dark:border-byz-blue-800 border-stone-700 focus:border-gold-500/50 rounded-xl px-3.5 py-2.5 text-xs dark:text-byz-blue-100 text-stone-100 placeholder-byz-blue-600/50 focus:outline-none font-serif italic leading-relaxed"
+                        className="w-full dark:bg-byz-blue-950 bg-[#e4d8c1]/80 border dark:border-byz-blue-800 border-[#c5a682] focus:border-gold-500/50 rounded-xl px-3.5 py-2.5 text-xs dark:text-byz-blue-100 text-[#4a3b3b] placeholder-byz-blue-600/50 focus:outline-none font-serif italic leading-relaxed"
                         placeholder="Announcement content in Romanian..."
                       />
                     </div>
                   </div>
 
                   {/* English Column */}
-                  <div className="space-y-4 dark:bg-byz-blue-950 bg-stone-800/30 p-4 rounded-2xl border dark:border-byz-blue-900 border-stone-700/50">
-                    <span className="text-[10px] uppercase font-mono tracking-wider bg-byz-blue-500/15 dark:text-byz-blue-300 text-stone-300 border border-byz-blue-500/30 px-2 py-0.5 rounded-full font-semibold">English</span>
+                  <div className="space-y-4 dark:bg-byz-blue-950 bg-[#e4d8c1]/30 p-4 rounded-2xl border border-byz-blue-900/50">
+                    <span className="text-[10px] uppercase font-mono tracking-wider bg-byz-blue-500/15 dark:text-byz-blue-300 text-[#7d6969] border border-byz-blue-500/30 px-2 py-0.5 rounded-full font-semibold">English</span>
                     
                     <div>
-                      <label className="block text-xs dark:text-byz-blue-200 text-stone-300 font-medium mb-1.5 font-sans">Announcement Title (EN)</label>
+                      <label className="block text-xs dark:text-byz-blue-200 text-[#5a4a4a] font-medium mb-1.5 font-sans">Announcement Title (EN)</label>
                       <input
                         type="text"
                         value={announcement.enTitle}
                         onChange={(e) => setAnnouncement({ ...announcement, enTitle: e.target.value })}
-                        className="w-full dark:bg-byz-blue-950 bg-stone-800 border dark:border-byz-blue-800 border-stone-700 focus:border-gold-500/50 rounded-xl px-3.5 py-2.5 text-xs dark:text-byz-blue-100 text-stone-100 placeholder-byz-blue-600/50 focus:outline-none"
+                        className="w-full dark:bg-byz-blue-950 bg-[#e4d8c1]/80 border dark:border-byz-blue-800 border-[#c5a682] focus:border-gold-500/50 rounded-xl px-3.5 py-2.5 text-xs dark:text-byz-blue-100 text-[#4a3b3b] placeholder-byz-blue-600/50 focus:outline-none"
                         placeholder="Ex: Schedule Update"
                       />
                     </div>
 
                     <div>
-                      <label className="block text-xs dark:text-byz-blue-200 text-stone-300 font-medium mb-1.5 font-sans">Announcement Message / Description (EN)</label>
+                      <label className="block text-xs dark:text-byz-blue-200 text-[#5a4a4a] font-medium mb-1.5 font-sans">Announcement Message / Description (EN)</label>
                       <textarea
                         rows={3}
                         value={announcement.enText}
                         onChange={(e) => setAnnouncement({ ...announcement, enText: e.target.value })}
-                        className="w-full dark:bg-byz-blue-950 bg-stone-800 border dark:border-byz-blue-800 border-stone-700 focus:border-gold-500/50 rounded-xl px-3.5 py-2.5 text-xs dark:text-byz-blue-100 text-stone-100 placeholder-byz-blue-600/50 focus:outline-none font-serif italic leading-relaxed"
+                        className="w-full dark:bg-byz-blue-950 bg-[#e4d8c1]/80 border dark:border-byz-blue-800 border-[#c5a682] focus:border-gold-500/50 rounded-xl px-3.5 py-2.5 text-xs dark:text-byz-blue-100 text-[#4a3b3b] placeholder-byz-blue-600/50 focus:outline-none font-serif italic leading-relaxed"
                         placeholder="Announcement content in English..."
                       />
                     </div>
@@ -1031,26 +1031,26 @@ export default function AdminPanel({ darkMode, setDarkMode }: { darkMode?: boole
             </section>
 
             {/* SERVICES EDIT BLOCK */}
-            <section className="dark:bg-byz-blue-900 bg-stone-900 shadow-xl dark:bg-byz-blue-900/40 border border-stone-800 dark:border-byz-blue-900/60 p-6 sm:p-8 rounded-3xl shadow-md">
+            <section className="dark:dark:bg-byz-blue-900 bg-[#d8c8ac]/40 bg-[#e4d8c1] border dark:dark:border-byz-blue-800 border-[#c5a682]/70 border-[#c5a682]/60 p-6 sm:p-8 rounded-3xl shadow-md">
               <div 
                 className="flex items-center justify-between cursor-pointer group mb-2" 
                 onClick={() => setIsServicesOpen(!isServicesOpen)}
               >
                 <div className="flex items-center space-x-3">
-                  <div className="p-2.5 bg-gold-500/10 text-gold-400 dark:text-gold-400 border border-gold-500/20 rounded-xl group-hover:bg-gold-500/20 transition-colors">
+                  <div className="p-2.5 bg-gold-500/10 text-gold-400 border border-gold-500/20 rounded-xl group-hover:bg-gold-500/20 transition-colors">
                     <Calendar size={18} />
                   </div>
                   <div>
-                    <h2 className="font-display font-bold text-lg text-gold-400 dark:text-gold-400">Holy Services Schedule</h2>
-                    <p className="font-serif text-xs dark:text-byz-blue-300 text-stone-300 italic">Manage slots, days and times in real-time for parishioners</p>
+                    <h2 className="font-display font-bold text-lg text-gold-400">Holy Services Schedule</h2>
+                    <p className="font-serif text-xs dark:text-byz-blue-300 text-[#7d6969] italic">Manage slots, days and times in real-time for parishioners</p>
                   </div>
                 </div>
-                <div className="text-gold-400 dark:text-gold-400 p-2 border border-transparent group-hover:border-gold-500/30 rounded-lg transition-colors">
+                <div className="text-gold-400 p-2 border border-transparent group-hover:border-gold-500/30 rounded-lg transition-colors">
                   {isServicesOpen ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
                 </div>
               </div>
 
-              {isServicesOpen && (<div className="pt-4 mt-4 border-t dark:border-byz-blue-800 border-stone-800">
+              {isServicesOpen && (<div className="pt-4 mt-4 border-t dark:border-byz-blue-800 border-[#c5a682]/60">
                 <div className="flex flex-wrap items-center gap-3 mb-6">
                   <button
                     type="button"
@@ -1063,7 +1063,7 @@ export default function AdminPanel({ darkMode, setDarkMode }: { darkMode?: boole
                         });
                       }
                     }}
-                    className="dark:bg-byz-blue-950 bg-stone-800 hover:dark:bg-byz-blue-900 bg-stone-800 dark:text-byz-blue-300 text-stone-300 hover:dark:text-white hover:text-stone-200 border dark:border-byz-blue-800 border-stone-800 px-3 py-2 rounded-xl transition-all cursor-pointer flex items-center justify-center space-x-1.5 text-xs uppercase"
+                    className="dark:bg-byz-blue-950 bg-[#e4d8c1]/80 hover:dark:bg-byz-blue-900 bg-[#d8c8ac] dark:text-byz-blue-300 text-[#7d6969] hover:dark:text-white hover:text-[#4a3b3b] border dark:border-byz-blue-800 border-[#c5a682] px-3 py-2 rounded-xl transition-all cursor-pointer flex items-center justify-center space-x-1.5 text-xs uppercase"
                     title="Reset schedule to default"
                   >
                     <RotateCcw size={12} />
@@ -1073,7 +1073,7 @@ export default function AdminPanel({ darkMode, setDarkMode }: { darkMode?: boole
                   <button
                     type="button"
                     onClick={addService}
-                    className="dark:bg-byz-blue-950 bg-stone-800 hover:dark:bg-byz-blue-900 hover:bg-stone-800 hover:text-gold-500 dark:text-gold-500 dark:hover:text-gold-400 dark:text-gold-400 border dark:border-byz-blue-800 border-stone-800 dark:text-byz-blue-200 text-stone-300 font-semibold px-4 py-2 rounded-xl transition-all cursor-pointer flex items-center justify-center space-x-1.5 text-xs uppercase"
+                    className="dark:bg-byz-blue-950 bg-[#e4d8c1]/90 hover:dark:bg-byz-blue-900 hover:bg-[#d8c8ac] hover:text-gold-500 dark:hover:text-gold-400 border dark:border-byz-blue-800 border-[#c5a682] dark:text-byz-blue-200 text-[#5a4a4a] font-semibold px-4 py-2 rounded-xl transition-all cursor-pointer flex items-center justify-center space-x-1.5 text-xs uppercase"
                   >
                     <Plus size={14} />
                     <span>Add Service</span>
@@ -1081,11 +1081,11 @@ export default function AdminPanel({ darkMode, setDarkMode }: { darkMode?: boole
                 </div>
               {/* Informative Help Box */}
               <div className="bg-gradient-to-r from-gold-950/15 via-byz-blue-950/50 to-gold-950/15 border border-gold-500/20 p-4.5 rounded-2xl mb-8">
-                <h4 className="text-xs uppercase font-display font-bold text-gold-400 dark:text-gold-400 tracking-wider mb-1.5 flex items-center gap-1.5">
+                <h4 className="text-xs uppercase font-display font-bold text-gold-400 tracking-wider mb-1.5 flex items-center gap-1.5">
                   <Sparkles size={12} />
                   <span>Main Page Synergy & Saturday Mode</span>
                 </h4>
-                <p className="text-[11.5px] leading-relaxed dark:text-byz-blue-200 text-stone-300 font-serif italic">
+                <p className="text-[11.5px] leading-relaxed dark:text-byz-blue-200 text-[#5a4a4a] font-serif italic">
                   * On the main page, the 4 basic service slots (Vespers, Matins, Holy Liturgy and Agape/Refreshments) are dynamically connected based on their presence in the list.
                   <br />
                   * <span className="text-gold-300 font-semibold">If you do not need Saturday Vespers</span>, you can simply delete or disable it via the delete button (🗑️) on that service. To reactivate it, use the "Add Service" button and make sure the type is set to "Vespers".
@@ -1103,15 +1103,15 @@ export default function AdminPanel({ darkMode, setDarkMode }: { darkMode?: boole
                   return (
                     <div 
                       key={service.id} 
-                      className="relative dark:bg-byz-blue-950 bg-stone-800/60 border dark:border-byz-blue-800 border-stone-800/80 hover:border-gold-500/35 p-5 sm:p-6 rounded-2xl transition-all duration-300"
+                      className="relative dark:bg-byz-blue-950 bg-[#e4d8c1]/60 border dark:border-byz-blue-800 border-[#c5a682]/80 hover:border-gold-500/35 p-5 sm:p-6 rounded-2xl transition-all duration-300"
                     >
                       
                       {/* Floating Tools Controls */}
-                      <div className="absolute top-4 right-4 flex items-center space-x-1 dark:bg-byz-blue-900 bg-stone-800 border border-byz-blue-850 rounded-lg p-1 shadow-md">
+                      <div className="absolute top-4 right-4 flex items-center space-x-1 dark:bg-byz-blue-900 bg-[#d8c8ac] border border-byz-blue-850 rounded-lg p-1 shadow-md">
                         <button
                           onClick={() => moveService(index, 'up')}
                           disabled={index === 0}
-                          className="p-1.5 dark:text-byz-blue-300 text-stone-300 hover:text-gold-400 dark:text-gold-400 disabled:opacity-20 cursor-pointer"
+                          className="p-1.5 dark:text-byz-blue-300 text-[#7d6969] hover:text-gold-400 disabled:opacity-20 cursor-pointer"
                           title="Move Up"
                         >
                           <ArrowUp size={14} />
@@ -1119,16 +1119,16 @@ export default function AdminPanel({ darkMode, setDarkMode }: { darkMode?: boole
                         <button
                           onClick={() => moveService(index, 'down')}
                           disabled={index === services.length - 1}
-                          className="p-1.5 dark:text-byz-blue-300 text-stone-300 hover:text-gold-400 dark:text-gold-400 disabled:opacity-20 cursor-pointer"
+                          className="p-1.5 dark:text-byz-blue-300 text-[#7d6969] hover:text-gold-400 disabled:opacity-20 cursor-pointer"
                           title="Move Down"
                         >
                           <ArrowDown size={14} />
                         </button>
-                        <div className="w-[1px] h-4 dark:bg-byz-blue-800 bg-amber-100/50 mx-1" />
+                        <div className="w-[1px] h-4 dark:bg-byz-blue-800 bg-[#cca87d] mx-1" />
                         <button
                           onClick={() => deleteService(index)}
                           className="p-1.5 text-red-400 hover:text-red-500 cursor-pointer"
-                          title="Delete service"
+                          title="Delete slujba"
                         >
                           <Trash2 size={13} />
                         </button>
@@ -1136,9 +1136,9 @@ export default function AdminPanel({ darkMode, setDarkMode }: { darkMode?: boole
 
                       {/* Left Icon decoration depending on service type */}
                       <div className="flex flex-wrap gap-2 mb-5 pr-24">
-                        <div className="flex items-center space-x-1.5 text-[10px] font-mono uppercase tracking-widest text-gold-400 dark:text-gold-400 bg-gold-500/10 border border-gold-500/20 px-2.5 py-1 rounded-full font-semibold">
+                        <div className="flex items-center space-x-1.5 text-[10px] font-mono uppercase tracking-widest text-gold-400 bg-gold-500/10 border border-gold-500/20 px-2.5 py-1 rounded-full font-semibold">
                           <Clock size={11} />
-                          <span>Service #{index + 1}</span>
+                          <span>Slujba #{index + 1}</span>
                         </div>
                         
                         {service.hidden === true && (
@@ -1174,10 +1174,10 @@ export default function AdminPanel({ darkMode, setDarkMode }: { darkMode?: boole
                       </div>
 
                       {/* Presets and Wipe Actions Bar */}
-                      <div className="mb-5 p-3.5 dark:bg-byz-blue-900 bg-stone-800/50 border dark:border-byz-blue-800 border-stone-800 rounded-xl flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-3">
+                      <div className="mb-5 p-3.5 dark:dark:bg-byz-blue-900 bg-[#d8c8ac]/40 bg-[#e4d8c1] border dark:border-byz-blue-800 border-[#c5a682]/60 rounded-xl flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-3">
                         <div className="flex flex-wrap items-center gap-4">
                           <div className="flex flex-wrap items-center gap-2">
-                            <label className="text-[10px] uppercase font-mono tracking-wider dark:text-byz-blue-300 text-stone-300 font-bold">
+                            <label className="text-[10px] uppercase font-mono tracking-wider dark:text-byz-blue-300 text-[#7d6969] font-bold">
                               Load Preset:
                             </label>
                             <select
@@ -1188,9 +1188,9 @@ export default function AdminPanel({ darkMode, setDarkMode }: { darkMode?: boole
                                 }
                               }}
                               defaultValue=""
-                              className="dark:bg-byz-blue-950 bg-stone-800 border dark:border-byz-blue-800 border-stone-700 focus:border-gold-500 rounded-lg px-2.5 py-1 text-xs dark:text-byz-blue-100 text-stone-100 cursor-pointer focus:outline-none"
+                              className="dark:bg-byz-blue-950 bg-[#e4d8c1] border dark:border-byz-blue-800 border-[#c5a682] focus:border-gold-500 rounded-lg px-2.5 py-1 text-xs dark:text-byz-blue-100 text-[#4a3b3b] cursor-pointer focus:outline-none"
                             >
-                              <option value="">-- Choose a Template --</option>
+                              <option value="">-- Alege un Model --</option>
                               <option value="vespers">Vecernie (Saturday Vespers)</option>
                               <option value="matins">Utrenie (Sunday Matins)</option>
                               <option value="liturgy">Holy Liturgy (Divine Liturgy)</option>
@@ -1198,14 +1198,14 @@ export default function AdminPanel({ darkMode, setDarkMode }: { darkMode?: boole
                             </select>
                           </div>
 
-                          <label className="flex items-center space-x-2 text-xs dark:text-byz-blue-100 text-stone-100 font-medium cursor-pointer select-none dark:bg-byz-blue-950 bg-stone-800/40 hover:dark:bg-byz-blue-950 bg-stone-800 px-3 py-1 rounded-lg border dark:border-byz-blue-800 border-stone-800/80 transition-all">
+                          <label className="flex items-center space-x-2 text-xs dark:text-byz-blue-100 text-[#4a3b3b] font-medium cursor-pointer select-none dark:bg-byz-blue-950 bg-[#e4d8c1]/40 hover:dark:bg-byz-blue-950 bg-[#e4d8c1]/80 px-3 py-1 rounded-lg border dark:border-byz-blue-800 border-[#c5a682]/80 transition-all">
                             <input
                               type="checkbox"
                               checked={service.hidden === true}
                               onChange={(e) => updateServiceField(index, 'hidden', e.target.checked)}
-                              className="rounded dark:border-byz-blue-800 border-stone-800 text-gold-500 dark:text-gold-500 focus:ring-gold-500 focus:ring-offset-byz-blue-950 dark:bg-byz-blue-950 bg-stone-800 cursor-pointer w-4 h-4"
+                              className="rounded dark:border-byz-blue-800 border-[#c5a682] text-gold-500 focus:ring-gold-500 focus:ring-offset-byz-blue-950 dark:bg-byz-blue-950 bg-[#e4d8c1] cursor-pointer w-4 h-4"
                             />
-                            <span className="font-mono text-[11px] uppercase tracking-wider dark:text-byz-blue-200 text-stone-300">
+                            <span className="font-mono text-[11px] uppercase tracking-wider text-stone-200">
                               Ascunde / Hide
                             </span>
                           </label>
@@ -1229,13 +1229,13 @@ export default function AdminPanel({ darkMode, setDarkMode }: { darkMode?: boole
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
                         {/* Time (RO) */}
                         <div>
-                          <label className="block text-[11px] text-byz-blue-350 font-medium mb-1">Service Time (RO)</label>
+                          <label className="block text-[11px] text-byz-blue-350 font-medium mb-1">Time slujbei (RO)</label>
                           <input
                             type="text"
                             value={getFieldVal(service.time, 'RO')}
                             onChange={(e) => updateServiceField(index, 'time', e.target.value, 'RO')}
-                            className="w-full dark:bg-byz-blue-950 bg-stone-800 border dark:border-byz-blue-800 border-stone-700 focus:border-gold-500/50 rounded-xl px-3 py-2 text-xs dark:text-byz-blue-100 text-stone-100 focus:outline-none"
-                            placeholder="E.g., 09:00 or Sunday"
+                            className="w-full dark:bg-byz-blue-950 bg-[#e4d8c1]/80 border dark:border-byz-blue-800 border-[#c5a682] focus:border-gold-500/50 rounded-xl px-3 py-2 text-xs dark:text-byz-blue-100 text-[#4a3b3b] focus:outline-none"
+                            placeholder="Ex: 09:00 or Sunday"
                           />
                         </div>
 
@@ -1246,34 +1246,34 @@ export default function AdminPanel({ darkMode, setDarkMode }: { darkMode?: boole
                             type="text"
                             value={getFieldVal(service.time, 'EN')}
                             onChange={(e) => updateServiceField(index, 'time', e.target.value, 'EN')}
-                            className="w-full dark:bg-byz-blue-950 bg-stone-800 border dark:border-byz-blue-800 border-stone-700 focus:border-gold-500/50 rounded-xl px-3 py-2 text-xs dark:text-byz-blue-100 text-stone-100 focus:outline-none"
-                            placeholder="E.g., 09:00 or Sunday"
+                            className="w-full dark:bg-byz-blue-950 bg-[#e4d8c1]/80 border dark:border-byz-blue-800 border-[#c5a682] focus:border-gold-500/50 rounded-xl px-3 py-2 text-xs dark:text-byz-blue-100 text-[#4a3b3b] focus:outline-none"
+                            placeholder="Ex: 09:00 or Sunday"
                           />
                         </div>
                       </div>
 
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
-                        {/* Day RO */}
+                        {/* Ziua RO */}
                         <div>
                           <label className="block text-[11px] text-byz-blue-350 font-medium mb-1">Day / Frequency (RO)</label>
                           <input
                             type="text"
                             value={getFieldVal(service.day, 'RO')}
                             onChange={(e) => updateServiceField(index, 'day', e.target.value, 'RO')}
-                            className="w-full dark:bg-byz-blue-950 bg-stone-800 border dark:border-byz-blue-800 border-stone-700 focus:border-gold-500/50 rounded-xl px-3 py-2 text-xs dark:text-byz-blue-100 text-stone-100 focus:outline-none"
-                            placeholder="E.g., Every Sunday"
+                            className="w-full dark:bg-byz-blue-950 bg-[#e4d8c1]/80 border dark:border-byz-blue-800 border-[#c5a682] focus:border-gold-500/50 rounded-xl px-3 py-2 text-xs dark:text-byz-blue-100 text-[#4a3b3b] focus:outline-none"
+                            placeholder="Ex: Every Sunday"
                           />
                         </div>
 
-                        {/* Day EN */}
+                        {/* Ziua EN */}
                         <div>
                           <label className="block text-[11px] text-byz-blue-350 font-medium mb-1">Day / Frequency (EN)</label>
                           <input
                             type="text"
                             value={getFieldVal(service.day, 'EN')}
                             onChange={(e) => updateServiceField(index, 'day', e.target.value, 'EN')}
-                            className="w-full dark:bg-byz-blue-950 bg-stone-800 border dark:border-byz-blue-800 border-stone-700 focus:border-gold-500/50 rounded-xl px-3 py-2 text-xs dark:text-byz-blue-100 text-stone-100 focus:outline-none"
-                            placeholder="E.g., Every Sunday"
+                            className="w-full dark:bg-byz-blue-950 bg-[#e4d8c1]/80 border dark:border-byz-blue-800 border-[#c5a682] focus:border-gold-500/50 rounded-xl px-3 py-2 text-xs dark:text-byz-blue-100 text-[#4a3b3b] focus:outline-none"
+                            placeholder="Ex: Every Sunday"
                           />
                         </div>
                       </div>
@@ -1281,12 +1281,12 @@ export default function AdminPanel({ darkMode, setDarkMode }: { darkMode?: boole
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                         {/* Name RO */}
                         <div>
-                          <label className="block text-[11px] text-byz-blue-350 font-medium mb-1">Service Name (RO)</label>
+                          <label className="block text-[11px] text-byz-blue-350 font-medium mb-1">Numele Slujbei (RO)</label>
                           <input
                             type="text"
                             value={getFieldVal(service.name, 'RO')}
                             onChange={(e) => updateServiceField(index, 'name', e.target.value, 'RO')}
-                            className="w-full dark:bg-byz-blue-950 bg-stone-800 border dark:border-byz-blue-800 border-stone-700 focus:border-gold-500/50 rounded-xl px-3 py-2 text-xs font-semibold dark:text-byz-blue-100 text-stone-100 focus:outline-none"
+                            className="w-full dark:bg-byz-blue-950 bg-[#e4d8c1]/80 border dark:border-byz-blue-800 border-[#c5a682] focus:border-gold-500/50 rounded-xl px-3 py-2 text-xs font-semibold dark:text-byz-blue-100 text-[#4a3b3b] focus:outline-none"
                             placeholder="Name in Romanian..."
                           />
                         </div>
@@ -1298,7 +1298,7 @@ export default function AdminPanel({ darkMode, setDarkMode }: { darkMode?: boole
                             type="text"
                             value={getFieldVal(service.name, 'EN')}
                             onChange={(e) => updateServiceField(index, 'name', e.target.value, 'EN')}
-                            className="w-full dark:bg-byz-blue-950 bg-stone-800 border dark:border-byz-blue-800 border-stone-700 focus:border-gold-500/50 rounded-xl px-3 py-2 text-xs font-semibold dark:text-byz-blue-100 text-stone-100 focus:outline-none"
+                            className="w-full dark:bg-byz-blue-950 bg-[#e4d8c1]/80 border dark:border-byz-blue-800 border-[#c5a682] focus:border-gold-500/50 rounded-xl px-3 py-2 text-xs font-semibold dark:text-byz-blue-100 text-[#4a3b3b] focus:outline-none"
                             placeholder="Name in English..."
                           />
                         </div>
@@ -1307,12 +1307,12 @@ export default function AdminPanel({ darkMode, setDarkMode }: { darkMode?: boole
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                         {/* DescRO */}
                         <div>
-                          <label className="block text-[11px] text-byz-blue-350 font-medium mb-1">Description / Details (RO)</label>
+                          <label className="block text-[11px] text-byz-blue-350 font-medium mb-1">Descriere / Detalii (RO)</label>
                           <textarea
                             rows={2}
                             value={getFieldVal(service.description, 'RO')}
                             onChange={(e) => updateServiceField(index, 'description', e.target.value, 'RO')}
-                            className="w-full dark:bg-byz-blue-950 bg-stone-800 border dark:border-byz-blue-800 border-stone-700 focus:border-gold-500/50 rounded-xl px-3 py-2 text-xs dark:text-byz-blue-200 text-stone-100 focus:outline-none"
+                            className="w-full dark:bg-byz-blue-950 bg-[#e4d8c1]/80 border dark:border-byz-blue-800 border-[#c5a682] focus:border-gold-500/50 rounded-xl px-3 py-2 text-xs dark:text-byz-blue-200 text-[#5a4a4a] focus:outline-none"
                             placeholder="Liturgical details in Romanian..."
                           />
                         </div>
@@ -1324,19 +1324,19 @@ export default function AdminPanel({ darkMode, setDarkMode }: { darkMode?: boole
                             rows={2}
                             value={getFieldVal(service.description, 'EN')}
                             onChange={(e) => updateServiceField(index, 'description', e.target.value, 'EN')}
-                            className="w-full dark:bg-byz-blue-950 bg-stone-800 border dark:border-byz-blue-800 border-stone-700 focus:border-gold-500/50 rounded-xl px-3 py-2 text-xs dark:text-byz-blue-200 text-stone-100 focus:outline-none"
+                            className="w-full dark:bg-byz-blue-950 bg-[#e4d8c1]/80 border dark:border-byz-blue-800 border-[#c5a682] focus:border-gold-500/50 rounded-xl px-3 py-2 text-xs dark:text-byz-blue-200 text-[#5a4a4a] focus:outline-none"
                             placeholder="Liturgical details in English..."
                           />
                         </div>
                       </div>
 
-                      <div className="pt-4 border-t dark:dark:border-byz-blue-800 border-stone-800 border-stone-800 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <div className="pt-4 border-t dark:dark:border-byz-blue-800 border-[#c5a682]/70 border-[#c5a682]/60 grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
-                          <label className="block text-[11px] text-byz-blue-350 font-medium mb-1">Service Type (for styling / colors)</label>
+                          <label className="block text-[11px] text-byz-blue-350 font-medium mb-1">Tipul Slujbei (pentru stil primar / culori)</label>
                           <select
                             value={service.type}
                             onChange={(e) => updateServiceField(index, 'type', e.target.value)}
-                            className="dark:bg-byz-blue-950 bg-stone-800 border border-byz-blue-850 text-xs rounded-xl px-2.5 py-2 dark:text-byz-blue-100 text-stone-100 focus:outline-none focus:border-gold-500 cursor-pointer"
+                            className="dark:bg-byz-blue-950 bg-[#e4d8c1] border border-byz-blue-850 text-xs rounded-xl px-2.5 py-2 dark:text-byz-blue-100 text-[#4a3b3b] focus:outline-none focus:border-gold-500 cursor-pointer"
                           >
                             <option value="liturgy">Holy Liturgy (Gold)</option>
                             <option value="vespers">Vecernie (Indigo)</option>
@@ -1351,8 +1351,8 @@ export default function AdminPanel({ darkMode, setDarkMode }: { darkMode?: boole
                 })}
 
                 {services.length === 0 && (
-                  <div className="text-center py-12 dark:bg-byz-blue-950 bg-stone-800/40 border dark:border-byz-blue-900 border-stone-700 rounded-2xl">
-                    <p className="font-serif dark:text-byz-blue-400 text-stone-400 text-xs italic">No services in the list. Click "Add Service" above.</p>
+                  <div className="text-center py-12 dark:bg-byz-blue-950 bg-[#e4d8c1]/40 border border-byz-blue-900 rounded-2xl">
+                    <p className="font-serif dark:text-byz-blue-400 text-[#9c8989] text-xs italic">No services in the list. Click "Add Service" above.</p>
                   </div>
                 )}
               </div>
@@ -1360,35 +1360,35 @@ export default function AdminPanel({ darkMode, setDarkMode }: { darkMode?: boole
             </section>
 
             {/* LOGOS MANAGEMENT SECTION */}
-            <section className="dark:bg-byz-blue-900 bg-stone-900 shadow-xl dark:bg-byz-blue-900/40 border border-stone-800 dark:border-byz-blue-900/60 p-6 sm:p-8 rounded-3xl shadow-md mt-8">
+            <section className="dark:dark:bg-byz-blue-900 bg-[#d8c8ac]/40 bg-[#e4d8c1] border dark:dark:border-byz-blue-800 border-[#c5a682]/70 border-[#c5a682]/60 p-6 sm:p-8 rounded-3xl shadow-md mt-8">
                 <div className="flex items-center justify-between cursor-pointer group" onClick={() => setIsLogosOpen(!isLogosOpen)}>
                   <div className="flex items-center space-x-3">
-                    <div className="p-2.5 bg-gold-500/10 text-gold-400 dark:text-gold-400 border border-gold-500/20 rounded-xl group-hover:bg-gold-500/20 transition-colors">
+                    <div className="p-2.5 bg-gold-500/10 text-gold-400 border border-gold-500/20 rounded-xl group-hover:bg-gold-500/20 transition-colors">
                       <ImageIcon size={18} />
                     </div>
                     <div>
-                      <h2 className="font-display font-bold text-lg text-gold-400 dark:text-gold-400">Logos</h2>
-                      <p className="font-serif text-xs dark:text-byz-blue-300 text-stone-300 italic">Manage application logos</p>
+                      <h2 className="font-display font-bold text-lg text-gold-400">Logos</h2>
+                      <p className="font-serif text-xs dark:text-byz-blue-300 text-[#7d6969] italic">Manage application logos</p>
                     </div>
                   </div>
-                  <div className="text-gold-400 dark:text-gold-400">
+                  <div className="text-gold-400">
                     {isLogosOpen ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
                   </div>
                 </div>
                 {isLogosOpen && (
                   <div className="mt-8 space-y-6">
                     <div>
-                      <label className="block text-[11px] font-semibold text-gold-400 dark:text-gold-400 uppercase tracking-widest mb-2">
+                      <label className="block text-[11px] font-semibold text-gold-400 uppercase tracking-widest mb-2">
                         Parish Logo (Same logo applied site-wide)
                       </label>
                       
                       <div className="flex items-center space-x-2">
                         <input
                           type="text"
-                          placeholder="Image URL (e.g., https://... from Firebase Storage)"
+                          placeholder="URL-ul imaginii (ex: https://... din Firebase Storage)"
                           value={logos.mainLogoUrl}
                           onChange={(e) => setLogos({ mainLogoUrl: e.target.value, canonicalLogoUrl: e.target.value })}
-                          className="flex-1 dark:bg-byz-blue-950 bg-stone-800 border dark:border-byz-blue-800 border-stone-700 focus:border-gold-500/50 rounded-xl px-4 py-3 text-sm dark:text-byz-blue-100 text-stone-100 focus:outline-none transition-all"
+                          className="flex-1 dark:bg-byz-blue-950 bg-[#e4d8c1]/80 border dark:border-byz-blue-800 border-[#c5a682] focus:border-gold-500/50 rounded-xl px-4 py-3 text-sm dark:text-byz-blue-100 text-[#4a3b3b] focus:outline-none transition-all"
                         />
                         <button
                           type="button"
@@ -1399,9 +1399,9 @@ export default function AdminPanel({ darkMode, setDarkMode }: { darkMode?: boole
                         </button>
                       </div>
 
-                      <p className="font-serif text-[10px] dark:text-byz-blue-400 text-stone-400 italic mt-1.5">Enter the image link. If left empty, the default emblem will be used. To display images from Firebase, Firebase Storage needs public read rules (allow read: if true;).</p>
+                      <p className="font-serif text-[10px] dark:text-byz-blue-400 text-[#9c8989] italic mt-1.5">Enter the image link. If left empty, the default emblem will be used. To display images from Firebase, Firebase Storage needs public read rules (allow read: if true;).</p>
                       {logos.mainLogoUrl && (
-                        <img src={logos.mainLogoUrl} alt="Preview" className="mt-3 h-16 w-16 object-contain rounded-full border dark:border-byz-blue-800 border-stone-800 bg-[#3b2f2f]" />
+                        <img src={logos.mainLogoUrl} alt="Preview" className="mt-3 h-16 w-16 object-contain rounded-full border dark:border-byz-blue-800 border-[#c5a682] bg-[#3b2f2f]" />
                       )}
                     </div>
                   </div>
@@ -1409,25 +1409,25 @@ export default function AdminPanel({ darkMode, setDarkMode }: { darkMode?: boole
             </section>
 
             {/* MAIN PHOTO MANAGEMENT SECTION */}
-            <section className="dark:bg-byz-blue-900 bg-stone-900 shadow-xl dark:bg-byz-blue-900/40 border border-stone-800 dark:border-byz-blue-900/60 p-6 sm:p-8 rounded-3xl shadow-md mt-8">
+            <section className="dark:dark:bg-byz-blue-900 bg-[#d8c8ac]/40 bg-[#e4d8c1] border dark:dark:border-byz-blue-800 border-[#c5a682]/70 border-[#c5a682]/60 p-6 sm:p-8 rounded-3xl shadow-md mt-8">
                 <div className="flex items-center justify-between cursor-pointer group" onClick={() => setIsMainPhotoOpen(!isMainPhotoOpen)}>
                   <div className="flex items-center space-x-3">
-                    <div className="p-2.5 bg-gold-500/10 text-gold-400 dark:text-gold-400 border border-gold-500/20 rounded-xl group-hover:bg-gold-500/20 transition-colors">
+                    <div className="p-2.5 bg-gold-500/10 text-gold-400 border border-gold-500/20 rounded-xl group-hover:bg-gold-500/20 transition-colors">
                       <ImageIcon size={18} />
                     </div>
                     <div>
-                      <h2 className="font-display font-bold text-lg text-gold-400 dark:text-gold-400">Main Photo</h2>
-                      <p className="font-serif text-xs dark:text-byz-blue-300 text-stone-300 italic">Main image at top of page (Priest and Metropolitan)</p>
+                      <h2 className="font-display font-bold text-lg text-gold-400">Main Photo</h2>
+                      <p className="font-serif text-xs dark:text-byz-blue-300 text-[#7d6969] italic">Main image at top of page (Priest and Metropolitan)</p>
                     </div>
                   </div>
-                  <div className="text-gold-400 dark:text-gold-400">
+                  <div className="text-gold-400">
                     {isMainPhotoOpen ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
                   </div>
                 </div>
                 {isMainPhotoOpen && (
                   <div className="mt-8 space-y-6">
                     <div>
-                      <label className="block text-[11px] font-semibold text-gold-400 dark:text-gold-400 uppercase tracking-widest mb-2">
+                      <label className="block text-[11px] font-semibold text-gold-400 uppercase tracking-widest mb-2">
                         Hero Main Photo
                       </label>
                       
@@ -1437,7 +1437,7 @@ export default function AdminPanel({ darkMode, setDarkMode }: { darkMode?: boole
                           placeholder="URL-ul imaginii"
                           value={mainPhotoUrl}
                           onChange={(e) => setMainPhotoUrl(e.target.value)}
-                          className="flex-1 dark:bg-byz-blue-950 bg-stone-800 border dark:border-byz-blue-800 border-stone-700 focus:border-gold-500/50 rounded-xl px-4 py-3 text-sm dark:text-byz-blue-100 text-stone-100 focus:outline-none transition-all"
+                          className="flex-1 dark:bg-byz-blue-950 bg-[#e4d8c1]/80 border dark:border-byz-blue-800 border-[#c5a682] focus:border-gold-500/50 rounded-xl px-4 py-3 text-sm dark:text-byz-blue-100 text-[#4a3b3b] focus:outline-none transition-all"
                         />
                         <button
                           type="button"
@@ -1458,7 +1458,7 @@ export default function AdminPanel({ darkMode, setDarkMode }: { darkMode?: boole
                         />
                         <label
                           htmlFor="photo-main-upload"
-                          className="flex items-center justify-center w-full dark:bg-byz-blue-900 bg-stone-800/50 hover:dark:bg-byz-blue-800 bg-amber-100/50 border border-byz-blue-700 hover:border-gold-500/50 text-gold-200 py-3 rounded-xl cursor-pointer transition-all duration-300 font-medium text-sm space-x-2"
+                          className="flex items-center justify-center w-full dark:bg-byz-blue-900 bg-[#d8c8ac]/50 hover:dark:bg-byz-blue-800 bg-[#cca87d] border border-byz-blue-700 hover:border-gold-500/50 text-gold-200 py-3 rounded-xl cursor-pointer transition-all duration-300 font-medium text-sm space-x-2"
                         >
                           {uploadingMainPhoto ? (
                             <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-gold-400" />
@@ -1472,7 +1472,7 @@ export default function AdminPanel({ darkMode, setDarkMode }: { darkMode?: boole
                       </div>
 
                       {mainPhotoUrl && (
-                        <img src={mainPhotoUrl} alt="Preview" className="mt-3 h-24 w-auto object-cover rounded border dark:border-byz-blue-800 border-stone-800 bg-[#3b2f2f]" />
+                        <img src={mainPhotoUrl} alt="Preview" className="mt-3 h-24 w-auto object-cover rounded border dark:border-byz-blue-800 border-[#c5a682] bg-[#3b2f2f]" />
                       )}
                     </div>
                   </div>
@@ -1480,26 +1480,26 @@ export default function AdminPanel({ darkMode, setDarkMode }: { darkMode?: boole
             </section>
 
             {/* GALLERY MANAGEMENT SECTION */}
-            <section className="dark:bg-byz-blue-900 bg-stone-900 shadow-xl dark:bg-byz-blue-900/40 border border-stone-800 dark:border-byz-blue-900/60 p-6 sm:p-8 rounded-3xl shadow-md mt-8">
+            <section className="dark:dark:bg-byz-blue-900 bg-[#d8c8ac]/40 bg-[#e4d8c1] border dark:dark:border-byz-blue-800 border-[#c5a682]/70 border-[#c5a682]/60 p-6 sm:p-8 rounded-3xl shadow-md mt-8">
               <div 
                 className="flex items-center justify-between cursor-pointer group mb-2" 
                 onClick={() => setIsGalleryOpen(!isGalleryOpen)}
               >
                 <div className="flex items-center space-x-3">
-                  <div className="p-2.5 bg-gold-500/10 text-gold-400 dark:text-gold-400 border border-gold-500/20 rounded-xl group-hover:bg-gold-500/20 transition-colors">
+                  <div className="p-2.5 bg-gold-500/10 text-gold-400 border border-gold-500/20 rounded-xl group-hover:bg-gold-500/20 transition-colors">
                     <ImageIcon size={18} />
                   </div>
                   <div>
-                    <h2 className="font-display font-bold text-lg text-gold-400 dark:text-gold-400">Gallery Administration (Photos & Videos)</h2>
-                    <p className="font-serif text-xs dark:text-byz-blue-300 text-stone-300 italic">Upload representative photos and add YouTube video links for parishioners</p>
+                    <h2 className="font-display font-bold text-lg text-gold-400">Gallery Administration (Photos & Videos)</h2>
+                    <p className="font-serif text-xs dark:text-byz-blue-300 text-[#7d6969] italic">Upload representative photos and add YouTube video links for parishioners</p>
                   </div>
                 </div>
-                <div className="text-gold-400 dark:text-gold-400 p-2 border border-transparent group-hover:border-gold-500/30 rounded-lg transition-colors">
+                <div className="text-gold-400 p-2 border border-transparent group-hover:border-gold-500/30 rounded-lg transition-colors">
                   {isGalleryOpen ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
                 </div>
               </div>
 
-              {isGalleryOpen && (<div className="pt-4 mt-4 border-t dark:border-byz-blue-800 border-stone-800">
+              {isGalleryOpen && (<div className="pt-4 mt-4 border-t dark:border-byz-blue-800 border-[#c5a682]/60">
               {/* Status Alert */}
               {galleryStatus.message && (
                 <div className={`p-4 rounded-xl text-xs mb-6 flex items-start space-x-2.5 border ${
@@ -1516,24 +1516,24 @@ export default function AdminPanel({ darkMode, setDarkMode }: { darkMode?: boole
                 
                 {/* 1. Photos Column */}
                 <div className="space-y-6">
-                  <div className="dark:bg-byz-blue-950 bg-stone-800/40 border dark:border-byz-blue-900 border-stone-700 p-5 rounded-2xl">
-                    <h3 className="text-sm font-semibold dark:text-byz-blue-100 text-stone-100 mb-2 flex items-center space-x-2">
-                       <Upload size={14} className="text-gold-400 dark:text-gold-400" />
+                  <div className="dark:bg-byz-blue-950 bg-[#e4d8c1]/40 border border-byz-blue-900 p-5 rounded-2xl">
+                    <h3 className="text-sm font-semibold dark:text-byz-blue-100 text-[#4a3b3b] mb-2 flex items-center space-x-2">
+                       <Upload size={14} className="text-gold-400" />
                       <span>Photo Upload ({galleryPhotos.length}/20)</span>
                     </h3>
-                    <p className="text-[11px] dark:text-byz-blue-400 text-stone-400 mb-4 leading-relaxed">
+                    <p className="text-[11px] dark:text-byz-blue-400 text-[#9c8989] mb-4 leading-relaxed">
                       Select or drag image files. The system will automatically resize them to optimal dimensions (max 1000px) to reduce site load.
                     </p>
 
                     <div className="space-y-4">
                       <div>
-                        <label className="block text-[10px] uppercase font-mono tracking-wider dark:text-byz-blue-300 text-stone-300 font-medium mb-1.5 font-semibold">Photo Description / Caption (optional)</label>
+                        <label className="block text-[10px] uppercase font-mono tracking-wider dark:text-byz-blue-300 text-[#7d6969] font-medium mb-1.5 font-semibold">Photo Description / Caption (optional)</label>
                         <input
                           type="text"
                           value={photoCaption}
                           onChange={(e) => setPhotoCaption(e.target.value)}
-                          className="w-full dark:bg-byz-blue-950 bg-stone-800 border dark:border-byz-blue-800 border-stone-700 focus:border-gold-500/50 rounded-xl px-3 py-2 text-xs dark:text-byz-blue-100 text-stone-100 placeholder-byz-blue-600/50 focus:outline-none"
-                          placeholder="E.g., Holy Liturgy, 2026..."
+                          className="w-full dark:bg-byz-blue-950 bg-[#e4d8c1]/80 border dark:border-byz-blue-800 border-[#c5a682] focus:border-gold-500/50 rounded-xl px-3 py-2 text-xs dark:text-byz-blue-100 text-[#4a3b3b] placeholder-byz-blue-600/50 focus:outline-none"
+                          placeholder="Ex: Slujba Sfintei Liturghii, 2026..."
                         />
                       </div>
 
@@ -1567,18 +1567,18 @@ export default function AdminPanel({ darkMode, setDarkMode }: { darkMode?: boole
                             className={`flex flex-col items-center justify-center border-2 border-dashed rounded-xl p-4 cursor-pointer text-center group transition-all h-24 ${
                               isDragging 
                                 ? 'border-gold-500 bg-gold-500/10 scale-102 shadow-[0_0_15px_rgba(212,171,21,0.2)]' 
-                                : 'dark:border-byz-blue-800 border-stone-800 hover:border-gold-500/40 dark:bg-byz-blue-950 bg-stone-800/30 hover:dark:bg-byz-blue-950 bg-stone-800/60'
+                                : 'dark:border-byz-blue-800 border-[#c5a682] hover:border-gold-500/40 dark:bg-byz-blue-950 bg-[#e4d8c1]/30 hover:dark:bg-byz-blue-950 bg-[#e4d8c1]/60'
                             }`}
                           >
                             {uploadingPhoto ? (
                               <>
-                                <Loader2 size={20} className="text-gold-400 dark:text-gold-400 animate-spin mb-1.5" />
-                                <span className="text-[11px] dark:text-byz-blue-400 text-stone-400">Loading...</span>
+                                <Loader2 size={20} className="text-gold-400 animate-spin mb-1.5" />
+                                <span className="text-[11px] dark:text-byz-blue-400 text-[#9c8989]">Loading...</span>
                               </>
                             ) : (
                               <>
-                                <Upload size={18} className={`mb-1.5 transition-colors ${isDragging ? 'text-gold-400 dark:text-gold-400 animate-bounce' : 'dark:text-byz-blue-400 text-stone-400 group-hover:text-gold-400 dark:text-gold-400'}`} />
-                                <span className="text-[10px] dark:text-byz-blue-300 text-stone-300 font-semibold uppercase tracking-wider">
+                                <Upload size={18} className={`mb-1.5 transition-colors ${isDragging ? 'text-gold-400 animate-bounce' : 'dark:text-byz-blue-400 text-[#9c8989] group-hover:text-gold-400'}`} />
+                                <span className="text-[10px] dark:text-byz-blue-300 text-[#7d6969] font-semibold uppercase tracking-wider">
                                   {isDragging ? 'Drop image!' : 'Choose or drag file'}
                                 </span>
                                 <span className="text-[9px] text-byz-blue-500 mt-0.5">JPEG, PNG</span>
@@ -1595,14 +1595,14 @@ export default function AdminPanel({ darkMode, setDarkMode }: { darkMode?: boole
                         </div>
 
                         {/* Paste URL Manual Fallback */}
-                        <div className="border dark:border-byz-blue-800 border-stone-800 dark:bg-byz-blue-950 bg-stone-800/30 p-3 rounded-xl space-y-2 h-24 flex flex-col justify-between">
-                          <span className="text-[9px] font-semibold uppercase tracking-wider dark:text-byz-blue-300 text-stone-300 block leading-tight">Or directly via web address (URL)</span>
+                        <div className="border dark:border-byz-blue-800 border-[#c5a682]/60 dark:bg-byz-blue-950 bg-[#e4d8c1]/30 p-3 rounded-xl space-y-2 h-24 flex flex-col justify-between">
+                          <span className="text-[9px] font-semibold uppercase tracking-wider dark:text-byz-blue-300 text-[#7d6969] block leading-tight">Sau direct prin adresa web (URL)</span>
                           <input
                             type="text"
                             value={photoUrlInput}
                             onChange={(e) => setPhotoUrlInput(e.target.value)}
-                            className="dark:bg-byz-blue-950 bg-stone-800 border dark:border-byz-blue-800 border-stone-700 rounded-lg px-2 py-1 text-[10px] dark:text-byz-blue-100 text-stone-100 focus:outline-none w-full"
-                            placeholder="Image URL (https://...)"
+                            className="dark:bg-byz-blue-950 bg-[#e4d8c1] border dark:border-byz-blue-800 border-[#c5a682] rounded-lg px-2 py-1 text-[10px] dark:text-byz-blue-100 text-[#4a3b3b] focus:outline-none w-full"
+                            placeholder="Adresa imaginii (https://...)"
                           />
                           <button
                             type="button"
@@ -1619,21 +1619,21 @@ export default function AdminPanel({ darkMode, setDarkMode }: { darkMode?: boole
 
                   {/* List of Photos */}
                   <div className="space-y-3">
-                    <span className="text-[11px] font-semibold dark:text-byz-blue-300 text-stone-300 flex items-center space-x-1.5">
+                    <span className="text-[11px] font-semibold dark:text-byz-blue-300 text-[#7d6969] flex items-center space-x-1.5">
                       <ImageIcon size={12} />
                       <span>Fotografii Existente ({galleryPhotos.length})</span>
                     </span>
 
                     {galleryPhotos.length === 0 ? (
-                      <div className="text-center py-8 dark:bg-byz-blue-950 bg-stone-800/20 border dark:border-byz-blue-900 border-stone-700 rounded-xl">
-                        <p className="font-serif italic dark:text-byz-blue-400 text-stone-400 text-xs text-center">No photos added yet.</p>
+                      <div className="text-center py-8 dark:bg-byz-blue-950 bg-[#e4d8c1]/20 border border-byz-blue-900 rounded-xl">
+                        <p className="font-serif italic dark:text-byz-blue-400 text-[#9c8989] text-xs text-center">No photos added yet.</p>
                       </div>
                     ) : (
                       <div className="grid grid-cols-2 gap-3 max-h-[350px] overflow-y-auto pr-1">
                         {galleryPhotos.map((photo) => (
                           <div
                             key={photo.id}
-                            className="relative aspect-video rounded-lg overflow-hidden border dark:border-byz-blue-800 border-stone-800/80 group dark:bg-byz-blue-950 bg-stone-800"
+                            className="relative aspect-video rounded-lg overflow-hidden border dark:border-byz-blue-800 border-[#c5a682]/80 group dark:bg-byz-blue-950 bg-[#e4d8c1]"
                           >
                             <img
                               src={photo.url}
@@ -1642,14 +1642,14 @@ export default function AdminPanel({ darkMode, setDarkMode }: { darkMode?: boole
                               className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity"
                             />
                             {photo.caption && (
-                              <div className="absolute inset-x-0 bottom-0 dark:bg-byz-blue-950 bg-stone-800 py-1 px-1.5 text-[9px] font-sans truncate dark:text-byz-blue-200 text-stone-300">
+                              <div className="absolute inset-x-0 bottom-0 dark:bg-byz-blue-950 bg-[#e4d8c1]/90 py-1 px-1.5 text-[9px] font-sans truncate dark:text-byz-blue-200 text-[#5a4a4a]">
                                 {photo.caption}
                               </div>
                             )}
                             <button
                               type="button"
                               onClick={() => handleDeletePhoto(photo)}
-                              className="absolute top-1.5 right-1.5 p-1 bg-red-600 dark:text-white text-stone-100 rounded-md hover:bg-red-500 transition-colors shadow-md cursor-pointer"
+                              className="absolute top-1.5 right-1.5 p-1 bg-red-600 dark:text-white text-[#3b2f2f] rounded-md hover:bg-red-500 transition-colors shadow-md cursor-pointer"
                               title="Delete fotografia"
                             >
                               <Trash2 size={11} />
@@ -1663,31 +1663,31 @@ export default function AdminPanel({ darkMode, setDarkMode }: { darkMode?: boole
 
                 {/* 2. Videos Column */}
                 <div className="space-y-6">
-                  <div className="dark:bg-byz-blue-950 bg-stone-800/40 border dark:border-byz-blue-900 border-stone-700/80 p-5 rounded-2xl space-y-4">
-                    <h3 className="text-sm font-semibold dark:text-byz-blue-100 text-stone-100 mb-2 flex items-center space-x-2">
-                      <VideoIcon size={14} className="text-gold-400 dark:text-gold-400" />
+                  <div className="dark:bg-byz-blue-950 bg-[#e4d8c1]/40 border border-byz-blue-900/80 p-5 rounded-2xl space-y-4">
+                    <h3 className="text-sm font-semibold dark:text-byz-blue-100 text-[#4a3b3b] mb-2 flex items-center space-x-2">
+                      <VideoIcon size={14} className="text-gold-400" />
                       <span>Add YouTube Video Material</span>
                     </h3>
                     
                     <div>
-                      <label className="block text-[10px] uppercase font-mono tracking-wider dark:text-byz-blue-300 text-stone-300 font-medium mb-1.5 font-semibold">Video Recording Title</label>
+                      <label className="block text-[10px] uppercase font-mono tracking-wider dark:text-byz-blue-300 text-[#7d6969] font-medium mb-1.5 font-semibold">Video Recording Title</label>
                       <input
                         type="text"
                         value={newVideoTitle}
                         onChange={(e) => setNewVideoTitle(e.target.value)}
-                        className="w-full dark:bg-byz-blue-950 bg-stone-800 border dark:border-byz-blue-800 border-stone-700 focus:border-gold-500/50 rounded-xl px-3 py-2 text-xs dark:text-byz-blue-100 text-stone-100 focus:outline-none font-semibold"
-                        placeholder="E.g., Holy Liturgy Service and Te Deum"
+                        className="w-full dark:bg-byz-blue-950 bg-[#e4d8c1]/80 border dark:border-byz-blue-800 border-[#c5a682] focus:border-gold-500/50 rounded-xl px-3 py-2 text-xs dark:text-byz-blue-100 text-[#4a3b3b] focus:outline-none font-semibold"
+                        placeholder="Ex: Holy Liturgy Service and Te Deum"
                       />
                     </div>
 
                     <div>
-                      <label className="block text-[10px] uppercase font-mono tracking-wider dark:text-byz-blue-300 text-stone-300 font-medium mb-1.5 font-semibold">Link / URL YouTube (Unlisted/Public)</label>
+                      <label className="block text-[10px] uppercase font-mono tracking-wider dark:text-byz-blue-300 text-[#7d6969] font-medium mb-1.5 font-semibold">Link / URL YouTube (Unlisted/Public)</label>
                       <input
                         type="text"
                         value={newVideoUrl}
                         onChange={(e) => setNewVideoUrl(e.target.value)}
-                        className="w-full dark:bg-byz-blue-950 bg-stone-800 border dark:border-byz-blue-800 border-stone-700 focus:border-gold-500/50 rounded-xl px-3 py-2 text-xs dark:text-byz-blue-100 text-stone-100 focus:outline-none font-semibold"
-                        placeholder="E.g., https://www.youtube.com/watch?v=... or https://youtu.be/..."
+                        className="w-full dark:bg-byz-blue-950 bg-[#e4d8c1]/80 border dark:border-byz-blue-800 border-[#c5a682] focus:border-gold-500/50 rounded-xl px-3 py-2 text-xs dark:text-byz-blue-100 text-[#4a3b3b] focus:outline-none font-semibold"
+                        placeholder="Ex: https://www.youtube.com/watch?v=... sau https://youtu.be/..."
                       />
                     </div>
 
@@ -1703,14 +1703,14 @@ export default function AdminPanel({ darkMode, setDarkMode }: { darkMode?: boole
 
                   {/* List of Videos */}
                   <div className="space-y-3">
-                    <span className="text-[11px] font-semibold dark:text-byz-blue-300 text-stone-300 flex items-center space-x-1.5">
+                    <span className="text-[11px] font-semibold dark:text-byz-blue-300 text-[#7d6969] flex items-center space-x-1.5">
                       <VideoIcon size={12} />
                       <span>Videoclipuri Existente ({galleryVideos.length})</span>
                     </span>
 
                     {galleryVideos.length === 0 ? (
-                      <div className="text-center py-8 dark:bg-byz-blue-950 bg-stone-800/20 border dark:border-byz-blue-900 border-stone-700 rounded-xl">
-                        <p className="font-serif italic dark:text-byz-blue-400 text-stone-400 text-xs text-center">No video material added yet.</p>
+                      <div className="text-center py-8 dark:bg-byz-blue-950 bg-[#e4d8c1]/20 border border-byz-blue-900 rounded-xl">
+                        <p className="font-serif italic dark:text-byz-blue-400 text-[#9c8989] text-xs text-center">No video material added yet.</p>
                       </div>
                     ) : (
                       <div className="space-y-2.5 max-h-[350px] overflow-y-auto pr-1">
@@ -1720,10 +1720,10 @@ export default function AdminPanel({ darkMode, setDarkMode }: { darkMode?: boole
                           return (
                             <div
                               key={video.id}
-                              className="dark:bg-byz-blue-950 bg-stone-800/40 border dark:border-byz-blue-800 border-stone-800 p-2 rounded-xl flex items-center justify-between gap-3 hover:border-gold-500/30 transition-all group"
+                              className="dark:bg-byz-blue-950 bg-[#e4d8c1]/40 border dark:border-byz-blue-800 border-[#c5a682] p-2 rounded-xl flex items-center justify-between gap-3 hover:border-gold-500/30 transition-all group"
                             >
                               <div className="flex items-center space-x-3 truncate">
-                                <div className="relative aspect-video w-16 dark:bg-byz-blue-950 bg-stone-800 rounded overflow-hidden flex-shrink-0 flex items-center justify-center border dark:border-byz-blue-800 border-stone-800">
+                                <div className="relative aspect-video w-16 dark:bg-byz-blue-950 bg-[#e4d8c1] rounded overflow-hidden flex-shrink-0 flex items-center justify-center border dark:border-byz-blue-800 border-[#c5a682]">
                                   {yid ? (
                                     <img
                                       src={`https://img.youtube.com/vi/${yid}/default.jpg`}
@@ -1732,19 +1732,19 @@ export default function AdminPanel({ darkMode, setDarkMode }: { darkMode?: boole
                                       className="w-full h-full object-cover"
                                     />
                                   ) : (
-                                    <VideoIcon size={12} className="dark:text-byz-blue-400 text-stone-400" />
+                                    <VideoIcon size={12} className="dark:text-byz-blue-400 text-[#9c8989]" />
                                   )}
-                                  <div className="absolute inset-0 dark:bg-byz-blue-950 bg-stone-800/20 flex items-center justify-center">
-                                    <Play size={10} fill="currentColor" className="dark:text-white text-stone-100" />
+                                  <div className="absolute inset-0 dark:bg-byz-blue-950 bg-[#e4d8c1]/20 flex items-center justify-center">
+                                    <Play size={10} fill="currentColor" className="dark:text-white text-[#3b2f2f]" />
                                   </div>
                                 </div>
                                 <div className="truncate">
-                                  <p className="text-xs font-semibold dark:text-byz-blue-100 text-stone-100 select-all leading-tight truncate">{video.title}</p>
+                                  <p className="text-xs font-semibold dark:text-byz-blue-100 text-[#4a3b3b] select-all leading-tight truncate">{video.title}</p>
                                   <a
                                     href={video.url}
                                     target="_blank"
                                     rel="noreferrer"
-                                    className="text-[9px] dark:text-byz-blue-400 text-stone-400 hover:text-gold-400 dark:text-gold-400 flex items-center space-x-1 mt-0.5 truncate"
+                                    className="text-[9px] dark:text-byz-blue-400 text-[#9c8989] hover:text-gold-400 flex items-center space-x-1 mt-0.5 truncate"
                                   >
                                     <span className="truncate">{video.url}</span>
                                     <ExternalLink size={8} />
@@ -1754,7 +1754,7 @@ export default function AdminPanel({ darkMode, setDarkMode }: { darkMode?: boole
                               <button
                                 type="button"
                                 onClick={() => handleDeleteVideo(video.id)}
-                                className="p-2 dark:text-byz-blue-400 text-stone-400 hover:text-red-500 rounded-lg hover:dark:bg-byz-blue-900 hover:bg-stone-800/50 transition-colors cursor-pointer"
+                                className="p-2 dark:text-byz-blue-400 text-[#9c8989] hover:text-red-500 rounded-lg hover:dark:dark:bg-byz-blue-900 bg-[#d8c8ac]/40 bg-[#e4d8c1] transition-colors cursor-pointer"
                                 title="Delete video"
                               >
                                 <Trash2 size={13} />
@@ -1776,10 +1776,10 @@ export default function AdminPanel({ darkMode, setDarkMode }: { darkMode?: boole
         <div className="mt-12 text-center">
           <button
             onClick={goBack}
-            className="inline-flex items-center space-x-2 dark:text-byz-blue-400 text-stone-400 hover:text-gold-400 dark:text-gold-400 text-xs font-mono tracking-widest uppercase transition-colors cursor-pointer"
+            className="inline-flex items-center space-x-2 dark:text-byz-blue-400 text-[#9c8989] hover:text-gold-400 text-xs font-mono tracking-widest uppercase transition-colors cursor-pointer"
           >
             <ArrowLeft size={12} />
-            <span>Back to Main Site</span>
+            <span>Back to Site-ul Principal</span>
           </button>
         </div>
 

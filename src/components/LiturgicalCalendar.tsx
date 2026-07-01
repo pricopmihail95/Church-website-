@@ -81,7 +81,7 @@ export default function LiturgicalCalendar({ lang, services, canonicalLogoUrl }:
             </div>
 
             {/* Schedule of Services Card */}
-            <div className="bg-stone-900 shadow-xl dark:bg-byz-blue-900/40 border border-stone-800 dark:border-byz-blue-900/60 rounded-3xl p-6 sm:p-8  relative overflow-hidden group">
+            <div id="schedule-card" className="bg-stone-900 shadow-xl dark:bg-byz-blue-900/40 border border-stone-800 dark:border-byz-blue-900/60 rounded-3xl p-6 sm:p-8  relative overflow-hidden group">
               <div className="absolute top-0 right-0 h-16 w-16 bg-radial-gradient(ellipse_at_top_right,rgba(212,171,21,0.05),transparent_70%) pointer-events-none" />
               
               <div className="flex items-center justify-between mb-4 pb-3 border-b border-white/10 dark:border-byz-blue-900/80">
@@ -194,7 +194,9 @@ export default function LiturgicalCalendar({ lang, services, canonicalLogoUrl }:
                 </div>
 
                 <div className="pt-4 border-t border-white/10 dark:border-byz-blue-900/50 flex justify-between items-center text-xs font-mono text-gold-600 dark:text-gold-400">
-                  <span>{lang === 'RO' ? 'Registered Charity 1208759' : 'Charity No: 1208759'}</span>
+                  <a href="https://register-of-charities.charitycommission.gov.uk/en/charity-search/-/charity-details/5242873?_uk_gov_ccew_onereg_charitydetails_web_portlet_CharityDetailsPortlet_organisationNumber=5242873" target="_blank" rel="noopener noreferrer" className="hover:text-gold-300 underline underline-offset-2 transition-colors" title="View Charity Details on HMRC">
+                    {lang === 'RO' ? 'Registered Charity 1208759' : 'Charity No: 1208759'}
+                  </a>
                   <a href="#support" className="hover:underline flex items-center gap-1 font-semibold">
                     {lang === 'RO' ? 'Susține' : 'Sustain'} →
                   </a>
@@ -209,7 +211,7 @@ export default function LiturgicalCalendar({ lang, services, canonicalLogoUrl }:
           <div className="lg:col-span-4 space-y-6">
             
             {/* Box 0: Canonical Archdiocese Authority (Requested Logo in the Right Section) */}
-            <div className="bg-stone-900 shadow-xl border border-stone-800 p-6 rounded-3xl text-center relative overflow-hidden group">
+            <div className="bg-stone-900 shadow-xl border border-stone-800 dark:bg-byz-blue-900/40 dark:border-byz-blue-900/60 p-6 rounded-3xl text-center relative overflow-hidden group">
               <div className="absolute top-0 right-0 w-12 h-12 bg-radial-gradient(ellipse_at_top_right,rgba(212,171,21,0.06),transparent_70%) pointer-events-none" />
               
               {/* Authentic representation of the uploaded black & white circular crest of the Archdiocese */}
@@ -242,46 +244,46 @@ export default function LiturgicalCalendar({ lang, services, canonicalLogoUrl }:
               </div>
             </div>
 
-            {/* Box 2: Unde ne găsiți (Google Maps box) */}
-            <div className="bg-stone-900 shadow-xl dark:bg-byz-blue-900/40 border border-stone-800 dark:border-byz-blue-900/60 p-6 sm:p-7 rounded-3xl ">
-              <h3 className="font-display text-lg font-semibold text-gold-400 dark:text-white mb-4">
-                {lang === 'RO' ? 'Unde ne găsiți' : 'Where to Find Us'}
-              </h3>
-              
-              <div className="flex items-start space-x-3 text-xs sm:text-sm text-stone-200 dark:text-byz-blue-200 italic font-serif leading-relaxed mb-4">
-                <MapPin size={18} className="text-gold-500 flex-shrink-0 mt-0.5" />
-                <p>
-                  Old Brumby United Church / Methodist Church, 185 Ashby Rd, Scunthorpe DN16 2AQ
-                </p>
-              </div>
-
-              <div className="relative w-full h-[220px] rounded-xl overflow-hidden border border-stone-800 dark:border-byz-blue-900/60 mb-4 shadow-inner">
-                <iframe
-                  title="Google Map Location"
-                  src="https://maps.google.com/maps?q=Old%20Brumby%20United%20Church,%20185%20Ashby%20Rd,%20Scunthorpe%20DN16%202AQ&t=&z=15&ie=UTF8&iwloc=&output=embed"
-                  className="w-full h-full border-0"
-                  allowFullScreen
-                  loading="lazy"
-                />
-              </div>
-
-              <p className="text-[11px] sm:text-xs text-stone-300 dark:text-byz-blue-300 leading-normal mb-5">
-                {lang === 'RO'
-                  ? 'Slujbele noastre se țin în format fizic la adresa comunității. Parcare auto gratuită disponibilă în zona din spate a clădirii.'
-                  : 'Our services are held physically at the community address. Free car parking is available in the rear area of the church building.'}
-              </p>
-
-              <button
-                onClick={handleOpenMap}
-                className="w-full inline-flex items-center justify-center space-x-2 px-4 py-2.5 bg-byz-blue-650 text-white font-sans font-semibold rounded-xl text-xs hover:bg-gold-500 hover:text-stone-950 transition-all shadow-sm cursor-pointer"
-              >
-                <Compass size={14} />
-                <span>{lang === 'RO' ? 'Deschide în Google Maps' : 'Open in Google Maps'}</span>
-              </button>
-            </div>
-
           </div>
 
+        </div>
+
+        {/* Box 2: Unde ne găsiți (Google Maps box) - Centered below the grid */}
+        <div id="where-to-find-us" className="mt-12 bg-stone-900 shadow-xl dark:bg-byz-blue-900/40 border border-stone-800 dark:border-byz-blue-900/60 p-6 sm:p-8 rounded-3xl max-w-3xl mx-auto text-center">
+          <h3 className="font-display text-xl sm:text-2xl font-semibold text-gold-400 dark:text-white mb-4">
+            {lang === 'RO' ? 'Unde ne găsiți' : 'Where to Find Us'}
+          </h3>
+          
+          <div className="flex items-center justify-center space-x-3 text-sm text-stone-100 dark:text-stone-100 italic font-serif leading-relaxed mb-6">
+            <MapPin size={18} className="text-gold-500 flex-shrink-0" />
+            <p>
+              Old Brumby United Church / Methodist Church, 185 Ashby Rd, Scunthorpe DN16 2AQ
+            </p>
+          </div>
+
+          <div className="relative w-full h-[350px] sm:h-[450px] rounded-2xl overflow-hidden border border-stone-800 dark:border-byz-blue-900/60 mb-6 shadow-inner mx-auto">
+            <iframe
+              title="Google Map Location"
+              src="https://maps.google.com/maps?q=Old%20Brumby%20United%20Church,%20185%20Ashby%20Rd,%20Scunthorpe%20DN16%202AQ&t=&z=15&ie=UTF8&iwloc=&output=embed"
+              className="w-full h-full border-0"
+              allowFullScreen
+              loading="lazy"
+            />
+          </div>
+
+          <p className="text-sm text-stone-200 dark:text-stone-200 leading-relaxed mb-6 max-w-xl mx-auto">
+            {lang === 'RO'
+              ? 'Slujbele noastre se țin în format fizic la adresa comunității. Parcare auto gratuită disponibilă în zona din spate a clădirii.'
+              : 'Our services are held physically at the community address. Free car parking is available in the rear area of the church building.'}
+          </p>
+
+          <button
+            onClick={handleOpenMap}
+            className="inline-flex items-center justify-center space-x-2 px-6 py-3 bg-byz-blue-650 text-white font-sans font-semibold rounded-xl text-sm hover:bg-gold-500 hover:text-stone-950 transition-all shadow-md cursor-pointer mx-auto"
+          >
+            <Compass size={16} />
+            <span>{lang === 'RO' ? 'Deschide în Google Maps' : 'Open in Google Maps'}</span>
+          </button>
         </div>
 
       </div>

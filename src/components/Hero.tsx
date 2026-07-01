@@ -113,7 +113,8 @@ export default function Hero({ lang, mainPhotoUrl }: HeroProps) {
   const smoothScrollTo = (id: string) => {
     const el = document.getElementById(id);
     if (el) {
-      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      const y = el.getBoundingClientRect().top + window.scrollY - 80;
+      window.scrollTo({ top: y, behavior: 'smooth' });
     }
   };
 
@@ -125,7 +126,7 @@ export default function Hero({ lang, mainPhotoUrl }: HeroProps) {
       {mainPhotoUrl && (
         <div className="absolute inset-0 z-0 pointer-events-none flex items-start">
           <div 
-            className="w-full h-[60vh] sm:h-[70vh] bg-cover bg-top relative"
+            className="w-full h-[60vh] sm:h-[70vh] lg:h-[90vh] xl:h-[100vh] bg-cover bg-top relative"
             style={{ backgroundImage: `url(${mainPhotoUrl})` }}
           >
             <div className="absolute inset-0 bg-gradient-to-b from-stone-900/10 via-[#DFD5C4]/60 to-[#DFD5C4] dark:from-stone-900/40 dark:via-byz-blue-950/80 dark:to-byz-blue-950" />
@@ -180,7 +181,7 @@ export default function Hero({ lang, mainPhotoUrl }: HeroProps) {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.2, duration: 0.6 }}
-          className="font-sans text-xs sm:text-sm tracking-[0.25em] font-semibold text-stone-900 uppercase mb-3"
+          className="font-sans text-xs sm:text-sm tracking-[0.25em] font-semibold text-stone-900 dark:text-stone-100 uppercase mb-3"
         >
           {t.heroTagline}
         </motion.p>
@@ -190,7 +191,7 @@ export default function Hero({ lang, mainPhotoUrl }: HeroProps) {
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3, duration: 0.8 }}
-          className="font-display text-3xl sm:text-5xl lg:text-6xl text-stone-900 font-medium tracking-tight leading-[1.1] mb-6"
+          className="font-display text-3xl sm:text-5xl lg:text-6xl text-stone-900 dark:text-stone-100 font-medium tracking-tight leading-[1.1] mb-6"
         >
           {t.heroTitle}
         </motion.h1>
@@ -213,7 +214,7 @@ export default function Hero({ lang, mainPhotoUrl }: HeroProps) {
           className="flex flex-col sm:flex-row items-center justify-center gap-4"
         >
           <button
-            onClick={() => smoothScrollTo('services')}
+            onClick={() => smoothScrollTo('schedule-card')}
             className="w-full sm:w-auto flex items-center justify-center space-x-2.5 px-8 py-4 bg-gold-500 hover:bg-gold-400 text-stone-950 rounded-xl font-medium tracking-wider text-xs uppercase shadow-[0_4px_24px_rgba(212,171,21,0.3)] transition-all duration-300 transform hover:-translate-y-0.5"
           >
             <Calendar size={15} />
@@ -221,7 +222,7 @@ export default function Hero({ lang, mainPhotoUrl }: HeroProps) {
           </button>
           
           <button
-            onClick={() => smoothScrollTo('contact')}
+            onClick={() => smoothScrollTo('where-to-find-us')}
             className="w-full sm:w-auto flex items-center justify-center space-x-2.5 px-8 py-4 bg-stone-900/90 dark:bg-stone-800/80 hover:bg-stone-800 dark:hover:bg-stone-850 text-gold-200 border border-gold-500/30 hover:border-gold-500/60 rounded-xl font-medium tracking-wider text-xs uppercase transition-all duration-300 backdrop-blur-sm transform hover:-translate-y-0.5"
           >
             <Navigation size={14} />
@@ -244,7 +245,7 @@ export default function Hero({ lang, mainPhotoUrl }: HeroProps) {
       {/* Down Chevron link indicator */}
       <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20">
         <motion.button
-          onClick={() => smoothScrollTo('services')}
+          onClick={() => smoothScrollTo('schedule-card')}
           animate={{ y: [0, 8, 0] }}
           transition={{ repeat: Infinity, duration: 2, ease: 'easeInOut' }}
           className="p-2 text-stone-400 hover:text-gold-400 transition-colors"

@@ -147,7 +147,9 @@ export default function PangarDonations({ lang }: PangarDonationsProps) {
                 <div className="bg-white/10/40 dark:bg-byz-blue-950/60 border border-stone-800 dark:border-byz-blue-800/45 p-3 rounded-xl flex justify-between items-center text-xs">
                   <span className="text-stone-300 dark:text-byz-blue-300 uppercase font-mono tracking-wider font-semibold text-[10px]">Charity No</span>
                   <div className="flex items-center space-x-2">
-                    <span className="font-mono font-bold text-white dark:text-stone-200">{charityNum}</span>
+                    <a href="https://register-of-charities.charitycommission.gov.uk/en/charity-search/-/charity-details/5242873?_uk_gov_ccew_onereg_charitydetails_web_portlet_CharityDetailsPortlet_organisationNumber=5242873" target="_blank" rel="noopener noreferrer" className="font-mono font-bold text-gold-400 hover:text-gold-300 underline underline-offset-2 transition-colors" title="View Charity Details on HMRC">
+                      {charityNum}
+                    </a>
                     <button
                       onClick={() => handleCopy(charityNum, 'charity')}
                       className="p-1 text-stone-400 hover:text-gold-500 hover:bg-byz-blue-100 dark:hover:bg-byz-blue-950 rounded transition-all cursor-pointer"

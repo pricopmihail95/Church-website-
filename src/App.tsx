@@ -109,7 +109,7 @@ export default function App() {
   }, []);
 
   if (isAdminView) {
-    return <AdminPanel />;
+    return <AdminPanel darkMode={darkMode} setDarkMode={setDarkMode} />;
   }
 
   if (isGalleryView) {

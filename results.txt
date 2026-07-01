@@ -1,0 +1,4 @@
+src/components/IntroductionSection.tsx:43:        <div className="bg-stone-900 shadow-xl border border-stone-800 p-8 sm:p-10 rounded-3xl mb-12 relative overflow-hidden text-stone-100">
+src/components/GallerySection.tsx:351:                                className="absolute top-2.5 right-2.5 z-10 p-1.5 bg-stone-950/80 hover:bg-stone-900/95 text-stone-300 hover:text-white rounded-lg transition-all text-[10px] flex items-center space-x-1"
+src/components/AdminPanel.tsx:1375:                        <img src={logos.mainLogoUrl} alt="Preview" className="mt-3 h-16 w-16 object-contain rounded-full border border-byz-blue-800 bg-stone-900" />
+src/components/AdminPanel.tsx:1446:                        <img src={mainPhotoUrl} alt="Preview" className="mt-3 h-24 w-auto object-cover rounded border border-byz-blue-800 bg-stone-900" />

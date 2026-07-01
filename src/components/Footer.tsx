@@ -175,7 +175,7 @@ export default function Footer({ lang }: FooterProps) {
                 </a>
               </p>
               <p className="not-italic font-mono text-[10px] text-stone-400 mt-4">
-                Registered Charity No: <span className="text-gold-400 font-semibold">1208759</span>
+                Registered Charity No: <a href="https://register-of-charities.charitycommission.gov.uk/en/charity-search/-/charity-details/5242873?_uk_gov_ccew_onereg_charitydetails_web_portlet_CharityDetailsPortlet_organisationNumber=5242873" target="_blank" rel="noopener noreferrer" className="text-gold-400 font-semibold hover:text-gold-300 underline underline-offset-2 transition-colors">1208759</a>
               </p>
             </div>
           </div>
